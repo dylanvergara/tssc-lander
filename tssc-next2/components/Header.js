@@ -1,19 +1,8 @@
-import Image from 'next/image';
-
-export default function Header({ data }) {
+export default function Header() {
   return (
     <header className="header">
-      <div className="page-col">
-        <Image
-          src="/images/logo-white-bg.png"
-          alt="The Serial Sales Community"
-          width={80}
-          height={48}
-          className="header__logo"
-          priority
-        />
-        <p className="header__name">The Serial Sales Community</p>
-      </div>
+      <img src="/images/logo-transparent.png" alt="The Serial Sales Community" className="header__logo" />
+      <span className="header__name">The Serial Sales Community</span>
     </header>
   );
 }

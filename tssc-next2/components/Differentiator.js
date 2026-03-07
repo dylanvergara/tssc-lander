@@ -1,14 +1,15 @@
+// Differentiator.js
 export default function Differentiator({ data }) {
   const { differentiator } = data;
   return (
     <section className="section">
-      <div className="page-col">
-        <div className="card reveal">
+      <div className="col">
+        <div className="card card--accent-top reveal">
           <div className="diff__headline-wrap">
-            <div className="diff__headline">{differentiator.headline}</div>
-            <div className="diff__accent">{differentiator.accentWord}</div>
+            <div className="diff__line1">{differentiator.headline}</div>
+            <div className="diff__line2">{differentiator.accentWord}</div>
           </div>
-          <div className="card-body">
+          <div className="body-copy">
             {differentiator.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
           </div>
         </div>

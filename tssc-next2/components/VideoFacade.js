@@ -13,23 +13,25 @@ export default function VideoFacade({ videoId, platform = 'youtube', title, smal
     ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
     : '/images/thumb-placeholder.jpg';
 
-  return (
-    <div className="video-facade" onClick={() => setPlaying(true)}>
-      {playing ? (
+  if (playing) {
+    return (
+      <div className="video-facade" style={{ cursor: 'default' }}>
         <iframe src={embedUrl} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen title={title || 'Video'} />
-      ) : (
-        <>
-          <img src={thumbSrc} alt={title || 'Play video'} className="video-facade__thumb" loading="lazy" />
-          <div className="video-facade__overlay">
-            <button className={`play-btn${small ? ' play-btn--sm' : ''}`} aria-label="Play video">
-              <svg viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="30" r="29" stroke="currentColor" strokeWidth="2" />
-                <path d="M24 20L42 30L24 40V20Z" fill="currentColor" />
-              </svg>
-            </button>
-          </div>
-        </>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="video-facade" onClick={() => setPlaying(true)} role="button" tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && setPlaying(true)}>
+      <img src={thumbSrc} alt={title || 'Play video'} className="video-facade__thumb" loading="lazy" />
+      <div className="video-facade__overlay">
+        <button className={`play-btn${small ? ' play-btn--sm' : ''}`} aria-label="Play video">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

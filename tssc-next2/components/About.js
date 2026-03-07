@@ -1,19 +1,23 @@
-// About.js
 export default function About({ data }) {
-  const { about } = data;
+  const { about, ctaUrl, ctaText } = data;
   return (
-    <section className="about section">
-      <div className="page-col">
+    <section className="section">
+      <div className="col">
         <div className="reveal">
-          <div className="about__photo-wrap">
-            <img src={about.teamPhoto} alt="The TSSC Team" className="about__photo" loading="lazy" />
+          <div className="about__img-wrap">
+            <img src={about.image} alt="Dylan presenting to TSSC members" className="about__img" loading="lazy" />
           </div>
-          <div className="card" style={{ borderRadius: '0 0 12px 12px', paddingTop: '24px' }}>
-            <h2 className="card-headline">{about.headline}</h2>
-            <div className="card-body">
+          <div className="about__text">
+            <h2 className="headline">{about.headline}</h2>
+            <div className="body-copy">
               {about.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
             </div>
           </div>
+        </div>
+        <div className="reveal reveal--delay-1">
+          <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-primary btn-primary--dark">
+            {ctaText}
+          </a>
         </div>
       </div>
     </section>
