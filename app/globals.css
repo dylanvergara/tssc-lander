@@ -370,11 +370,11 @@ ul   { list-style: none; }
 /* ── Hero VSL glow ── */
 .vsl-glow {
   border-radius: calc(var(--radius) + 2px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(182, 205, 222, 0.5);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 0 18px 4px rgba(255, 255, 255, 0.12),
-    0 0 40px 8px rgba(255, 255, 255, 0.06);
+    0 0 0 1px rgba(182, 205, 222, 0.1),
+    0 0 20px 6px rgba(182, 205, 222, 0.18),
+    0 0 48px 12px rgba(182, 205, 222, 0.08);
   overflow: hidden;
 }
 
@@ -546,16 +546,15 @@ ul   { list-style: none; }
   z-index: 10;
 }
 
-/* Text zone — min-height keeps cards consistent when bio is closed, grows when open */
+/* Text zone — fixed height keeps all cards uniform */
 .carousel-card__text {
   min-height: 88px;
-  padding: 12px 14px 10px;
+  padding: 12px 14px 8px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 4px;
   flex-shrink: 0;
-  overflow: visible;
 }
 
 /* Milestone — clamped to exactly 2 lines */
@@ -932,7 +931,7 @@ ul   { list-style: none; }
     url('/images/money-pile.png')
     center bottom / cover no-repeat;
   opacity: 0.075;
-  mix-blend-mode: multiply;
+  mix-blend-mode: screen;
   pointer-events: none;
   z-index: 0;
   border-radius: 0 0 var(--radius) var(--radius);
@@ -1640,20 +1639,20 @@ a {
 /* ============================================================
    CAROUSEL CARD — READ MORE BIO
    ============================================================ */
-.carousel-card__bio-wrap {
-  padding: 4px 0 0;
+.carousel-card__bio-section {
+  padding: 0 14px 8px;
   flex-shrink: 0;
 }
 
 .carousel-card__readmore {
   background: none;
   border: none;
-  color: rgba(10, 26, 40, 0.65);
+  color: rgba(10, 26, 40, 0.6);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
   cursor: pointer;
-  padding: 6px 0 4px;
+  padding: 4px 0;
   text-align: left;
   width: 100%;
   transition: color 0.2s;
@@ -1663,18 +1662,21 @@ a {
   color: rgba(10, 26, 40, 1);
 }
 
+.carousel-card__bio-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.carousel-card__bio-body.is-open {
+  max-height: 400px;
+}
+
 .carousel-card__bio {
-  margin: 8px 0 0;
+  margin: 6px 0 4px;
   font-size: 12px;
   line-height: 1.6;
   color: rgba(10, 26, 40, 0.78);
   font-family: var(--font-body);
-  animation: bio-slide-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes bio-slide-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Card naturally grows with content when bio is open */
