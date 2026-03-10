@@ -8,7 +8,9 @@ export default function Hero({ data }) {
         <span className="hero__eyebrow">{hero.eyebrow}</span>
     <h1 className="hero__headline">Everything you need to know about TSSC is in this video.</h1>
         <div className="reveal">
-          <VideoFacade videoId={hero.vslVideoId} platform={hero.platform} title="Watch this first" />
+          <div className="vsl-glow">
+            <VideoFacade videoId={hero.vslVideoId} platform={hero.platform} title="Watch this first" />
+          </div>
         </div>
         <div className="hero__cta-wrap reveal reveal--delay-1">
           <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-primary btn-primary--blue">

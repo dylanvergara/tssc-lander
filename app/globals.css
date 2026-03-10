@@ -367,7 +367,18 @@ ul   { list-style: none; }
   padding: 0 4px;
 }
 
-/* ── Video facade ── */
+/* ── Hero VSL glow ── */
+.vsl-glow {
+  border-radius: calc(var(--radius) + 2px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 18px 4px rgba(255, 255, 255, 0.12),
+    0 0 40px 8px rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+
 .video-facade {
   position: relative;
   width: 100%;
@@ -535,16 +546,16 @@ ul   { list-style: none; }
   z-index: 10;
 }
 
-/* Text zone — fixed height for 2 lines of title + before label, identical on all cards */
+/* Text zone — min-height keeps cards consistent when bio is closed, grows when open */
 .carousel-card__text {
-  height: 88px;
+  min-height: 88px;
   padding: 12px 14px 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 4px;
   flex-shrink: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Milestone — clamped to exactly 2 lines */
@@ -920,7 +931,8 @@ ul   { list-style: none; }
   background:
     url('/images/money-pile.png')
     center bottom / cover no-repeat;
-  opacity: 0.20;
+  opacity: 0.075;
+  mix-blend-mode: multiply;
   pointer-events: none;
   z-index: 0;
   border-radius: 0 0 var(--radius) var(--radius);
@@ -1629,7 +1641,7 @@ a {
    CAROUSEL CARD — READ MORE BIO
    ============================================================ */
 .carousel-card__bio-wrap {
-  padding: 0 14px 12px;
+  padding: 4px 0 0;
   flex-shrink: 0;
 }
 
@@ -1665,7 +1677,8 @@ a {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Expanded card keeps hover scale but allows taller height */
+/* Card naturally grows with content when bio is open */
 .carousel-card--expanded {
-  transform: none !important;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }

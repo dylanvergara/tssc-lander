@@ -6,29 +6,32 @@ function CarouselCard({ vid }) {
   const [open, setOpen] = useState(false);
   return (
     <div className={`carousel-card${open ? ' carousel-card--expanded' : ''}`}>
+      {/* Milestone + Before */}
       <div className="carousel-card__text">
         <div className="carousel-card__milestone">{vid.label}</div>
         <div className="carousel-card__before">
           <span className="carousel-card__before-label">Before:</span> {vid.sub.replace('Before: ', '')}
         </div>
+        {/* Read more sits right under "Before" line, above video */}
+        {vid.bio && (
+          <div className="carousel-card__bio-wrap">
+            <button
+              className="carousel-card__readmore"
+              onClick={(e) => { e.stopPropagation(); setOpen(o => !o); }}
+              aria-expanded={open}
+            >
+              {open ? 'Read less ▲' : 'Read more ▼'}
+            </button>
+            {open && (
+              <p className="carousel-card__bio">{vid.bio}</p>
+            )}
+          </div>
+        )}
       </div>
+      {/* Video always at bottom, sharing card's bottom border */}
       <div className="carousel-card__video">
         <VideoFacade videoId={vid.videoId} platform={vid.platform} title={vid.label} small />
       </div>
-      {vid.bio && (
-        <div className="carousel-card__bio-wrap">
-          <button
-            className="carousel-card__readmore"
-            onClick={() => setOpen(o => !o)}
-            aria-expanded={open}
-          >
-            {open ? 'Read less ▲' : 'Read more ▼'}
-          </button>
-          {open && (
-            <p className="carousel-card__bio">{vid.bio}</p>
-          )}
-        </div>
-      )}
     </div>
   );
 }
