@@ -4,14 +4,32 @@ import { useState } from 'react';
 export default function VideoFacade({ videoId, platform = 'youtube', title, small = false }) {
   const [playing, setPlaying] = useState(false);
 
+  const thumbSrc = platform === 'youtube'
+    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    : platform === 'wistia'
+    ? `https://fast.wistia.com/embed/medias/${videoId}/swatch`
+    : '/images/thumb-placeholder.jpg';
+
+  // Wistia uses a web component — render it directly when playing
+  if (playing && platform === 'wistia') {
+    return (
+      <div className="video-facade" style={{ cursor: 'default' }}>
+        <script src="https://fast.wistia.com/player.js" async />
+        <script src={`https://fast.wistia.com/embed/${videoId}.js`} async type="module" />
+        <wistia-player
+          media-id={videoId}
+          aspect="1.7777777777777777"
+          autoplay="true"
+          style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}
+        />
+      </div>
+    );
+  }
+
   const embedUrl =
     platform === 'youtube' ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1` :
     platform === 'vimeo'   ? `https://player.vimeo.com/video/${videoId}?autoplay=1` :
-                             `https://www.loom.com/embed/${videoId}?autoplay=1`;
-
-  const thumbSrc = platform === 'youtube'
-    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-    : '/images/thumb-placeholder.jpg';
+                             `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
   if (playing) {
     return (

@@ -16,8 +16,8 @@ export const siteData = {
   hero: {
     eyebrow: 'Watch this first',
     headline: 'Everything you need to know is in this video.',
-    vslVideoId: 'XQ4AVDtHg0M',
-    platform: 'youtube',
+    vslVideoId: 'niz59sfcmb',
+    platform: 'wistia',
   },
 
   disclaimer: {
