@@ -40,7 +40,7 @@ export default function Hero({ data }) {
     <section className="hero section">
       <div className="col">
         <span className="hero__eyebrow">{hero.eyebrow}</span>
-        <h1 className="hero__headline">Everything you need to know about TSSC is in this video.</h1>
+        <h1 className="hero__headline">Everything you need to know about TSSC is in this video:</h1>
         <div className="reveal">
           <div className="vsl-glow">
             {hero.platform === 'wistia'
