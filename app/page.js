@@ -2,6 +2,7 @@ import { siteData } from '../data/content.js';
 import Header           from '../components/Header';
 import Hero             from '../components/Hero';
 import Disclaimer       from '../components/Disclaimer';
+import TrophyBanner     from '../components/TrophyBanner';
 import VideoCarousel    from '../components/VideoCarousel';
 import About            from '../components/About';
 import Process          from '../components/Process';
@@ -24,6 +25,7 @@ export default function Home() {
       <Header data={d} />
       <main>
         <div id="hero">        <Hero            data={d} /></div>
+        <TrophyBanner />
         <div>                  <Disclaimer      data={d} /></div>
         <div id="carousel-1">  <VideoCarousel   data={d} carouselIndex={0} /></div>
         <div id="about">       <About           data={d} /></div>

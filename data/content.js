@@ -21,7 +21,7 @@ export const siteData = {
   },
 
   disclaimer: {
-    headline: 'Mind if we start off on the right foot?',
+    headline: 'Mind if we start off\non the right foot?',
     paragraphs: [
       { text: 'Heavily performance-based 1099 remote sales roles are inherently "risky".', bold: true },
       { text: 'In fact, most people even see traditional sales roles as "risky".', bold: false },
