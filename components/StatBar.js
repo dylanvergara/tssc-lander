@@ -7,13 +7,15 @@ export default function StatBar() {
   ];
 
   return (
-    <div className="stat-bar">
-      {stats.map((s, i) => (
-        <div key={i} className="stat-bar__item">
-          <span className="stat-bar__value">{s.value}</span>
-          <span className="stat-bar__label">{s.label}</span>
-        </div>
-      ))}
+    <div className="stat-bar-wrap">
+      <div className="stat-bar">
+        {stats.map((s, i) => (
+          <div key={i} className="stat-bar__item">
+            <span className="stat-bar__value">{s.value}</span>
+            <span className="stat-bar__label">{s.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
