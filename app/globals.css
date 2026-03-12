@@ -1734,66 +1734,66 @@ a {
 
 /* ── Stat Bar ──────────────────────────────────────────────── */
 .stat-bar {
-  width: 100%;
   flex: 1;
-  overflow: hidden;
-  border-top: 1px solid rgba(182, 205, 222, 0.12);
-  border-bottom: 1px solid rgba(182, 205, 222, 0.12);
-  background: rgba(182, 205, 222, 0.04);
-  display: flex;
-  align-items: center;
-}
-
-.stat-bar__track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  animation: stat-ticker 18s linear infinite;
-  padding: 0;
-}
-
-.stat-bar__track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes stat-ticker {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 }
 
 .stat-bar__item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 0 48px;
-  white-space: nowrap;
-  border-right: 1px solid rgba(182, 205, 222, 0.15);
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 16px;
+  position: relative;
 }
 
-.stat-bar__item:last-child {
-  border-right: none;
+/* Right border on left column items */
+.stat-bar__item:nth-child(odd) {
+  border-right: 1px solid rgba(182, 205, 222, 0.12);
+}
+
+/* Bottom border on top row items */
+.stat-bar__item:nth-child(1),
+.stat-bar__item:nth-child(2) {
+  border-bottom: 1px solid rgba(182, 205, 222, 0.12);
 }
 
 .stat-bar__value {
   font-family: var(--font-headline);
-  font-size: clamp(28px, 5vw, 40px);
+  font-size: clamp(32px, 8vw, 48px);
   font-weight: 800;
   color: #fff;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.stat-bar__dot {
-  color: rgba(182, 205, 222, 0.3);
-  font-size: 22px;
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 
 .stat-bar__label {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--blue);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   line-height: 1;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .stat-bar {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    border-top: 1px solid rgba(182, 205, 222, 0.12);
+  }
+  .stat-bar__item:nth-child(1),
+  .stat-bar__item:nth-child(2) {
+    border-bottom: none;
+  }
+  .stat-bar__item:nth-child(even) {
+    border-right: 1px solid rgba(182, 205, 222, 0.12);
+  }
+  .stat-bar__item:last-child {
+    border-right: none;
+  }
 }
