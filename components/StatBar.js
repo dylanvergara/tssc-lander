@@ -2,7 +2,7 @@ export default function StatBar() {
   const stats = [
     { value: '250+',  label: 'Members' },
     { value: '16',    label: 'Countries' },
-    { value: '6,457', label: 'Jobs Shared' },
+    { value: '6,457', label: "Jobs Last 24mos" },
     { value: '2022',  label: 'Est.' },
   ];
 
