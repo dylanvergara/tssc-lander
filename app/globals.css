@@ -68,8 +68,8 @@ ul   { list-style: none; }
 .col       { width: 100%; max-width: var(--col);      margin: 0 auto; padding: 0 20px; }
 .col--wide { width: 100%; max-width: var(--col-wide); margin: 0 auto; padding: 0 20px; }
 
-.section       { padding: 20px 0; }
-.section--gap  { padding: 32px 0; }
+.section       { padding: 56px 0; }
+.section--gap  { padding: 72px 0; }
 
 /* ── Card system ── */
 .card {
@@ -340,8 +340,15 @@ ul   { list-style: none; }
    HERO
 ============================================================ */
 .hero {
-  padding: 36px 0 8px;
+  padding: 72px 0 48px;
   background: var(--dark);
+}
+
+/* Above-fold container: hero + stat bar always = exactly one screen height */
+.above-fold {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .hero__eyebrow {
@@ -352,7 +359,7 @@ ul   { list-style: none; }
   color: var(--blue-dk);
   text-align: center;
   display: block;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 
 .hero__headline {
@@ -363,7 +370,7 @@ ul   { list-style: none; }
   color: var(--white);
   text-align: center;
   line-height: 1.1;
-  margin-bottom: 28px;
+  margin-bottom: 48px;
   padding: 0 4px;
 }
 
@@ -448,7 +455,7 @@ ul   { list-style: none; }
   border-radius: var(--radius);
 }
 
-.hero__cta-wrap { padding: 20px 0 4px; }
+.hero__cta-wrap { padding: 40px 0 24px; }
 
 /* ============================================================
    DISCLAIMER
@@ -1728,10 +1735,13 @@ a {
 /* ── Stat Bar ──────────────────────────────────────────────── */
 .stat-bar {
   width: 100%;
+  flex: 1;
   overflow: hidden;
   border-top: 1px solid rgba(182, 205, 222, 0.12);
   border-bottom: 1px solid rgba(182, 205, 222, 0.12);
   background: rgba(182, 205, 222, 0.04);
+  display: flex;
+  align-items: center;
 }
 
 .stat-bar__track {
@@ -1739,7 +1749,7 @@ a {
   align-items: center;
   width: max-content;
   animation: stat-ticker 18s linear infinite;
-  padding: 22px 0;
+  padding: 0;
 }
 
 .stat-bar__track:hover {
@@ -1754,8 +1764,8 @@ a {
 .stat-bar__item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 40px;
+  gap: 14px;
+  padding: 0 48px;
   white-space: nowrap;
   border-right: 1px solid rgba(182, 205, 222, 0.15);
 }
@@ -1766,7 +1776,7 @@ a {
 
 .stat-bar__value {
   font-family: var(--font-headline);
-  font-size: 22px;
+  font-size: clamp(28px, 5vw, 40px);
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
@@ -1775,16 +1785,15 @@ a {
 
 .stat-bar__dot {
   color: rgba(182, 205, 222, 0.3);
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1;
 }
 
 .stat-bar__label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--blue);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   line-height: 1;
 }
-

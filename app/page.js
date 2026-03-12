@@ -24,8 +24,10 @@ export default function Home() {
     <>
       <Header data={d} />
       <main>
-        <div id="hero">        <Hero            data={d} /></div>
-        <StatBar />
+        <div className="above-fold">
+          <div id="hero">        <Hero            data={d} /></div>
+          <StatBar />
+        </div>
         <div>                  <Disclaimer      data={d} /></div>
         <div id="carousel-1">  <VideoCarousel   data={d} carouselIndex={0} /></div>
         <div id="about">       <About           data={d} /></div>
