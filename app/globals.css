@@ -387,7 +387,7 @@ ul   { list-style: none; }
   overflow: hidden;
   cursor: pointer;
   border-radius: var(--radius);
-  border: 1px solid var(--border-lt);
+  border: none;
 }
 
 .video-facade__thumb {
@@ -454,27 +454,31 @@ ul   { list-style: none; }
    DISCLAIMER
 ============================================================ */
 .disclaimer-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 36px 32px;
+  background: transparent;
+  border-radius: 0;
+  padding: 0 8px;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .disclaimer-card .headline {
-  font-size: clamp(22px, 5vw, 30px);
+  font-size: clamp(28px, 5vw, 42px);
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   line-height: 1.15;
+  color: #fff;
 }
 
 .disclaimer-card p {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.8;
-  color: #444;
+  color: rgba(255, 255, 255, 0.72);
   margin-bottom: 12px;
+  text-align: center;
 }
 
 .disclaimer-card p:last-child { margin-bottom: 0; }
-.disclaimer-card p.bold       { font-weight: 700; color: var(--text); }
+.disclaimer-card p.bold       { font-weight: 700; color: rgba(255, 255, 255, 0.95); }
 
 /* ============================================================
    VIDEO CAROUSEL
