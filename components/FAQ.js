@@ -115,19 +115,28 @@ const SECTIONS = [
   },
 ];
 
-function FaqItem({ item, color }) {
+// Flatten all questions with their section color, then split into equal panels of 7
+const ALL_QUESTIONS = SECTIONS.flatMap(s => s.faqs.map(faq => ({ ...faq, color: s.color })));
+const PANEL_SIZE = 7;
+const PANELS = [];
+for (let i = 0; i < ALL_QUESTIONS.length; i += PANEL_SIZE) {
+  PANELS.push(ALL_QUESTIONS.slice(i, i + PANEL_SIZE));
+}
+
+function FaqItem({ item }) {
   const [open, setOpen] = useState(false);
   return (
     <div
       className={`faq-item${open ? ' is-open' : ''}`}
-      style={{ borderLeft: `3px solid ${color}` }}
+      style={{ borderLeft: `4px solid ${item.color}` }}
     >
       <button
         className="faq-question"
         onClick={() => setOpen(o => !o)}
       >
+        <span className="faq-q-dot" style={{ background: item.color }} />
         <span>{item.q}</span>
-        <span className="faq-icon">+</span>
+        <span className="faq-icon" style={{ borderColor: item.color }}>+</span>
       </button>
       <div className="faq-answer">
         <p>{item.a}</p>
@@ -139,13 +148,19 @@ function FaqItem({ item, color }) {
 export default function FAQ({ data }) {
   const trackRef = useRef(null);
 
-  const scrollToPanel = (index) => {
+  const scrollToSection = (sectionId) => {
     const track = trackRef.current;
     if (!track) return;
+    // Find the first panel containing a question from this section
+    const section = SECTIONS.find(s => s.id === sectionId);
+    if (!section) return;
+    const firstQ = section.faqs[0].q;
+    const globalIndex = ALL_QUESTIONS.findIndex(q => q.q === firstQ);
+    const panelIndex = Math.floor(globalIndex / PANEL_SIZE);
     const panels = track.querySelectorAll('.faq-panel');
-    if (!panels[index]) return;
+    if (!panels[panelIndex]) return;
     const trackRect = track.getBoundingClientRect();
-    const panelRect = panels[index].getBoundingClientRect();
+    const panelRect = panels[panelIndex].getBoundingClientRect();
     track.scrollTo({ left: track.scrollLeft + (panelRect.left - trackRect.left), behavior: 'smooth' });
   };
 
@@ -156,12 +171,12 @@ export default function FAQ({ data }) {
         <h2 className="headline headline--white reveal">Common Questions</h2>
 
         <div className="faq-key reveal reveal--delay-1">
-          {SECTIONS.map((section, i) => (
+          {SECTIONS.map((section) => (
             <button
               key={section.id}
               className="faq-key-chip"
               style={{ background: section.color }}
-              onClick={() => scrollToPanel(i)}
+              onClick={() => scrollToSection(section.id)}
               title={section.label}
             >
               {section.label}
@@ -176,13 +191,10 @@ export default function FAQ({ data }) {
           ref={trackRef}
           style={{ paddingLeft: 'max(20px, calc((100vw - var(--col)) / 2))' }}
         >
-          {SECTIONS.map((section) => (
-            <div key={section.id} className="faq-panel">
-              <div className="faq-panel-label" style={{ color: section.color }}>
-                {section.label}
-              </div>
-              {section.faqs.map((item, qi) => (
-                <FaqItem key={qi} item={item} color={section.color} />
+          {PANELS.map((panel, pi) => (
+            <div key={pi} className="faq-panel">
+              {panel.map((item, qi) => (
+                <FaqItem key={qi} item={item} />
               ))}
             </div>
           ))}
