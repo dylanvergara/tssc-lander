@@ -117,7 +117,7 @@ const SECTIONS = [
 
 // Flatten all questions with their section color, then split into equal panels of 7
 const ALL_QUESTIONS = SECTIONS.flatMap(s => s.faqs.map(faq => ({ ...faq, color: s.color })));
-const PANEL_SIZE = 7;
+const PANEL_SIZE = 5;
 const PANELS = [];
 for (let i = 0; i < ALL_QUESTIONS.length; i += PANEL_SIZE) {
   PANELS.push(ALL_QUESTIONS.slice(i, i + PANEL_SIZE));
