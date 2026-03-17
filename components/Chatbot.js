@@ -24,7 +24,7 @@ Be conversational, direct, and honest. Keep answers concise (2-4 sentences). Don
 export default function Chatbot({ ctaUrl }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'bot', text: "I've been trained on the entire TSSC process plus over 20 hours of interviews from the most successful TSSC members (~50 $10,000+/mo earners). What do you want to know?" }
+    { role: 'bot', text: "How can I help? I've been trained on the entire TSSC process and over 20 hours of interviews from the most successful TSSC members (about ~50 $10,000+ per month earners)." }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
