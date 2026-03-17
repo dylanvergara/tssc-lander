@@ -81,8 +81,8 @@ export default function Chatbot({ ctaUrl }) {
       >
         <div className="chatbot-toggle__icon">💬</div>
         <div className="chatbot-toggle__text">
-          <span className="chatbot-toggle__label">Want to talk to successful TSSC members?</span>
-          <span className="chatbot-toggle__sub">Get answers about TSSC instantly</span>
+          <span className="chatbot-toggle__label">Questions about TSSC?</span>
+          <span className="chatbot-toggle__sub">Tap to get instant answers</span>
         </div>
         <span className="chatbot-toggle__arrow">⌄</span>
       </button>
