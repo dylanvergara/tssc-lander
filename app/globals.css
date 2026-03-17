@@ -1234,6 +1234,19 @@ ul   { list-style: none; }
   background: var(--black);
 }
 
+.faq-item.is-open .faq-question {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  align-items: flex-start;
+}
+
+.faq-item.is-open .faq-question span:nth-child(2) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
 /* Expandable answer — uses max-height trick */
 .faq-answer {
   max-height: 0;
