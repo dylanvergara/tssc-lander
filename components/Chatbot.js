@@ -28,11 +28,11 @@ export default function Chatbot({ ctaUrl }) {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const bottomRef = useRef(null);
+  const messagesRef = useRef(null);
 
   useEffect(() => {
-    if (open && bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (open && messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   }, [messages, open]);
 
@@ -89,7 +89,7 @@ export default function Chatbot({ ctaUrl }) {
 
       <div className={`chatbot-body${open ? ' is-open' : ''}`}>
         <div className="chatbot-inner">
-          <div className="chatbot-messages">
+          <div className="chatbot-messages" ref={messagesRef}>
             {messages.map((m, i) => (
               <div key={i} className={`chat-msg chat-msg--${m.role === 'user' ? 'user' : 'bot'}`}>
                 {m.text}
@@ -98,7 +98,6 @@ export default function Chatbot({ ctaUrl }) {
             {loading && (
               <div className="chat-msg chat-msg--bot chat-msg--typing">typing…</div>
             )}
-            <div ref={bottomRef} />
           </div>
           <div className="chatbot-form">
             <input
