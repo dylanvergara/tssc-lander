@@ -24,7 +24,7 @@ Be conversational, direct, and honest. Keep answers concise (2-4 sentences). Don
 export default function Chatbot({ ctaUrl }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'bot', text: 'Hey! I can answer questions about TSSC — results, process, what to expect. What do you want to know?' }
+    { role: 'bot', text: "I've been trained on the entire TSSC process plus over 20 hours of interviews from the most successful TSSC members (~50 $10,000+/mo earners). What do you want to know?" }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -81,8 +81,8 @@ export default function Chatbot({ ctaUrl }) {
       >
         <div className="chatbot-toggle__icon">💬</div>
         <div className="chatbot-toggle__text">
-          <span className="chatbot-toggle__label">Questions about TSSC?</span>
-          <span className="chatbot-toggle__sub">Tap to get instant answers</span>
+          <span className="chatbot-toggle__label">Talk to a successful TSSC member</span>
+          <span className="chatbot-toggle__sub">Ask about our process, results or getting started</span>
         </div>
         <span className="chatbot-toggle__arrow">⌄</span>
       </button>
