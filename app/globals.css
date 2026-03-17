@@ -1307,7 +1307,19 @@ ul   { list-style: none; }
    CHATBOT
 ============================================================ */
 .chatbot-wrap {
-  margin-top: 8px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 0 max(16px, calc((100vw - var(--col)) / 2)) env(safe-area-inset-bottom, 12px);
+  pointer-events: none;
+}
+
+.chatbot-wrap > * {
+  pointer-events: auto;
 }
 
 .chatbot-toggle {
@@ -1321,6 +1333,11 @@ ul   { list-style: none; }
   gap: 14px;
   cursor: pointer;
   transition: border-color var(--t), background var(--t);
+}
+
+.chatbot-toggle.is-open {
+  border-radius: 0 0 var(--radius) var(--radius);
+  border-top: none;
 }
 
 .chatbot-toggle:hover {
@@ -1371,8 +1388,8 @@ ul   { list-style: none; }
 .chatbot-inner {
   background: var(--card-dark);
   border: 1px solid var(--border-lt);
-  border-top: none;
-  border-radius: 0 0 var(--radius) var(--radius);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
   display: flex;
   flex-direction: column;
   height: 480px;
@@ -1387,6 +1404,7 @@ ul   { list-style: none; }
   gap: 10px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.1) transparent;
+  overscroll-behavior: contain;
 }
 
 .chatbot-messages::-webkit-scrollbar { width: 4px; }

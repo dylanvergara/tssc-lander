@@ -43,14 +43,10 @@ export default function Home() {
         <div id="longevity">   <Longevity       data={d} /></div>
         <div id="carousel-4">  <VideoCarousel   data={d} carouselIndex={3} /></div>
         <div id="faq">         <FAQ             data={d} /></div>
-        <section className="section">
-          <div className="col">
-            <Chatbot ctaUrl={d.ctaUrl} />
-          </div>
-        </section>
         <FinalCTA        data={d} />
       </main>
       <Footer data={d} />
+      <Chatbot ctaUrl={d.ctaUrl} />
     </>
   );
 }
