@@ -329,7 +329,7 @@ ul   { list-style: none; }
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
-  padding: 11px 14px;
+  padding: 7px 14px;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
