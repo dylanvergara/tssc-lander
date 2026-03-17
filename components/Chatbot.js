@@ -60,8 +60,12 @@ export default function Chatbot({ ctaUrl }) {
       });
 
       const data = await res.json();
-      const reply = data?.content?.[0]?.text || "I'm not sure about that one — best to book a call with the team.";
-      setMessages(m => [...m, { role: 'bot', text: reply }]);
+      if (data?.error) {
+        setMessages(m => [...m, { role: 'bot', text: `Error: ${data.error}` }]);
+      } else {
+        const reply = data?.content?.[0]?.text || "I'm not sure about that one — best to book a call with the team.";
+        setMessages(m => [...m, { role: 'bot', text: reply }]);
+      }
     } catch {
       setMessages(m => [...m, { role: 'bot', text: "Something went wrong on my end. Try asking again or book a call." }]);
     } finally {
