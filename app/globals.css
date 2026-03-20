@@ -2229,3 +2229,68 @@ a {
   display: flex;
   justify-content: center;
 }
+
+/* ── Social Footer ─────────────────────────────────────────── */
+.social-footer {
+  background: var(--dark);
+  padding: 40px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid rgba(182, 205, 222, 0.1);
+}
+
+.social-footer__text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.social-footer__icons {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.social-footer__link {
+  color: rgba(255,255,255,0.45);
+  transition: color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.social-footer__link:hover {
+  color: var(--blue);
+  transform: translateY(-2px);
+}
+
+.social-footer__link svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* ── Thank-you page spacing fixes ──────────────────────────── */
+
+/* Cards that lose their CTA button get tighter bottom padding */
+.card:last-child:not(:has(.btn-brand)) {
+  padding-bottom: 28px;
+}
+
+/* About card white box — reduce bottom padding when no CTA */
+.about__text--no-cta {
+  padding-bottom: 24px !important;
+}
+
+/* Tighten section spacing on thank-you page where CTAs are absent */
+.thank-you-page .section {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.thank-you-page .carousel-section {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}

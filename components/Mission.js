@@ -4,7 +4,6 @@ export default function Mission({ data }) {
     <section className="section">
       <div className="col">
         <div className="card card--mission reveal" style={{ position: 'relative', overflow: 'hidden' }}>
-          {/* Money pile background */}
           <div className="mission__money-bg" />
           <div className="mission__headline-wrap">
             <span className="mission__line1">{mission.headline}</span>
@@ -13,11 +12,13 @@ export default function Mission({ data }) {
           <div className="body-copy">
             {mission.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
           </div>
-          <div style={{ marginTop: '28px' }}>
-            <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
-              Apply Now
-            </a>
-          </div>
+          {ctaUrl && (
+            <div style={{ marginTop: '28px' }}>
+              <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
+                Apply Now
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>

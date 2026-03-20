@@ -11,11 +11,13 @@ export default function Differentiator({ data }) {
           <div className="body-copy">
             {differentiator.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
           </div>
-          <div style={{ marginTop: '28px' }}>
-            <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
-              Apply Now
-            </a>
-          </div>
+          {ctaUrl && (
+            <div style={{ marginTop: '28px' }}>
+              <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
+                Apply Now
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -67,11 +67,13 @@ export default function Wins({ data }) {
             />
           </div>
 
-          <div style={{ marginTop: '20px' }}>
-            <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
-              Apply Now
-            </a>
-          </div>
+          {ctaUrl && (
+            <div style={{ marginTop: '20px' }}>
+              <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
+                Apply Now
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>

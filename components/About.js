@@ -28,8 +28,7 @@ export default function About({ data }) {
               background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.92))',
             }} />
           </div>
-          {/* Fix 4: button is inside the white card */}
-          <div className="about__text">
+          <div className={`about__text${ctaUrl ? '' : ' about__text--no-cta'}`}>
             <div className="about__headline-wrap">
               <div className="about__line1">Sales training doesn't get you hired.</div>
               <div className="about__line2">We do.</div>
@@ -37,11 +36,13 @@ export default function About({ data }) {
             <div className="body-copy">
               {about.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
             </div>
-            <div style={{ marginTop: '24px' }}>
-              <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
-                Apply Now
-              </a>
-            </div>
+            {ctaUrl && (
+              <div style={{ marginTop: '24px' }}>
+                <a href={ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-brand">
+                  Apply Now
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
