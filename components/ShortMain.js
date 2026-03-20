@@ -106,10 +106,12 @@ export default function ShortMain({ data }) {
   const { ctaUrl } = data;
   return (
     <section className="short-main">
+      <div className="short-section-divider" />
+
       {/* Section title */}
       <div className="short-main__header">
         <p className="short-main__eyebrow">Don't take our word for it</p>
-        <h2 className="short-main__title">Results & Frequently Asked Questions</h2>
+        <h2 className="short-main__title">Results & FAQs</h2>
         <p className="short-main__sub">Swipe through 40 member interviews, then get your questions answered below.</p>
       </div>
 

@@ -1872,15 +1872,23 @@ a {
 }
 
 .short-hero__nav {
-  padding: 14px 20px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
+  background: var(--dark);
+  border-bottom: 1px solid rgba(182,205,222,0.08);
 }
 
 .short-hero__logo {
-  height: 44px;
+  height: 48px;
   width: auto;
   pointer-events: none;
+  display: block;
 }
 
 .short-hero__content {
@@ -1891,6 +1899,7 @@ a {
   justify-content: flex-start;
   padding: 20px 20px 0;
   gap: 12px;
+  margin-top: 72px; /* offset for fixed nav */
 }
 
 .short-hero__eyebrow {
@@ -1954,6 +1963,15 @@ a {
 .short-main {
   background: var(--dark);
   padding-bottom: 60px;
+  border-top: none;
+}
+
+/* Divider between CTA and second section */
+.short-section-divider {
+  height: 1px;
+  background: rgba(182, 205, 222, 0.18);
+  margin: 32px 24px 0;
+  border-radius: 1px;
 }
 
 .short-main__header {
