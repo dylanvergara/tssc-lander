@@ -1,6 +1,7 @@
 import './globals.css';
 import ScrollReveal from '../components/ScrollReveal';
 import NoSave from '../components/NoSave';
+import { Analytics } from '@vercel/analytics/next';
 
 export async function generateMetadata() {
   const { siteData } = await import('../data/content.js');
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
         <ScrollReveal />
         <NoSave />
         {children}
+        <Analytics />
       </body>
     </html>
   );
