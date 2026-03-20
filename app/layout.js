@@ -1,4 +1,5 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 import ScrollReveal from '../components/ScrollReveal';
 import NoSave from '../components/NoSave';
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
         <ScrollReveal />
         <NoSave />
         {children}
+        <Analytics />
       </body>
     </html>
   );

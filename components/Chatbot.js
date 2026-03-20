@@ -24,15 +24,15 @@ Be conversational, direct, and honest. Keep answers concise (2-4 sentences). Don
 export default function Chatbot({ ctaUrl }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'bot', text: "How can I help? I've been trained on the entire TSSC process and over 20 hours of interviews from the most successful TSSC members (about ~50 $10,000+ per month earners)." }
+    { role: 'bot', text: 'Hey! I can answer questions about TSSC — results, process, what to expect. What do you want to know?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesRef = useRef(null);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    if (open && messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    if (open && bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, open]);
 
@@ -52,7 +52,7 @@ export default function Chatbot({ ctaUrl }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
+          model: 'claude-sonnet-4-20250514',
           max_tokens: 300,
           system: SYSTEM_PROMPT,
           messages: [...history, { role: 'user', content: text }],
@@ -60,12 +60,8 @@ export default function Chatbot({ ctaUrl }) {
       });
 
       const data = await res.json();
-      if (data?.error) {
-        setMessages(m => [...m, { role: 'bot', text: `Error: ${data.error}` }]);
-      } else {
-        const reply = data?.content?.[0]?.text || "I'm not sure about that one — best to book a call with the team.";
-        setMessages(m => [...m, { role: 'bot', text: reply }]);
-      }
+      const reply = data?.content?.[0]?.text || "I'm not sure about that one — best to book a call with the team.";
+      setMessages(m => [...m, { role: 'bot', text: reply }]);
     } catch {
       setMessages(m => [...m, { role: 'bot', text: "Something went wrong on my end. Try asking again or book a call." }]);
     } finally {
@@ -81,15 +77,15 @@ export default function Chatbot({ ctaUrl }) {
       >
         <div className="chatbot-toggle__icon">💬</div>
         <div className="chatbot-toggle__text">
-          <span className="chatbot-toggle__label">Talk to a successful TSSC member</span>
-          <span className="chatbot-toggle__sub">Ask about our process, results or getting started</span>
+          <span className="chatbot-toggle__label">Want to talk to successful TSSC members?</span>
+          <span className="chatbot-toggle__sub">Get answers about TSSC instantly</span>
         </div>
         <span className="chatbot-toggle__arrow">⌄</span>
       </button>
 
       <div className={`chatbot-body${open ? ' is-open' : ''}`}>
         <div className="chatbot-inner">
-          <div className="chatbot-messages" ref={messagesRef}>
+          <div className="chatbot-messages">
             {messages.map((m, i) => (
               <div key={i} className={`chat-msg chat-msg--${m.role === 'user' ? 'user' : 'bot'}`}>
                 {m.text}
@@ -98,6 +94,7 @@ export default function Chatbot({ ctaUrl }) {
             {loading && (
               <div className="chat-msg chat-msg--bot chat-msg--typing">typing…</div>
             )}
+            <div ref={bottomRef} />
           </div>
           <div className="chatbot-form">
             <input
