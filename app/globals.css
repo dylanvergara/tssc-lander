@@ -2142,51 +2142,26 @@ a {
   justify-content: center;
 }
 
-/* ── Typeform Modal ─────────────────────────────────────────── */
-.tf-modal__backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-.tf-modal__box {
-  position: relative;
+/* ── Inline expanding Typeform ─────────────────────────────── */
+.short-inline-form {
   width: 100%;
-  max-width: 640px;
-  height: 80vh;
-  max-height: 720px;
-  background: #fff;
-  border-radius: 12px;
+  max-width: 520px;
+  max-height: 0;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.tf-modal__close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 10;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(0,0,0,0.15);
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
+.short-inline-form.is-open {
+  max-height: 700px;
 }
 
-.tf-modal__close:hover {
-  background: rgba(0,0,0,0.35);
+.short-inline-form__inner {
+  padding-top: 16px;
+  width: 100%;
+  min-height: 600px;
+}
+
+.short-inline-form__inner > div {
+  width: 100%;
+  min-height: 600px;
 }
