@@ -1,6 +1,5 @@
 import { siteData } from '../data/content.js';
 import ShortHero from '../components/ShortHero';
-import ShortMain from '../components/ShortMain';
 import Footer    from '../components/Footer';
 
 export default function Home() {
@@ -9,7 +8,6 @@ export default function Home() {
     <>
       <main>
         <ShortHero data={d} />
-        <ShortMain data={d} />
       </main>
       <Footer data={d} />
     </>
