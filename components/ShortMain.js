@@ -55,7 +55,7 @@ const FAQS = [
   { q: 'How long does it take to get started?',             a: "Our intake call is 45 minutes and onboarding takes about 15. You'll be on a one-on-one with your client success manager within 24 to 48 business hours." },
   { q: 'Why should I work with you versus somebody else?',  a: 'Better results, more consistency, and a truly custom-fit process. We are a white glove service. Your success is our success.' },
   { q: "What if it doesn't work?",                          a: "Sales jobs on the internet do work. If it doesn't work, you didn't make it work. Our job isn't to convince you the opportunity exists. It's to help people who already know it does." },
-  { q: 'How do I get started?',                             a: 'Book a call on this page. Show up on time, from a quiet space, with good Wi-Fi and something to take notes with. If it\'s a fit, we\'ll discuss onboarding and next steps on the call.' },
+  { q: 'How do I get started?',                             a: "Book a call on this page. Show up on time, from a quiet space, with good Wi-Fi and something to take notes with. If it's a fit, we'll discuss onboarding and next steps on the call." },
 ];
 
 function VideoCard({ vid }) {
@@ -102,7 +102,7 @@ function FaqItem({ item }) {
   );
 }
 
-export default function ShortMain({ data, onApply }) {
+export default function ShortMain({ data, onApply, formOpen }) {
   return (
     <section className="short-main">
       <div className="short-section-divider" />
@@ -138,8 +138,13 @@ export default function ShortMain({ data, onApply }) {
 
       <div className="short-final-cta">
         <button className="short-hero__cta" onClick={onApply}>
-          Apply to Join TSSC
+          {formOpen ? 'Close Application' : 'Apply to Join TSSC'}
         </button>
+        <div className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
+          <div className="short-inline-form__inner">
+            <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
+          </div>
+        </div>
       </div>
     </section>
   );

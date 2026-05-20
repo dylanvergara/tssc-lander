@@ -4,7 +4,7 @@ import ShortMain from './ShortMain';
 
 export default function ShortHero({ data }) {
   const { hero } = data;
-  const [modalOpen, setModalOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
@@ -23,28 +23,19 @@ export default function ShortHero({ data }) {
     }
   }, [hero.vslVideoId]);
 
-  // Load Typeform script when modal first opens
+  // Load Typeform script on first open
   useEffect(() => {
-    if (modalOpen && !document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
+    if (formOpen && !document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
       const s = document.createElement('script');
       s.src = '//embed.typeform.com/next/embed.js';
       s.async = true;
       document.body.appendChild(s);
     }
-  }, [modalOpen]);
+  }, [formOpen]);
 
-  // Close on Escape key
-  useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') setModalOpen(false); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, []);
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    document.body.style.overflow = modalOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [modalOpen]);
+  const handleApply = () => {
+    setFormOpen(prev => !prev);
+  };
 
   return (
     <>
@@ -69,26 +60,20 @@ export default function ShortHero({ data }) {
             </div>
           </div>
 
-          <button className="short-hero__cta" onClick={() => setModalOpen(true)}>
-            Apply to Join TSSC
+          <button className="short-hero__cta" onClick={handleApply}>
+            {formOpen ? 'Close Application' : 'Apply to Join TSSC'}
           </button>
+
+          {/* Inline expanding Typeform */}
+          <div className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
+            <div className="short-inline-form__inner">
+              <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Pass openModal down to ShortMain so both CTAs share the same modal */}
-      <ShortMain data={data} onApply={() => setModalOpen(true)} />
-
-      {/* Typeform Modal */}
-      {modalOpen && (
-        <div className="tf-modal__backdrop" onClick={() => setModalOpen(false)}>
-          <div className="tf-modal__box" onClick={(e) => e.stopPropagation()}>
-            <button className="tf-modal__close" onClick={() => setModalOpen(false)} aria-label="Close">
-              ✕
-            </button>
-            <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" style={{ width: '100%', height: '100%' }} />
-          </div>
-        </div>
-      )}
+      <ShortMain data={data} onApply={handleApply} formOpen={formOpen} />
     </>
   );
 }
