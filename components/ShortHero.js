@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ShortMain from './ShortMain';
 
 export default function ShortHero({ data }) {
   const { hero } = data;
   const [formOpen, setFormOpen] = useState(false);
+  const formRef = useRef(null);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
@@ -23,18 +24,25 @@ export default function ShortHero({ data }) {
     }
   }, [hero.vslVideoId]);
 
-  // Load Typeform script on first open
+  // Load Typeform script once
   useEffect(() => {
-    if (formOpen && !document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
+    if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
       const s = document.createElement('script');
       s.src = '//embed.typeform.com/next/embed.js';
       s.async = true;
       document.body.appendChild(s);
     }
-  }, [formOpen]);
+  }, []);
 
   const handleApply = () => {
-    setFormOpen(prev => !prev);
+    const opening = !formOpen;
+    setFormOpen(opening);
+    // Scroll to form when opening
+    if (opening && formRef.current) {
+      setTimeout(() => {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   };
 
   return (
@@ -61,11 +69,15 @@ export default function ShortHero({ data }) {
           </div>
 
           <button className="short-hero__cta" onClick={handleApply}>
-            {formOpen ? 'Close Application' : 'Apply to Join TSSC'}
+            {formOpen ? '✕ Close' : 'Apply to Join TSSC'}
           </button>
 
-          {/* Inline expanding Typeform */}
-          <div className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
+          {/* Inline form — renders below button, no scroll inside */}
+          <div
+            ref={formRef}
+            className={`short-inline-form${formOpen ? ' is-open' : ''}`}
+            aria-hidden={!formOpen}
+          >
             <div className="short-inline-form__inner">
               <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
             </div>
