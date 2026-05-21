@@ -6,6 +6,7 @@ export default function ShortHero({ data }) {
   const { hero } = data;
   const [formOpen, setFormOpen] = useState(false);
   const formRef = useRef(null);
+  const tfLoaded = useRef(false);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
@@ -24,24 +25,23 @@ export default function ShortHero({ data }) {
     }
   }, [hero.vslVideoId]);
 
-  // Load Typeform script once
-  useEffect(() => {
-    if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
-      const s = document.createElement('script');
-      s.src = '//embed.typeform.com/next/embed.js';
-      s.async = true;
-      document.body.appendChild(s);
-    }
-  }, []);
+  const loadTypeform = () => {
+    if (tfLoaded.current) return;
+    tfLoaded.current = true;
+    const s = document.createElement('script');
+    s.src = '//embed.typeform.com/next/embed.js';
+    s.async = true;
+    document.body.appendChild(s);
+  };
 
   const handleApply = () => {
     const opening = !formOpen;
+    if (opening) loadTypeform();
     setFormOpen(opening);
-    // Scroll to form when opening
     if (opening && formRef.current) {
       setTimeout(() => {
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
+      }, 150);
     }
   };
 
@@ -72,15 +72,16 @@ export default function ShortHero({ data }) {
             {formOpen ? '✕ Close' : 'Apply to Join TSSC'}
           </button>
 
-          {/* Inline form — renders below button, no scroll inside */}
+          {/* Form container — in DOM always so Typeform can init, visually hidden until open */}
           <div
             ref={formRef}
             className={`short-inline-form${formOpen ? ' is-open' : ''}`}
-            aria-hidden={!formOpen}
           >
-            <div className="short-inline-form__inner">
-              <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
-            </div>
+            {formOpen && (
+              <div className="short-inline-form__inner">
+                <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
+              </div>
+            )}
           </div>
         </div>
       </section>
