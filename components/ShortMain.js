@@ -96,12 +96,27 @@ function FaqItem({ item }) {
   );
 }
 
-export default function ShortMain({ data, onApply, formOpen }) {
+export default function ShortMain({ data }) {
   const formRef = useRef(null);
+  const tfLoaded = useRef(false);
+
+  const [formOpen, setFormOpen] = useState(false);
 
   const handleApply = () => {
-    onApply();
-    if (!formOpen && formRef.current) {
+    const opening = !formOpen;
+    if (opening && !tfLoaded.current) {
+      tfLoaded.current = true;
+      // Typeform script already loaded by ShortHero on first use;
+      // if user hits bottom first, load it now
+      if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
+        const s = document.createElement('script');
+        s.src = '//embed.typeform.com/next/embed.js';
+        s.async = true;
+        document.body.appendChild(s);
+      }
+    }
+    setFormOpen(opening);
+    if (opening && formRef.current) {
       setTimeout(() => {
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 150);
@@ -130,9 +145,11 @@ export default function ShortMain({ data, onApply, formOpen }) {
         </div>
       </div>
       <div className="short-final-cta">
-        <button className="short-hero__cta" onClick={handleApply}>
-          {formOpen ? '✕ Close' : 'Apply to Join TSSC'}
-        </button>
+        {!formOpen && (
+          <button className="short-hero__cta" onClick={handleApply}>
+            Learn More About TSSC
+          </button>
+        )}
         <div ref={formRef} className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
           {formOpen && (
             <div className="short-inline-form__inner">
