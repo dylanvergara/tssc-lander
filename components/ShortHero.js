@@ -68,15 +68,13 @@ export default function ShortHero({ data }) {
             </div>
           </div>
 
-          <button className="short-hero__cta" onClick={handleApply}>
-            {formOpen ? '✕ Close' : 'Apply to Join TSSC'}
-          </button>
+          {!formOpen && (
+            <button className="short-hero__cta" onClick={handleApply}>
+              Learn More About TSSC
+            </button>
+          )}
 
-          {/* Form container — in DOM always so Typeform can init, visually hidden until open */}
-          <div
-            ref={formRef}
-            className={`short-inline-form${formOpen ? ' is-open' : ''}`}
-          >
+          <div ref={formRef} className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
             {formOpen && (
               <div className="short-inline-form__inner">
                 <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
@@ -86,7 +84,8 @@ export default function ShortHero({ data }) {
         </div>
       </section>
 
-      <ShortMain data={data} onApply={handleApply} formOpen={formOpen} />
+      {/* ShortMain manages its own independent form state */}
+      <ShortMain data={data} />
     </>
   );
 }
