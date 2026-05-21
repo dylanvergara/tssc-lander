@@ -505,7 +505,7 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 .short-faq-a p { padding: 2px 18px 18px; font-size: 13px; line-height: 1.75; color: #555; }
 .short-faq-item.is-open .short-faq-a { max-height: 300px; }
 
-/* â”€â”€ Short final CTA â€” column so form stacks below button â”€â”€ */
+/* â”€â”€ Short final CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .short-final-cta {
   padding: 36px 20px 48px;
   display: flex;
@@ -515,54 +515,57 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
   width: 100%;
 }
 
-/* â”€â”€ Inline expanding Typeform â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* On mobile, let form stretch to edges of padding area */
+@media (max-width: 639px) {
+  .short-final-cta .short-inline-form {
+    width: calc(100% + 0px);
+  }
+}
 
-/* Hidden â€” fully out of flow, no ghost space, no internal scroll */
+/* â”€â”€ Inline Typeform â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .short-inline-form {
   display: none;
   width: 100%;
-  max-width: 520px;
-}
-
-/* Open â€” natural height, Typeform iframe sizes itself */
-.short-inline-form.is-open {
-  display: block;
+  /* Full width on mobile â€” no horizontal padding gaps */
+  max-width: 100%;
   margin-top: 20px;
 }
 
-.short-inline-form__inner {
-  width: 100%;
-  min-height: 500px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-}
-
-/* No fixed height â€” Typeform renders at its own height */
-.short-inline-form__inner > div {
-  width: 100% !important;
-  min-height: 500px;
-}
-
-.short-inline-form__inner iframe {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 500px;
-  border: none !important;
+.short-inline-form.is-open {
   display: block;
 }
 
-/* Desktop: wider form, subtle shadow */
+/* Typeform renders its own iframe â€” give it space, dark bg prevents white flash */
+.short-inline-form__inner {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--dark);
+  /* Tall enough for Typeform to render without internal scroll */
+  min-height: 520px;
+}
+
+.short-inline-form__inner > div {
+  width: 100%;
+}
+
+/* Typeform's injected iframe â€” full width, auto height, no border */
+.short-inline-form__inner iframe {
+  display: block;
+  width: 100% !important;
+  min-height: 520px;
+  border: none !important;
+}
+
+/* Desktop: cap width, add polish */
 @media (min-width: 640px) {
   .short-inline-form {
-    max-width: 640px;
+    max-width: 600px;
   }
   .short-inline-form__inner {
     min-height: 580px;
     border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
   }
-  .short-inline-form__inner > div,
   .short-inline-form__inner iframe {
     min-height: 580px;
   }
