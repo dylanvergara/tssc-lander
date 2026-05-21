@@ -6,7 +6,6 @@ export default function ShortHero({ data }) {
   const { hero } = data;
   const [formOpen, setFormOpen] = useState(false);
   const formRef = useRef(null);
-  const tfLoaded = useRef(false);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
@@ -25,25 +24,25 @@ export default function ShortHero({ data }) {
     }
   }, [hero.vslVideoId]);
 
-  const loadTypeform = () => {
-    if (tfLoaded.current) return;
-    tfLoaded.current = true;
-    const s = document.createElement('script');
-    s.src = '//embed.typeform.com/next/embed.js';
-    s.async = true;
-    document.body.appendChild(s);
-  };
+  const handleApply = () => { setFormOpen(true); };
 
-  const handleApply = () => {
-    const opening = !formOpen;
-    if (opening) loadTypeform();
-    setFormOpen(opening);
-    if (opening && formRef.current) {
-      setTimeout(() => {
-        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 150);
-    }
-  };
+  useEffect(() => {
+    if (!formOpen) return;
+    const timer = setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
+        const s = document.createElement('script');
+        s.src = '//embed.typeform.com/next/embed.js';
+        s.async = true;
+        document.body.appendChild(s);
+      } else if (window.tf && typeof window.tf.load === 'function') {
+        window.tf.load();
+      }
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [formOpen]);
 
   return (
     <>
