@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const ALL_VIDEOS = [
   { id: 1,  label: '$54k commission month at 24',               sub: 'Before: Door-to-Door Food Sales',      videoId: 'cIKgkBmLNeg' },
@@ -103,6 +103,17 @@ function FaqItem({ item }) {
 }
 
 export default function ShortMain({ data, onApply, formOpen }) {
+  const formRef = useRef(null);
+
+  const handleApply = () => {
+    onApply();
+    if (!formOpen && formRef.current) {
+      setTimeout(() => {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  };
+
   return (
     <section className="short-main">
       <div className="short-section-divider" />
@@ -136,11 +147,16 @@ export default function ShortMain({ data, onApply, formOpen }) {
         </div>
       </div>
 
+      {/* Bottom CTA + inline form */}
       <div className="short-final-cta">
-        <button className="short-hero__cta" onClick={onApply}>
-          {formOpen ? 'Close Application' : 'Apply to Join TSSC'}
+        <button className="short-hero__cta" onClick={handleApply}>
+          {formOpen ? '✕ Close' : 'Apply to Join TSSC'}
         </button>
-        <div className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
+        <div
+          ref={formRef}
+          className={`short-inline-form${formOpen ? ' is-open' : ''}`}
+          aria-hidden={!formOpen}
+        >
           <div className="short-inline-form__inner">
             <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
           </div>
