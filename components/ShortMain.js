@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const ALL_VIDEOS = [
   { id: 1,  label: '$54k commission month at 24',               sub: 'Before: Door-to-Door Food Sales',      videoId: 'cIKgkBmLNeg' },
@@ -98,30 +98,34 @@ function FaqItem({ item }) {
 
 export default function ShortMain({ data }) {
   const formRef = useRef(null);
-  const tfLoaded = useRef(false);
 
   const [formOpen, setFormOpen] = useState(false);
 
   const handleApply = () => {
-    const opening = !formOpen;
-    if (opening && !tfLoaded.current) {
-      tfLoaded.current = true;
-      // Typeform script already loaded by ShortHero on first use;
-      // if user hits bottom first, load it now
+    setFormOpen(true);
+  };
+
+  // Once formOpen flips to true, the div mounts — then trigger tf.load()
+  // so Typeform scans the newly-mounted div even if the script already ran
+  useEffect(() => {
+    if (!formOpen) return;
+    const timer = setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      // Load Typeform script if not yet present
       if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
         const s = document.createElement('script');
         s.src = '//embed.typeform.com/next/embed.js';
         s.async = true;
         document.body.appendChild(s);
+      } else if (window.tf && typeof window.tf.load === 'function') {
+        // Script already loaded — re-scan DOM for new data-tf-live divs
+        window.tf.load();
       }
-    }
-    setFormOpen(opening);
-    if (opening && formRef.current) {
-      setTimeout(() => {
-        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 150);
-    }
-  };
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [formOpen]);
 
   return (
     <section className="short-main">
