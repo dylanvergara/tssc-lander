@@ -69,11 +69,7 @@ function VideoCard({ vid }) {
       </div>
       <div className="short-card__video" onClick={() => !playing && setPlaying(true)}>
         {playing ? (
-          <iframe
-            src={`https://www.youtube.com/embed/${vid.videoId}?autoplay=1&rel=0&modestbranding=1`}
-            allow="autoplay; fullscreen"
-            allowFullScreen
-          />
+          <iframe src={`https://www.youtube.com/embed/${vid.videoId}?autoplay=1&rel=0&modestbranding=1`} allow="autoplay; fullscreen" allowFullScreen />
         ) : (
           <>
             <img src={thumb} alt={vid.label} />
@@ -95,9 +91,7 @@ function FaqItem({ item }) {
         <span>{item.q}</span>
         <span className="short-faq-icon">+</span>
       </button>
-      <div className="short-faq-a">
-        <p>{item.a}</p>
-      </div>
+      <div className="short-faq-a"><p>{item.a}</p></div>
     </div>
   );
 }
@@ -110,56 +104,41 @@ export default function ShortMain({ data, onApply, formOpen }) {
     if (!formOpen && formRef.current) {
       setTimeout(() => {
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
+      }, 150);
     }
   };
 
   return (
     <section className="short-main">
       <div className="short-section-divider" />
-
       <div className="short-main__header">
         <p className="short-main__eyebrow">Don't take our word for it</p>
         <h2 className="short-main__title">Results & FAQs</h2>
         <p className="short-main__sub">Swipe through 40 member interviews, then get your questions answered below.</p>
       </div>
-
       <div className="short-carousel-outer">
         <div className="short-carousel-track">
-          {ALL_VIDEOS.map(vid => (
-            <VideoCard key={vid.id} vid={vid} />
-          ))}
+          {ALL_VIDEOS.map(vid => <VideoCard key={vid.id} vid={vid} />)}
           <div style={{ flexShrink: 0, width: '16px' }} />
         </div>
       </div>
-
-      <div className="short-swipe-hint">
-        <span>SWIPE TO SEE MORE</span>
-      </div>
-
+      <div className="short-swipe-hint"><span>SWIPE TO SEE MORE</span></div>
       <div className="short-divider" />
-
       <div className="short-faq-wrap">
         <div className="short-faq-list">
-          {FAQS.map((item, i) => (
-            <FaqItem key={i} item={item} />
-          ))}
+          {FAQS.map((item, i) => <FaqItem key={i} item={item} />)}
         </div>
       </div>
-
-      {/* Bottom CTA + inline form */}
       <div className="short-final-cta">
         <button className="short-hero__cta" onClick={handleApply}>
           {formOpen ? '✕ Close' : 'Apply to Join TSSC'}
         </button>
-        <div
-          ref={formRef}
-          className={`short-inline-form${formOpen ? ' is-open' : ''}`}
-          aria-hidden={!formOpen}
-        >
-          <div className="short-inline-form__inner">
-            <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
-          </div>
+        <div ref={formRef} className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
+          {formOpen && (
+            <div className="short-inline-form__inner">
+              <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
+            </div>
+          )}
         </div>
       </div>
     </section>
