@@ -570,3 +570,74 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
     min-height: 580px;
   }
 }
+/* ============================================================
+   BOOKING PAGE
+============================================================ */
+.booking-page {
+  min-height: 100vh;
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  background: var(--dark);
+  border-bottom: 1px solid rgba(182,205,222,0.08);
+}
+
+.booking-nav__logo {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.booking-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 88px 16px 40px; /* 88px = nav height + breathing room */
+  width: 100%;
+}
+
+/* The iframe itself â€” full width, auto height via GHL's resize script */
+.booking-iframe {
+  width: 100%;
+  max-width: 1100px;
+  /* Start tall enough for the calendar â€” GHL script will resize it */
+  min-height: 700px;
+  height: 800px;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+   
+  background: #fff;
+}
+
+/* Mobile â€” full bleed, taller to fit stacked layout */
+@media (max-width: 639px) {
+  .booking-main {
+    padding: 80px 0 0; /* no side padding â€” iframe fills width */
+  }
+  .booking-iframe {
+    border-radius: 0;
+    min-height: 900px;
+    height: 1000px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .booking-iframe {
+    min-height: 750px;
+    height: 850px;
+  }
+}
