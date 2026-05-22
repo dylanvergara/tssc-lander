@@ -641,3 +641,56 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
     height: 850px;
   }
 }
+/* ============================================================
+   BOOKING PAGE
+============================================================ */
+.booking-page {
+  min-height: 100vh;
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  background: var(--dark);
+  border-bottom: 1px solid rgba(182,205,222,0.08);
+}
+
+.booking-nav__logo {
+  height: 48px;
+  width: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.booking-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 73px; /* height of fixed nav */
+}
+
+/* iframe fills full height â€” GHL script auto-resizes it */
+.booking-iframe {
+  width: 100%;
+  max-width: 1100px;
+  min-height: calc(100vh - 73px);
+  border: none;
+  display: block;
+}
+
+/* Mobile: full bleed, no side gaps */
+@media (max-width: 639px) {
+  .booking-main {
+    padding-top: 73px;
+  }
+  .booking-iframe {
+    min-height: calc(100vh - 73px);
+  }
+}
