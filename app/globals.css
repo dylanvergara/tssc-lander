@@ -692,40 +692,55 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 /* ============================================================
    /2pt PAGE - Two-Piece Tuesday
 ============================================================ */
-.tpt-page { min-height: 100vh; background: #0f0f0f; display: flex; flex-direction: column; align-items: center; padding: 0 0 48px; }
-.tpt-image { width: 100%; max-width: 600px; height: auto; display: block; pointer-events: auto; user-select: auto; -webkit-user-drag: auto; }
-.tpt-form-wrap { width: 700px; max-width: 100%; padding: 0; box-sizing: border-box; }
-.tpt-form-wrap > div { width: 100%; }
-.tpt-form-wrap .formkit-form { margin-left: auto !important; margin-right: auto !important; max-width: 100% !important; }
-@media (max-width: 720px) {
-  .tpt-image { max-width: 100%; }
-  .tpt-form-wrap { width: 100%; padding: 0 12px; }
+.tpt-page {
+  min-height: 100vh;
+  background: #0f0f0f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 48px;
+  overflow: hidden;
 }
-/* Center Kit form on /2pt — Kit appends to body, not our wrapper */
+
+.tpt-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  pointer-events: auto;
+  user-select: auto;
+  -webkit-user-drag: auto;
+}
+
+.tpt-form-spacer {
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.tpt-form-wrap {
+  width: 100%;
+  max-width: 600px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.tpt-form-wrap > div {
+  width: 100%;
+}
+
+/* Center Kit's body-level form and give it rounded corners */
 body:has(.tpt-page) > .formkit-form {
-  max-width: 700px;
+  max-width: 568px !important;
   margin: 0 auto !important;
-  display: block !important;
-}
-/* ── /2pt gradient blend ──────────────────────────────────── */
-.tpt-gradient-top {
-  width: 700px;
-  max-width: 100%;
-  height: 60px;
-  background: linear-gradient(to bottom, #0f0f0f, rgb(249, 250, 251));
-  pointer-events: none;
-}
-
-.tpt-gradient-bottom {
-  width: 700px;
-  max-width: 100%;
-  height: 60px;
-  background: linear-gradient(to bottom, rgb(249, 250, 251), #0f0f0f);
-  pointer-events: none;
-}
-
-/* Remove form border so there's no hard edge */
-body:has(.tpt-page) > .formkit-form {
+  border-radius: 16px !important;
   border: none !important;
-  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 639px) {
+  .tpt-image { max-width: 100%; }
+  .tpt-form-wrap { padding: 0 16px; }
+  body:has(.tpt-page) > .formkit-form {
+    max-width: calc(100vw - 32px) !important;
+  }
 }
