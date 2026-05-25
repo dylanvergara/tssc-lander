@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export default function TwoPieceTuesdayPage() {
   useEffect(() => {
-    // Always load a fresh copy of Kit's script (busts CDN cache)
+    // Always load fresh Kit script (busts CDN cache)
     const src = `https://serialsales.kit.com/aecfb85dd8/index.js?v=${Date.now()}`;
     const s = document.createElement('script');
     s.src = src;
@@ -24,9 +24,16 @@ export default function TwoPieceTuesdayPage() {
         alt="Two-Piece Tuesday Newsletter Preview"
         className="tpt-image"
       />
+
+      {/* Gradient bridge: black â†’ form background */}
+      <div className="tpt-gradient-top" />
+
       <div className="tpt-form-wrap">
         <div data-uid="aecfb85dd8" />
       </div>
+
+      {/* Gradient bridge: form background â†’ black */}
+      <div className="tpt-gradient-bottom" />
     </div>
   );
 }
