@@ -16,9 +16,9 @@ export default function TwoPieceTuesdayPage() {
       const form = document.querySelector('body > .formkit-form');
       if (form) {
         clearInterval(interval);
+        form.style.border = 'none';
         form.style.borderRadius = '16px';
         form.style.overflow = 'hidden';
-        form.style.border = 'none';
         form.style.maxWidth = '600px';
         form.style.margin = '0 auto';
       }
@@ -40,11 +40,9 @@ export default function TwoPieceTuesdayPage() {
         alt="Two-Piece Tuesday Newsletter Preview"
         className="tpt-image"
       />
-      <div className="tpt-form-spacer" />
       <div className="tpt-form-wrap">
         <div data-uid="aecfb85dd8" />
       </div>
-      <div className="tpt-form-spacer" />
     </div>
   );
 }
