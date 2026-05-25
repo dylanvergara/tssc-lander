@@ -701,3 +701,9 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
   .tpt-image { max-width: 100%; }
   .tpt-form-wrap { width: 100%; padding: 0 12px; }
 }
+/* Center Kit form on /2pt — Kit appends to body, not our wrapper */
+body:has(.tpt-page) > .formkit-form {
+  max-width: 700px;
+  margin: 0 auto !important;
+  display: block !important;
+}
