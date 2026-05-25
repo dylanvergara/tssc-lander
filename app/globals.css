@@ -1067,13 +1067,19 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 /* Form wrapper â€” matches image width */
 .tpt-form-wrap {
   width: 100%;
-  max-width: 600px;
+  max-width: 760px;
   padding: 0 16px;
   margin: 0 auto;
 }
 
 .tpt-form-wrap > div {
   width: 100%;
+}
+
+/* Kit injects .formkit-form with margin: 0 — override to center it */
+.tpt-form-wrap .formkit-form {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* ConvertKit form override â€” dark page treatment */
