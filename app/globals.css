@@ -707,3 +707,25 @@ body:has(.tpt-page) > .formkit-form {
   margin: 0 auto !important;
   display: block !important;
 }
+/* ── /2pt gradient blend ──────────────────────────────────── */
+.tpt-gradient-top {
+  width: 700px;
+  max-width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom, #0f0f0f, rgb(249, 250, 251));
+  pointer-events: none;
+}
+
+.tpt-gradient-bottom {
+  width: 700px;
+  max-width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom, rgb(249, 250, 251), #0f0f0f);
+  pointer-events: none;
+}
+
+/* Remove form border so there's no hard edge */
+body:has(.tpt-page) > .formkit-form {
+  border: none !important;
+  border-radius: 0 !important;
+}
