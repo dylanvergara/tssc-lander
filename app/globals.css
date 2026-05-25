@@ -1034,78 +1034,53 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
     padding: 24px 40px;
   }
 }
-/* ============================================================
-   /2pt PAGE â€” Two-Piece Tuesday
-============================================================ */
-.tpt-page {
-  min-height: 100vh;
-  background: #0f0f0f;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* No nav â€” no padding-top needed */
-  padding: 0 0 48px;
-}
+'use client';
+import { useEffect } from 'react';
 
-/* Both images stack full width, capped for readability */
-.tpt-image {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  display: block;
-  /* Remove default img pointer-events block from globals */
-  pointer-events: auto;
-  user-select: auto;
-  -webkit-user-drag: auto;
-}
+export default function TwoPieceTuesdayPage() {
+  useEffect(() => {
+    // Load Kit script
+    if (!document.querySelector('script[src="https://serialsales.kit.com/aecfb85dd8/index.js"]')) {
+      const s = document.createElement('script');
+      s.src = 'https://serialsales.kit.com/aecfb85dd8/index.js';
+      s.async = true;
+      s.setAttribute('data-uid', 'aecfb85dd8');
+      document.body.appendChild(s);
+    }
 
-/* First image â€” flush to top */
-.tpt-image:first-child {
-  margin-top: 0;
-}
+    // Poll until Kit renders the form, then center it via inline style
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const form = document.querySelector('.tpt-form-wrap .formkit-form');
+      if (form) {
+        form.style.marginLeft = 'auto';
+        form.style.marginRight = 'auto';
+        form.style.display = 'block';
+        clearInterval(interval);
+      }
+      if (attempts > 60) clearInterval(interval); // stop after 6 seconds
+    }, 100);
 
-/* Form wrapper â€” matches image width */
-.tpt-form-wrap {
-  width: 100%;
-  max-width: 760px;
-  padding: 0 16px;
-  margin: 0 auto;
-}
+    return () => clearInterval(interval);
+  }, []);
 
-.tpt-form-wrap > div {
-  width: 100%;
-}
-
-/* Kit injects .formkit-form with margin: 0 — override to center it */
-.tpt-form-wrap .formkit-form {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* ConvertKit form override â€” dark page treatment */
-.tpt-form-wrap .formkit-form {
-  background-color: #fff !important;
-  border-radius: 12px !important;
-  overflow: hidden;
-  border: none !important;
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* Mobile â€” full bleed images, no side padding */
-@media (max-width: 599px) {
-  .tpt-image {
-    max-width: 100%;
-  }
-  .tpt-form-wrap {
-    max-width: 100%;
-    padding: 0 12px;
-  }
-}
-
-/* Desktop â€” a little breathing room above form */
-@media (min-width: 600px) {
-  .tpt-form-wrap {
-    padding: 0;
-  }
+  return (
+    <div className="tpt-page">
+      <img
+        src="/images/2PT (1).png"
+        alt="Two-Piece Tuesday"
+        className="tpt-image"
+      />
+      <img
+        src="/images/2PT.png"
+        alt="Two-Piece Tuesday Newsletter Preview"
+        className="tpt-image"
+      />
+      {/* Wrapper sized to match Kit's 700px form exactly */}
+      <div className="tpt-form-wrap">
+        <div data-uid="aecfb85dd8" />
+      </div>
+    </div>
+  );
 }
