@@ -732,11 +732,11 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 body:has(.tpt-page) > .formkit-form {
   max-width: 568px !important;
   margin: 0 auto !important;
+  margin-top: 0 !important;
   border-radius: 16px !important;
   border: none !important;
   overflow: hidden !important;
 }
-
 @media (max-width: 639px) {
   .tpt-image { max-width: 100%; }
   .tpt-form-wrap { padding: 0 16px; }
