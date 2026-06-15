@@ -454,10 +454,10 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 .short-hero__nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 12px 20px; display: flex; align-items: center; background: var(--dark); border-bottom: 1px solid rgba(182,205,222,0.08); }
 .short-hero__logo { height: 48px; width: auto; pointer-events: none; display: block; }
 /* UPDATED: more breathing room between elements on mobile */
-.short-hero__content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 32px 20px 0; gap: 20px; margin-top: 72px; }
+.short-hero__content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 28px 20px 0; gap: 24px; margin-top: 73px; }
 .short-hero__eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blue-dk); text-align: center; display: block; }
 /* UPDATED: smaller font so headline wraps to 2 even lines */
-.short-hero__headline { font-family: var(--font-headline); font-size: clamp(19px, 4.2vw, 30px); font-weight: 700; letter-spacing: -0.02em; color: var(--white); text-align: center; line-height: 1.2; max-width: 640px; }
+.short-hero__headline { font-family: var(--font-headline); font-size: clamp(22px, 5.5vw, 30px); font-weight: 700; letter-spacing: -0.02em; color: var(--white); text-align: center; line-height: 1.2; max-width: 640px; text-wrap: balance; }
 /* UPDATED: small top margin for visual breathing room */
 .short-hero__vsl-wrap { width: 100%; max-width: 720px; margin-top: 4px; }
 .short-hero__cta {
@@ -473,8 +473,8 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 .short-hero__cta:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 0 0 1px rgba(182,205,222,0.3), 0 0 32px 8px rgba(182,205,222,0.22), 0 12px 40px rgba(0,0,0,0.5); }
 /* UPDATED: desktop â€” vertically centered, more generous spacing */
 @media (min-width: 640px) {
-  .short-hero { min-height: 100vh; }
-  .short-hero__content { justify-content: center; padding: 40px 20px; gap: 24px; margin-top: 0; }
+  .short-hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+  .short-hero__content { justify-content: center; padding: 48px 20px; gap: 28px; margin-top: 0; }
 }
 .short-main { background: var(--dark); padding-bottom: 60px; }
 .short-main__header { padding: 16px 20px 12px; max-width: 680px; margin: 0 auto; text-align: center; }
