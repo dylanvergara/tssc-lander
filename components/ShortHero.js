@@ -67,6 +67,8 @@ export default function ShortHero({ data }) {
             </div>
           </div>
 
+          <p className="short-hero__microcopy">The exact same process that has been refined over hundreds of clients and countless success stories since 2022..</p>
+
           {!formOpen && (
             <button className="short-hero__cta" onClick={handleApply}>
               Learn More About TSSC
