@@ -53,7 +53,7 @@ export default function ShortHero({ data }) {
 
         <div className="short-hero__content">
           <span className="short-hero__eyebrow">Watch this first</span>
-          <h1 className="short-hero__headline">Everything you need to know about TSSC is in this video.</h1>
+          <h1 className="short-hero__headline">Here's how people are landing quality 1099 remote sales roles in 3-5 weeks with our process:</h1>
 
           <div className="short-hero__vsl-wrap">
             <div className="vsl-glow">
