@@ -81,7 +81,7 @@ export default function ShortHero({ data }) {
             )}
           </div>
 
-          <p className="short-hero__microcopy">Trusted by 500+ sales reps since 2022 to land remote sales roles with internet businesses who know how to drive inbound leads</p>
+          <p className="short-hero__microcopy">Trusted by 500+ reps since 2022 to land remote sales roles with internet businesses who know how to drive inbound leads</p>
 
           <img src="/images/bos-banner.png" alt="Sell to inbound leads for coaches, consultants, agencies, service providers, events, A.I., software, bootcamps, masterminds, communities, and more" className="short-hero__banner" />
         </div>
