@@ -67,8 +67,6 @@ export default function ShortHero({ data }) {
             </div>
           </div>
 
-          <p className="short-hero__microcopy">The same process hundreds have used to sell to inbound leads for online coaches, consultants, agencies, service providers, software companies, mentorships, masterminds, communities, and more (from anywhere in the world)</p>
-
           {!formOpen && (
             <button className="short-hero__cta" onClick={handleApply}>
               Learn More About TSSC
@@ -82,6 +80,10 @@ export default function ShortHero({ data }) {
               </div>
             )}
           </div>
+
+          <p className="short-hero__microcopy">The exact same process refined over hundreds of clients and countless success stories since 2022</p>
+
+          <img src="/images/bos-banner.png" alt="Sell to inbound leads for coaches, consultants, agencies, service providers, events, A.I., software, bootcamps, masterminds, communities, and more" className="short-hero__banner" />
         </div>
       </section>
 
