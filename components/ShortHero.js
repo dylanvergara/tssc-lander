@@ -67,7 +67,7 @@ export default function ShortHero({ data }) {
             </div>
           </div>
 
-          <p className="short-hero__microcopy">The same process hundreds have used to sell to inbound leads for online coaches, consultants, agencies, service providers, software companies, mentorships, masterminds,  communities, and more (from anywhere in the world).</p>
+          <p className="short-hero__microcopy">The same process hundreds have used to sell to inbound leads for online coaches, consultants, agencies, service providers, software companies, mentorships, masterminds, communities, and more (from anywhere in the world)</p>
 
           {!formOpen && (
             <button className="short-hero__cta" onClick={handleApply}>
