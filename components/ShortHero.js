@@ -81,7 +81,7 @@ export default function ShortHero({ data }) {
             )}
           </div>
 
-          <p className="short-hero__microcopy">The exact same process refined over hundreds of clients and countless success stories since 2022</p>
+          <p className="short-hero__microcopy">The same custom-fit solution that&apos;s allowed 500+ sales reps to sell for internet-based companies since 2022</p>
 
           <img src="/images/bos-banner.png" alt="Sell to inbound leads for coaches, consultants, agencies, service providers, events, A.I., software, bootcamps, masterminds, communities, and more" className="short-hero__banner" />
         </div>
