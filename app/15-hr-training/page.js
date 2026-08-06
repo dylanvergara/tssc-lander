@@ -33,6 +33,7 @@ export default function FifteenHourTrainingPage() {
     <div className="lm15">
       <div className="lm15__inner">
         <header className="lm15__head">
+          <img src="/images/dylan-headshot.jpg" alt="Dylan Vergara" className="lm15__avatar" />
           <span className="lm15__eyebrow">Free Training</span>
           <h1 className="lm15__headline">
             15 Hour Free Training: How to Land a 1099 Inbound WFH Sales Job

@@ -625,6 +625,12 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 
 .lm15__head { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.lm15__avatar {
+  width: 76px; height: 76px; border-radius: 50%; object-fit: cover;
+  border: 2px solid rgba(182,205,222,0.5);
+  box-shadow: 0 0 0 1px rgba(182,205,222,0.1), 0 0 18px 4px rgba(182,205,222,0.16);
+  margin: 0 auto 2px;
+}
 .lm15__eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--blue-dk); display: block;
@@ -662,7 +668,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   font-family: var(--font-display); font-size: 15px; font-weight: 700;
   letter-spacing: 0.01em; color: var(--white); margin: 0;
 }
-.lm15__form { width: 100%; max-width: 460px; margin: 0 auto; min-height: 300px; overflow-x: hidden; }
+.lm15__form { width: 100%; max-width: 600px; margin: 0 auto; min-height: 300px; overflow-x: hidden; }
 .lm15__form iframe { width: 100% !important; max-width: 100% !important; border: none !important; display: block; margin: 0 auto; }
 .lm15__form > div { width: 100% !important; max-width: 100% !important; }
 .lm15__microcopy {
