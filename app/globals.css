@@ -619,7 +619,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   justify-content: space-between;
   gap: 20px;
   width: 100%; max-width: 620px; margin: 0 auto;
-  padding: 84px 20px 28px;       /* top clears the fixed nav */
+  padding: 28px 20px 28px;       /* nav removed - reclaim the space */
   box-sizing: border-box;
   text-align: center;
 }
@@ -670,6 +670,6 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 
 @media (min-width: 640px) {
-  .lm15__inner { max-width: 660px; padding: 96px 20px 36px; gap: 26px; }
+  .lm15__inner { max-width: 660px; padding: 40px 20px 36px; gap: 26px; }
   .lm15__img { max-height: 40vh; }
 }

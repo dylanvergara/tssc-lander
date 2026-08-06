@@ -31,10 +31,6 @@ export default function FifteenHourTrainingPage() {
 
   return (
     <div className="lm15">
-      <div className="lm15__nav">
-        <img src="/images/logo-white-bg.png" alt="The Serial Sales Community" className="lm15__logo" />
-      </div>
-
       <div className="lm15__inner">
         <header className="lm15__head">
           <span className="lm15__eyebrow">Free Training</span>
