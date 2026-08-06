@@ -601,6 +601,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   min-height: 100vh;
   min-height: 100dvh;
   margin-top: -69px;              /* cancel global body padding-top so we own the full viewport */
+  overflow-x: hidden;             /* never allow horizontal scroll on mobile */
   background: var(--dark);
   display: flex;
   flex-direction: column;
@@ -668,7 +669,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   font-family: var(--font-display); font-size: 15px; font-weight: 700;
   letter-spacing: 0.01em; color: var(--white); margin: 0;
 }
-.lm15__form { width: 100%; max-width: 600px; margin: 0 auto; min-height: 300px; overflow-x: hidden; }
+.lm15__form { width: 100%; max-width: 600px; margin: 0 auto; min-height: 300px; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; }
 .lm15__form iframe { width: 100% !important; max-width: 100% !important; border: none !important; display: block; margin: 0 auto; }
 .lm15__form > div { width: 100% !important; max-width: 100% !important; }
 .lm15__microcopy {
