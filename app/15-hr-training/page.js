@@ -42,7 +42,7 @@ export default function FifteenHourTrainingPage() {
             Based on thousands of datapoints across hundreds of paying clients, stuffed into 43 sections.
             The definitive training on how you can land a quality remote appointment setting or closing job.
           </p>
-          <p className="lm15__meta">7 modules &middot; 43 sections &middot; ~15 hours</p>
+          <p className="lm15__meta">7 modules, 43 sections, ~15 hours of content</p>
         </header>
 
         {/* Middle image slot — swap /public/images/15-hr-training.png with your graphic (same filename, no code change needed) */}

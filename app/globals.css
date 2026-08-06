@@ -627,7 +627,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 
 .lm15__head { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .lm15__avatar {
-  width: 76px; height: 76px; border-radius: 50%; object-fit: cover;
+  width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
   border: 2px solid rgba(182,205,222,0.5);
   box-shadow: 0 0 0 1px rgba(182,205,222,0.1), 0 0 18px 4px rgba(182,205,222,0.16);
   margin: 0 auto 2px;
