@@ -39,7 +39,7 @@ export default function FifteenHourTrainingPage() {
             15 Hour Free Training: How to Land a 1099 Inbound WFH Sales Job
           </h1>
           <p className="lm15__sub">
-            Based on thousands of datapoints across hundreds of paying clients, stuffed into 43 sections.
+            Based on thousands of datapoints across hundreds of paying clients.
             The definitive training on how you can land a quality remote appointment setting or closing job.
           </p>
           <p className="lm15__meta">7 modules, 43 sections, ~15 hours of content</p>
@@ -53,7 +53,6 @@ export default function FifteenHourTrainingPage() {
         </div>
 
         <div className="lm15__cta">
-          <p className="lm15__cta-label">Get the training now</p>
           <div ref={formRef} className="lm15__form" />
           <p className="lm15__microcopy">100% free, unsubscribe anytime.</p>
         </div>
