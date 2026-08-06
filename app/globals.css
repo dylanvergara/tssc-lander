@@ -593,3 +593,83 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   .tpt-form-wrap { padding: 0 16px; }
   body:has(.tpt-page) > .formkit-form { max-width: calc(100vw - 32px) !important; }
 }
+
+/* ============================================================
+   LEAD MAGNET: /15-hr-training  (single-screen, no long scroll)
+============================================================ */
+.lm15 {
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-top: -69px;              /* cancel global body padding-top so we own the full viewport */
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.lm15__nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 12px 20px; display: flex; align-items: center;
+  background: var(--dark); border-bottom: 1px solid rgba(182,205,222,0.08);
+}
+.lm15__logo { height: 44px; width: auto; pointer-events: none; display: block; }
+
+.lm15__inner {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%; max-width: 620px; margin: 0 auto;
+  padding: 84px 20px 28px;       /* top clears the fixed nav */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.lm15__head { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.lm15__eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--blue-dk); display: block;
+}
+.lm15__headline {
+  font-family: var(--font-display);
+  font-size: clamp(21px, 5vw, 30px); font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.15; color: var(--white);
+  text-wrap: balance; max-width: 600px;
+}
+.lm15__sub {
+  font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.55);
+  max-width: 520px; margin: 0 auto;
+}
+.lm15__meta {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(182,205,222,0.7); margin: 0;
+}
+
+/* Middle image slot */
+.lm15__media { width: 100%; display: flex; justify-content: center; }
+.lm15__media-frame {
+  width: 100%; max-width: 560px;
+  border-radius: calc(var(--radius) + 2px);
+}
+.lm15__img {
+  width: 100%; height: auto; display: block;
+  max-height: 34vh; object-fit: cover;
+  border-radius: calc(var(--radius) + 1px);
+}
+
+/* Bottom CTA + Beehiiv form */
+.lm15__cta { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.lm15__cta-label {
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  letter-spacing: 0.01em; color: var(--white); margin: 0;
+}
+.lm15__form { width: 100%; max-width: 460px; margin: 0 auto; min-height: 300px; overflow-x: hidden; }
+.lm15__form iframe { width: 100% !important; max-width: 100% !important; border: none !important; display: block; margin: 0 auto; }
+.lm15__form > div { width: 100% !important; max-width: 100% !important; }
+.lm15__microcopy {
+  font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.01em; margin: 0;
+}
+
+@media (min-width: 640px) {
+  .lm15__inner { max-width: 660px; padding: 96px 20px 36px; gap: 26px; }
+  .lm15__img { max-height: 40vh; }
+}
