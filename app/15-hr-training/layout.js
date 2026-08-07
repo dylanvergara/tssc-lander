@@ -7,8 +7,8 @@ export const metadata = {
     images: [
       {
         url: 'https://www.serialsalescommunity.co/images/15-hr-training-cover.jpg?v=1',
-        width: 1280,
-        height: 720,
+        width: 1600,
+        height: 900,
         alt: '15 Hour Free Training',
       },
     ],
