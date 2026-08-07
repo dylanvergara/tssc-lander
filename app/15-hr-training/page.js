@@ -48,7 +48,7 @@ export default function FifteenHourTrainingPage() {
         {/* Middle image slot — swap /public/images/15-hr-training.png with your graphic (same filename, no code change needed) */}
         <div className="lm15__media">
           <div className="vsl-glow lm15__media-frame">
-            <img src="/images/15-hr-training-cover.jpg" alt="The 15 Hour Free Training — Parts 1 and 2 curriculum" className="lm15__img" />
+            <img src="/images/15-hr-training-cover.jpg?v=2" alt="The 15 Hour Free Training — Parts 1 and 2 curriculum" className="lm15__img" />
           </div>
         </div>
 

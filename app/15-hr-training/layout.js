@@ -6,7 +6,7 @@ export const metadata = {
     description: 'Based on thousands of datapoints across hundreds of paying clients, stuffed into 43 sections. 100% free, unsubscribe anytime.',
     images: [
       {
-        url: 'https://www.serialsalescommunity.co/images/15-hr-training-cover.jpg?v=1',
+        url: 'https://www.serialsalescommunity.co/images/15-hr-training-cover.jpg?v=2',
         width: 1600,
         height: 900,
         alt: '15 Hour Free Training',
@@ -19,7 +19,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: '15 Hour Free Training: How to Land a 1099 Inbound WFH Sales Job',
     description: 'The definitive free training on landing a quality remote sales job. 100% free, unsubscribe anytime.',
-    images: ['https://www.serialsalescommunity.co/images/15-hr-training-cover.jpg?v=1'],
+    images: ['https://www.serialsalescommunity.co/images/15-hr-training-cover.jpg?v=2'],
   },
 };
 
