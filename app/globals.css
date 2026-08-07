@@ -656,6 +656,8 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 .lm15__media-frame {
   width: 100%; max-width: 560px;
   border-radius: calc(var(--radius) + 2px);
+  border: 1px solid rgba(182,205,222,0.35);
+  box-shadow: 0 0 0 1px rgba(182,205,222,0.07), 0 0 20px 6px rgba(182,205,222,0.126), 0 0 48px 12px rgba(182,205,222,0.056);
 }
 .lm15__img {
   width: 100%; height: auto; display: block;
