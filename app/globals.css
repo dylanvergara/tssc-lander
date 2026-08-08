@@ -682,3 +682,19 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   .lm15__inner { max-width: 660px; padding: 40px 20px 36px; gap: 26px; }
   .lm15__img { max-height: 40vh; }
 }
+
+/* -- /15-hr-training/confirmation extras -- */
+.lm15__check {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue);
+  border: 2px solid rgba(182,205,222,0.5);
+  box-shadow: 0 0 0 1px rgba(182,205,222,0.08), 0 0 18px 4px rgba(182,205,222,0.14);
+}
+.lm15__check svg { width: 30px; height: 30px; }
+.lm15__ps {
+  font-size: 13px; line-height: 1.6; font-style: italic;
+  color: rgba(255,255,255,0.4); max-width: 520px; margin: 8px auto 0; text-align: center;
+}
+.lm15__ps a { color: rgba(182,205,222,0.85); text-decoration: underline; text-underline-offset: 2px; }
+.lm15__ps a:hover { color: var(--blue-lt); }
