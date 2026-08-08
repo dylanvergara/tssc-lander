@@ -693,8 +693,16 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 .lm15__check svg { width: 30px; height: 30px; }
 .lm15__ps {
-  font-size: 13px; line-height: 1.6; font-style: italic;
-  color: rgba(255,255,255,0.4); max-width: 520px; margin: 8px auto 0; text-align: center;
+  font-size: clamp(7.5px, 2.25vw, 13px); line-height: 1.6; font-style: italic;
+  white-space: nowrap;
+  color: rgba(255,255,255,0.4); max-width: 100%; margin: 8px auto 0; text-align: center;
 }
+.lm15__sub--note { font-size: 13px; color: rgba(255,255,255,0.42); }
+
+/* Confirmation page — tightened for mobile single-screen */
+.lm15--confirm .lm15__inner { gap: 16px; }
+.lm15--confirm .lm15__check { width: 52px; height: 52px; }
+.lm15--confirm .lm15__check svg { width: 24px; height: 24px; }
+.lm15--confirm .lm15__img { max-height: 24vh; }
 .lm15__ps a { color: rgba(182,205,222,0.85); text-decoration: underline; text-underline-offset: 2px; }
 .lm15__ps a:hover { color: var(--blue-lt); }
