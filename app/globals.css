@@ -699,10 +699,8 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 .lm15__sub--note { font-size: 13px; color: rgba(255,255,255,0.42); }
 
-/* Confirmation page — tightened for mobile single-screen */
-.lm15--confirm .lm15__inner { gap: 16px; }
-.lm15--confirm .lm15__check { width: 52px; height: 52px; }
-.lm15--confirm .lm15__check svg { width: 24px; height: 24px; }
-.lm15--confirm .lm15__img { max-height: 24vh; }
+/* Confirmation page — a little more breathing room */
+.lm15--confirm .lm15__inner { gap: 26px; }
+.lm15--confirm .lm15__head { gap: 16px; }
 .lm15__ps a { color: rgba(182,205,222,0.85); text-decoration: underline; text-underline-offset: 2px; }
 .lm15__ps a:hover { color: var(--blue-lt); }
