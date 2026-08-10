@@ -620,7 +620,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
   justify-content: center;
   gap: 20px;
   width: 100%; max-width: 620px; margin: 0 auto;
-  padding: 28px 20px 28px;       /* nav removed - reclaim the space */
+  padding: 28px 20px 28px;       /* nav removed — reclaim the space */
   box-sizing: border-box;
   text-align: center;
 }
@@ -704,6 +704,7 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 .lm15--confirm .lm15__head { gap: 16px; }
 .lm15__ps a { color: rgba(182,205,222,0.85); text-decoration: underline; text-underline-offset: 2px; }
 .lm15__ps a:hover { color: var(--blue-lt); }
+
 
 /* ============================================================
    /sales-ascension  (TSSC Sales Ascension - 1-on-1 program)
@@ -915,13 +916,15 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 
 /* Coaches */
-.sa-coach { display: grid; grid-template-columns: 1fr; gap: 22px; margin-bottom: 44px; align-items: start; }
+.sa-coach { display: grid; grid-template-columns: 1fr; background: var(--dark-2); border: 1px solid var(--border-lt); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
 .sa-coach:last-of-type { margin-bottom: 0; }
-.sa-coach__media { display: flex; flex-direction: column; }
-.sa-coach__photo { width: 100%; max-width: 300px; aspect-ratio: 1/1.15; object-fit: cover; object-position: top; border-radius: var(--radius); border: 1px solid rgba(182,205,222,0.25); }
-.sa-coach__name { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--white); margin: 14px 0 4px; }
-.sa-coach__role { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(182,205,222,0.7); }
+.sa-coach__media { position: relative; width: 100%; }
+.sa-coach__photo { width: 100%; height: 260px; object-fit: cover; object-position: top center; display: block; }
+.sa-coach__body { padding: 24px 24px 26px; min-width: 0; }
+.sa-coach__name { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--white); margin: 0 0 6px; }
+.sa-coach__role { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(182,205,222,0.7); margin-bottom: 16px; }
 .sa-coach__bio p { font-size: 13.5px; line-height: 1.75; color: rgba(255,255,255,0.6); margin-bottom: 13px; }
+.sa-coach__bio p:last-child { margin-bottom: 0; }
 .sa-coach__video { position: relative; width: 100%; max-width: 480px; aspect-ratio: 16/9; cursor: pointer; margin-top: 8px; border-radius: var(--radius); }
 .sa-coach__video img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .sa-coach__video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; border-radius: var(--radius); }
@@ -938,9 +941,9 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 .sa-coach__play svg { width: 20px; height: 20px; margin-left: 2px; }
 @media (min-width: 760px) {
-  .sa-coach { grid-template-columns: 300px 1fr; gap: 32px; }
-  .sa-coach--flip { grid-template-columns: 1fr 300px; }
-  .sa-coach--flip .sa-coach__media { order: 2; }
+  .sa-coach { grid-template-columns: 260px 1fr; align-items: stretch; }
+  .sa-coach__media { height: 100%; }
+  .sa-coach__photo { position: absolute; inset: 0; width: 100%; height: 100%; }
 }
 
 /* Guarantee */

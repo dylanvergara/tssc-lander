@@ -616,10 +616,11 @@ export default function SalesAscensionPage() {
         <div className="sa-coach">
           <div className="sa-coach__media">
             <img src="/images/team/team-5.jpg" alt="Chris Cha" className="sa-coach__photo" />
+          </div>
+          <div className="sa-coach__body">
             <h3 className="sa-coach__name">Chris Cha</h3>
             <span className="sa-coach__role">Head of Client Success · Lead Sales Coach</span>
-          </div>
-          <div className="sa-coach__bio">
+            <div className="sa-coach__bio">
             <p>
               Chris spent three years in South Korea as a missionary, Bible teacher, and youth
               minister before ever touching a sales call. With a degree in English secondary
@@ -635,17 +636,19 @@ export default function SalesAscensionPage() {
               where the breakdowns happen because he lived them. Because of this, he leads with
               belief shifts before tactics, because that's how real teaching works.
             </p>
-            <ChrisVideo />
+              <ChrisVideo />
+            </div>
           </div>
         </div>
 
-        <div className="sa-coach sa-coach--flip">
+        <div className="sa-coach">
           <div className="sa-coach__media">
             <img src="/images/dylan-headshot.jpg" alt="Dylan Vergara" className="sa-coach__photo" />
+          </div>
+          <div className="sa-coach__body">
             <h3 className="sa-coach__name">Dylan Vergara</h3>
             <span className="sa-coach__role">Founder · Operations &amp; Infrastructure Lead</span>
-          </div>
-          <div className="sa-coach__bio">
+            <div className="sa-coach__bio">
             <p>
               Dylan left a high-paying roofing sales job in 2022 for remote closing, recreated a
               six-figure income, and quickly outgrew the seat, leaning into management, recruiting,
@@ -663,6 +666,7 @@ export default function SalesAscensionPage() {
               you leads. Closer turned operator turned builder. He knows what reps need to win
               because he's built the systems that let them.
             </p>
+            </div>
           </div>
         </div>
       </section>
