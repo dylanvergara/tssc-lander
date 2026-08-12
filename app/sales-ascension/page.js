@@ -305,7 +305,7 @@ function PastClients() {
     <section className="sa-section" id="clients">
       <span className="sa-pill">Past Clients</span>
       <h2 className="sa-h2">What Every Client Said</h2>
-      <p className="sa-lead">We don&apos;t cherry-pick the wins. These are reviews from every client who&apos;s worked with us &mdash; not just the success stories. Tap any client to read the exact message they sent us.</p>
+      <p className="sa-lead">We don&apos;t cherry-pick the wins. These are reviews from every client who&apos;s worked with us, not just the success stories. Tap any client to read the exact message they sent us.</p>
 
       <div className="sa-clients">
         {CLIENTS.map((cl, i) => (
@@ -520,6 +520,9 @@ export default function SalesAscensionPage() {
         </div>
       </section>
 
+      {/* PAST CLIENTS */}
+      <PastClients />
+
       {/* STANDARDS */}
       <section className="sa-section">
         <div className="sa-card-dark">
@@ -732,9 +735,6 @@ export default function SalesAscensionPage() {
           </div>
         </div>
       </section>
-
-      {/* PAST CLIENTS */}
-      <PastClients />
 
       {/* GUARANTEE */}
       <section className="sa-guarantee">
