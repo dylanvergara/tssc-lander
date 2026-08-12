@@ -279,6 +279,68 @@ function ChrisVideo() {
   );
 }
 
+/* ---------- Past clients (headshot -> text-message screenshot modal) ---------- */
+/* To add a client: drop a headshot + a text screenshot into /public/images/clients/
+   and add an entry below. `texts` accepts one or more screenshots. */
+const CLIENTS = [
+  { name: 'Jose R.', result: '', headshot: '/images/clients/jose.jpg', texts: ['/images/clients/jose-text.jpg'] },
+  { name: 'Daniel J.', result: '', headshot: '/images/clients/daniel.jpg', texts: ['/images/clients/daniel-text.jpg'] },
+];
+
+function PastClients() {
+  const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (e) => { if (e.key === 'Escape') setActive(null); };
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [active]);
+
+  const c = active !== null ? CLIENTS[active] : null;
+
+  return (
+    <section className="sa-section" id="clients">
+      <span className="sa-pill">Past Clients</span>
+      <h2 className="sa-h2">What Every Client Said</h2>
+      <p className="sa-lead">We don&apos;t cherry-pick the wins. These are reviews from every client who&apos;s worked with us &mdash; not just the success stories. Tap any client to read the exact message they sent us.</p>
+
+      <div className="sa-clients">
+        {CLIENTS.map((cl, i) => (
+          <button key={i} type="button" className="sa-client" onClick={() => setActive(i)}>
+            <img src={cl.headshot} alt={cl.name} className="sa-client__photo" />
+            <span className="sa-client__name">{cl.name}</span>
+            {cl.result ? <span className="sa-client__result">{cl.result}</span> : null}
+            <span className="sa-client__cue">View message</span>
+          </button>
+        ))}
+      </div>
+
+      {c && (
+        <div className="sa-modal" role="dialog" aria-modal="true" onClick={() => setActive(null)}>
+          <div className="sa-modal__box" onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="sa-modal__close" onClick={() => setActive(null)} aria-label="Close">&times;</button>
+            <div className="sa-modal__head">
+              <img src={c.headshot} alt={c.name} className="sa-modal__photo" />
+              <div>
+                <h3 className="sa-modal__name">{c.name}</h3>
+                {c.result ? <span className="sa-modal__result">{c.result}</span> : null}
+              </div>
+            </div>
+            <div className="sa-modal__texts">
+              {c.texts.map((t, j) => (
+                <img key={j} src={t} alt={`Message from ${c.name}`} className="sa-modal__text" />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 /* ---------- Page ---------- */
 export default function SalesAscensionPage() {
   return (
@@ -670,6 +732,9 @@ export default function SalesAscensionPage() {
           </div>
         </div>
       </section>
+
+      {/* PAST CLIENTS */}
+      <PastClients />
 
       {/* GUARANTEE */}
       <section className="sa-guarantee">
