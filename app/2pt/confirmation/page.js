@@ -1,6 +1,8 @@
+import BeehiivForm from '../../../components/BeehiivForm';
+
 export const metadata = {
-  title: "You're in, confirm your subscription | Two-Piece Tuesday",
-  description: 'Check your inbox to confirm your Two-Piece Tuesday subscription.',
+  title: "You're subscribed | Two-Piece Tuesday",
+  description: 'You are now subscribed to Two-Piece Tuesday.',
   robots: { index: false, follow: false },
 };
 
@@ -15,14 +17,14 @@ export default function TwoPTConfirmationPage() {
             </svg>
           </div>
           <span className="lm15__eyebrow">You&apos;re In</span>
-          <h1 className="lm15__headline">Check your inbox to confirm your subscription</h1>
+          <h1 className="lm15__headline">You&apos;re now subscribed to Two-Piece Tuesday</h1>
           <p className="lm15__sub">
-            One quick step and you&apos;re set. Confirm your email, and every Tuesday I&apos;ll send you fresh
-            remote sales roles straight to your inbox. If you don&apos;t see it in a minute or two, check your
-            spam or promotions folder.
+            I just sent you an email confirming your subscription. Be sure to move this into your primary
+            inbox if it didn&apos;t land there so that all future sales roles/breakdowns I send you land there!
           </p>
           <p className="lm15__sub lm15__sub--note">
-            If it&apos;s in spam/promo, do me a solid and move it to your main inbox so that Google knows you like my emails 👍
+            Included in that email is a little bonus for ya, check it out if you&apos;re actively in the market
+            and performing DD on roles like this 👍
           </p>
         </header>
 
@@ -31,6 +33,8 @@ export default function TwoPTConfirmationPage() {
             <img src="/images/TWO-PIECE-TUESDAY.png" alt="Two-Piece Tuesday" className="lm15__img" />
           </div>
         </div>
+
+        <BeehiivForm formId="eadf2cfa-487e-4dc2-b023-07a7eecb02b3" className="lm15__form" />
 
         <p className="lm15__ps">
           <em>PS: if you&apos;d just like to work with me 1-1 and make it easy, check out <a href="http://serialsalescommunity.co?utm_source=lead_mag&utm_medium=organic&utm_campaign=2pt&utm_content=2pt_confirmation_page">TSSC</a>.</em>
