@@ -1,5 +1,3 @@
-import BeehiivForm from '../../../components/BeehiivForm';
-
 export const metadata = {
   title: "You're subscribed | Two-Piece Tuesday",
   description: 'You are now subscribed to Two-Piece Tuesday.',
@@ -33,8 +31,6 @@ export default function TwoPTConfirmationPage() {
             <img src="/images/TWO-PIECE-TUESDAY.png" alt="Two-Piece Tuesday" className="lm15__img" />
           </div>
         </div>
-
-        <BeehiivForm formId="eadf2cfa-487e-4dc2-b023-07a7eecb02b3" className="lm15__form" />
 
         <p className="lm15__ps">
           <em>PS: if you&apos;d just like to work with me 1-1 and make it easy, check out <a href="http://serialsalescommunity.co?utm_source=lead_mag&utm_medium=organic&utm_campaign=2pt&utm_content=2pt_confirmation_page">TSSC</a>.</em>

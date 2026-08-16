@@ -1,33 +1,6 @@
-'use client';
-import { useEffect } from 'react';
+import BeehiivForm from '../../components/BeehiivForm';
 
 export default function TwoPieceTuesdayPage() {
-  useEffect(() => {
-    const src = `https://serialsales.kit.com/aecfb85dd8/index.js?v=${Date.now()}`;
-    const s = document.createElement('script');
-    s.src = src;
-    s.async = true;
-    s.setAttribute('data-uid', 'aecfb85dd8');
-    document.body.appendChild(s);
-
-    let attempts = 0;
-    const interval = setInterval(() => {
-      attempts++;
-      const form = document.querySelector('body > .formkit-form');
-      if (form) {
-        clearInterval(interval);
-        form.style.border = 'none';
-        form.style.borderRadius = '16px';
-        form.style.overflow = 'hidden';
-        form.style.maxWidth = '600px';
-        form.style.margin = '0 auto';
-      }
-      if (attempts > 60) clearInterval(interval);
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="tpt-page">
       <img
@@ -41,7 +14,7 @@ export default function TwoPieceTuesdayPage() {
         className="tpt-image"
       />
       <div className="tpt-form-wrap">
-        <div data-uid="aecfb85dd8" />
+        <BeehiivForm formId="eadf2cfa-487e-4dc2-b023-07a7eecb02b3" />
       </div>
     </div>
   );
