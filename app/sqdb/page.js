@@ -436,8 +436,20 @@ export default function ChatPage() {
       <div className="messages-wrap" ref={messagesContainerRef}>
         {isEmpty && (
           <div className="empty-state">
-            <p className="empty-title">The most successful minds of TSSC in your pocket.</p>
-            <p className="empty-sub">Ask anything about breaking into remote appointment setting or closing. Literally anything.</p>
+            <div className="empty-hero">
+              <p className="empty-title">The most successful minds of TSSC in your pocket.</p>
+              <p className="empty-sub">Ask anything about breaking into remote appointment setting or closing. Literally anything.</p>
+            </div>
+            <div className="empty-suggestions">
+              {SUGGESTIONS.map((s) => (
+                <button key={s.prompt} className="suggestion-chip" onClick={() => handleSuggestion(s)}>
+                  {s.label}
+                </button>
+              ))}
+              <a href="https://serialsalescommunity.co/" target="_blank" rel="noopener noreferrer" className="suggestion-chip cta">
+                Speak to the TSSC team →
+              </a>
+            </div>
           </div>
         )}
 
@@ -490,19 +502,23 @@ export default function ChatPage() {
       </div>
 
       <div className="bottom">
-        <div className="suggestions-hint-wrap">
-          <span className="suggestions-hint">scroll to select a prompt, or type your own.</span>
-        </div>
-        <div className="suggestions-scroll">
-          {SUGGESTIONS.map((s) => (
-            <button key={s.prompt} className="suggestion-chip" onClick={() => handleSuggestion(s)}>
-              {s.label}
-            </button>
-          ))}
-          <a href="https://serialsalescommunity.co/" target="_blank" rel="noopener noreferrer" className="suggestion-chip cta">
-            Speak to the TSSC team →
-          </a>
-        </div>
+        {!isEmpty && (
+          <>
+            <div className="suggestions-hint-wrap">
+              <span className="suggestions-hint">scroll to select a prompt, or type your own.</span>
+            </div>
+            <div className="suggestions-scroll">
+              {SUGGESTIONS.map((s) => (
+                <button key={s.prompt} className="suggestion-chip" onClick={() => handleSuggestion(s)}>
+                  {s.label}
+                </button>
+              ))}
+              <a href="https://serialsalescommunity.co/" target="_blank" rel="noopener noreferrer" className="suggestion-chip cta">
+                Speak to the TSSC team →
+              </a>
+            </div>
+          </>
+        )}
 
         <form className="input-row" onSubmit={handleSubmit}>
           <textarea
@@ -553,17 +569,23 @@ export default function ChatPage() {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 14px 16px 12px;
-          border-bottom: 1px solid rgba(182, 205, 222, 0.1);
-          background: #0d0f12;
+          padding: 13px 18px 12px;
+          border-bottom: 1px solid rgba(182, 205, 222, 0.09);
+          background: rgba(13, 15, 18, 0.85);
+          backdrop-filter: saturate(140%) blur(8px);
+          -webkit-backdrop-filter: saturate(140%) blur(8px);
           flex-shrink: 0;
           z-index: 10;
         }
 
+        @media (min-width: 520px) {
+          .header { padding: 15px 28px 14px; }
+        }
+
         .logo {
-          width: 38px;
-          height: 38px;
-          border-radius: 8px;
+          width: 40px;
+          height: 40px;
+          border-radius: 9px;
           object-fit: cover;
         }
 
@@ -590,12 +612,16 @@ export default function ChatPage() {
         .messages-wrap {
           flex: 1;
           overflow-y: auto;
-          padding: 16px 14px 8px;
+          padding: 16px 18px 10px;
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 10px;
           -webkit-overflow-scrolling: touch;
           scroll-behavior: smooth;
+        }
+
+        @media (min-width: 520px) {
+          .messages-wrap { padding: 22px 28px 12px; gap: 12px; }
         }
 
         .messages-wrap::-webkit-scrollbar { width: 0; }
@@ -607,45 +633,69 @@ export default function ChatPage() {
           justify-content: center;
           align-items: flex-start;
           text-align: left;
-          padding: 48px 22px 32px;
-          gap: 12px;
+          padding: 24px 18px 20px;
+          gap: 24px;
+          animation: heroIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .empty-hero {
+          display: flex;
+          flex-direction: column;
+          gap: 13px;
         }
 
         .empty-title {
-          font-size: 27px;
+          font-size: 29px;
           font-weight: 600;
           color: #e8eaed;
-          line-height: 1.18;
-          letter-spacing: -0.7px;
-          max-width: 290px;
+          line-height: 1.14;
+          letter-spacing: -0.85px;
+          max-width: 330px;
         }
 
         .empty-sub {
-          font-size: 13px;
-          color: #6b7e94;
-          line-height: 1.65;
-          max-width: 250px;
+          font-size: 13.5px;
+          color: #7a8fa6;
+          line-height: 1.6;
+          max-width: 310px;
           font-weight: 400;
           letter-spacing: 0.1px;
         }
 
+        .empty-suggestions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 9px;
+          max-width: 440px;
+        }
+
+        @keyframes heroIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (min-width: 520px) {
           .empty-state {
-            padding: 64px 36px 40px;
-            gap: 18px;
+            padding: 24px 28px;
+            gap: 30px;
           }
 
           .empty-title {
-            font-size: 40px;
-            letter-spacing: -1.4px;
-            max-width: 460px;
-            line-height: 1.1;
+            font-size: 44px;
+            letter-spacing: -1.6px;
+            max-width: 520px;
+            line-height: 1.07;
           }
 
           .empty-sub {
             font-size: 15px;
-            max-width: 360px;
+            max-width: 420px;
             color: #7a8fa6;
+          }
+
+          .empty-suggestions {
+            gap: 10px;
+            max-width: 560px;
           }
         }
 
@@ -658,13 +708,15 @@ export default function ChatPage() {
         .bubble-row.assistant { justify-content: flex-start; }
 
         .bubble {
-          max-width: 82%;
-          padding: 10px 14px;
+          max-width: 85%;
+          padding: 11px 15px;
           border-radius: 18px;
-          font-size: 14px;
-          line-height: 1.55;
+          font-size: 14.5px;
+          line-height: 1.58;
           word-break: break-word;
         }
+
+        .bubble-row.assistant .bubble { max-width: 90%; }
 
         .bubble.user {
           background: #b6cdde;
@@ -730,7 +782,7 @@ export default function ChatPage() {
         .suggestions-scroll {
           display: flex;
           gap: 8px;
-          padding: 10px 14px 6px;
+          padding: 10px 18px 8px;
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
@@ -739,10 +791,19 @@ export default function ChatPage() {
 
         .suggestions-scroll::-webkit-scrollbar { display: none; }
 
+        @media (max-width: 519px) {
+          .suggestions-scroll {
+            -webkit-mask-image: linear-gradient(to right, #000 84%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 84%, transparent 100%);
+            padding-right: 26px;
+          }
+        }
+
         @media (min-width: 520px) {
           .suggestions-scroll {
             flex-wrap: wrap;
             overflow-x: visible;
+            padding: 12px 28px 8px;
           }
         }
 
@@ -751,15 +812,17 @@ export default function ChatPage() {
           background: #1a1d22;
           border: 1px solid rgba(182, 205, 222, 0.15);
           color: #b6cdde;
-          padding: 7px 13px;
+          padding: 8px 15px;
           border-radius: 20px;
-          font-size: 12.5px;
+          font-size: 13px;
           font-family: 'DM Sans', sans-serif;
           font-weight: 500;
           cursor: pointer;
           white-space: nowrap;
-          transition: background 0.15s, border-color 0.15s;
+          transition: background 0.15s, border-color 0.15s, transform 0.1s;
         }
+
+        .suggestion-chip:not(.cta):active { transform: scale(0.96); }
 
         .suggestion-chip:hover, .suggestion-chip:active {
           background: #232730;
@@ -782,7 +845,11 @@ export default function ChatPage() {
           display: flex;
           align-items: flex-end;
           gap: 10px;
-          padding: 8px 14px 12px;
+          padding: 8px 18px 14px;
+        }
+
+        @media (min-width: 520px) {
+          .input-row { padding: 10px 28px 18px; }
         }
 
         .input-box {
@@ -802,14 +869,15 @@ export default function ChatPage() {
         }
 
         .input-box:focus {
-          border-color: rgba(182, 205, 222, 0.4);
+          border-color: rgba(182, 205, 222, 0.45);
+          box-shadow: 0 0 0 3px rgba(182, 205, 222, 0.08);
         }
 
         .input-box::placeholder { color: #4a5568; }
 
         .send-btn {
-          width: 40px;
-          height: 40px;
+          width: 42px;
+          height: 42px;
           border-radius: 50%;
           background: #b6cdde;
           border: none;
@@ -819,10 +887,12 @@ export default function ChatPage() {
           justify-content: center;
           color: #0d0f12;
           flex-shrink: 0;
-          transition: opacity 0.15s, transform 0.1s;
+          transition: opacity 0.15s, transform 0.1s, background 0.15s, box-shadow 0.15s;
         }
 
-        .send-btn:disabled { opacity: 0.3; cursor: default; }
+        .send-btn:not(:disabled) { box-shadow: 0 4px 14px rgba(182, 205, 222, 0.25); }
+        .send-btn:not(:disabled):hover { background: #cddae6; }
+        .send-btn:disabled { opacity: 0.3; cursor: default; box-shadow: none; }
         .send-btn:not(:disabled):active { transform: scale(0.92); }
 
         @media (min-width: 680px) {
