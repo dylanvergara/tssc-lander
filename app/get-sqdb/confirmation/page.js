@@ -27,7 +27,7 @@ export default function GetSqdbConfirmationPage() {
 
         <div className="lm15__media">
           <div className="vsl-glow lm15__media-frame">
-            <img src="/images/get-sqdb-cover.png" alt="The SQDB, Success Query Database" className="lm15__img" />
+            <img src="/images/get-sqdb-demo.gif" alt="The SQDB in action" className="lm15__img" />
           </div>
         </div>
 

@@ -36,20 +36,20 @@ export default function GetSqdbPage() {
           <img src="/images/dylan-headshot.jpg" alt="Dylan Vergara" className="lm15__avatar" />
           <span className="lm15__eyebrow">Free Access</span>
           <h1 className="lm15__headline">
-            The Most Successful Minds of TSSC, In Your Pocket
+            24/7 Access to 69x $10,000+/mo earners, in your pocket.
           </h1>
           <p className="lm15__sub">
-            The SQDB is an AI trained on 69 real interviews with paying members who broke into
-            remote appointment setting and closing. Ask it anything about landing a 1099 WFH sales
-            job and get straight answers with real names and real numbers.
+            The SQDB is an AI trained on 69 real interviews with TSSC members who broke into remote
+            appointment setting and closing, and scaled past $10,000/mo in earnings. Ask it anything
+            and get real answers around what it takes.
           </p>
-          <p className="lm15__meta">69 member interviews, 20+ hours of stories, 1 chatbot</p>
+          <p className="lm15__meta">69 member interviews, 25+ hours of stories, 1 chatbot</p>
         </header>
 
-        {/* Middle image slot: swap /public/images/get-sqdb-cover.png with your graphic (same filename, no code change needed) */}
+        {/* Middle media slot: animated demo of the SQDB. Swap /public/images/get-sqdb-demo.gif to change it. */}
         <div className="lm15__media">
           <div className="vsl-glow lm15__media-frame">
-            <img src="/images/get-sqdb-cover.png" alt="The SQDB, Success Query Database" className="lm15__img" />
+            <img src="/images/get-sqdb-demo.gif" alt="The SQDB in action" className="lm15__img" />
           </div>
         </div>
 
