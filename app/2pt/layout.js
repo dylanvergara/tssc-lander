@@ -6,7 +6,7 @@ export const metadata = {
     description: 'See sales roles every Tuesday',
     images: [
       {
-        url: 'https://www.serialsalescommunity.co/images/TWO-PIECE-TUESDAY.png?v=1',
+        url: 'https://www.serialsalescommunity.co/images/TWO-PIECE-TUESDAY-og.jpg?v=2',
         width: 1280,
         height: 720,
         alt: 'Two-Piece Tuesday',
@@ -19,7 +19,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Subscribe to 2PT Now!',
     description: 'See sales roles every Tuesday',
-    images: ['https://www.serialsalescommunity.co/images/TWO-PIECE-TUESDAY.png?v=1'],
+    images: ['https://www.serialsalescommunity.co/images/TWO-PIECE-TUESDAY-og.jpg?v=2'],
   },
 };
 
