@@ -34,13 +34,13 @@ const ALL_VIDEOS = [
   { id: 30, label: '$10k part-time, 10x ROI in 4 months',       sub: 'Before: Software Sales SDR',           videoId: 'n74DuGv-dSg' },
   { id: 31, label: 'Top setter to closer, launched own brand',  sub: 'Before: Email Marketer / Agency',      videoId: 'RH1tLrZeXqE' },
   { id: 32, label: '$5-7k/mo from Maldives, $1M+ in sets',      sub: 'Before: High School Student',          videoId: 'LS2UzFdwTJE' },
-  { id: 33, label: '$1k+ commission days traveling US & Canada', sub: 'Before: Remote Entertainment Sales',  videoId: 'pqkm1Pau9LY' },
+  { id: 33, label: '$1k+ commission days traveling US & Canada', sub: 'Before: Entertainment Sales',  videoId: 'pqkm1Pau9LY' },
   { id: 34, label: '$5k/mo working just 7 hours a week',        sub: 'Before: Active Duty Military',         videoId: 'Lcwj3WlIQO8' },
-  { id: 35, label: 'Doubled income through remote closing',     sub: 'Before: Corporate Account Management', videoId: 'iDchGIpIH24' },
+  { id: 35, label: 'Doubled income through remote closing',     sub: 'Before: Corp Account Mgmt', videoId: 'iDchGIpIH24' },
   { id: 36, label: 'Consistent $10k/mo as a triage setter',    sub: 'Before: Watch Reseller',               videoId: '3bCy4fuABSs' },
   { id: 37, label: '$6-10k/mo setting with a $3k base',         sub: 'Before: Real Estate Marketing',        videoId: 'ncLVggg5N_c' },
   { id: 38, label: 'Landed closing role within 5 days',         sub: 'Before: SDR / Closer Abroad',          videoId: 'TXjOXmzzj6o' },
-  { id: 39, label: '$18k/mo closing remotely from Turkey',      sub: 'Before: Basketball / Freelance Mktg',  videoId: 'ignIURf-G-k' },
+  { id: 39, label: '$18k/mo closing remotely from Turkey',      sub: 'Before: Basketball + Marketing',  videoId: 'ignIURf-G-k' },
   { id: 40, label: '6-figure remote role within one week',      sub: 'Before: Personal Trainer / Retail',    videoId: 'Zohndt8yRTI' },
 ];
 
