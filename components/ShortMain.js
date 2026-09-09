@@ -139,40 +139,49 @@ export default function ShortMain({ data }) {
   }, [formOpen]);
 
   return (
-    <section className="short-main">
-      <div className="short-section-divider" />
-      <div className="short-main__header">
-        <p className="short-main__eyebrow">Don't take our word for it</p>
-        <h2 className="short-main__title">Results & FAQs</h2>
-        <p className="short-main__sub">Swipe through 40 member interviews, then get your questions answered below.</p>
-      </div>
-      <div className="short-carousel-outer">
-        <div className="short-carousel-track">
-          {ALL_VIDEOS.map(vid => <VideoCard key={vid.id} vid={vid} />)}
-          <div style={{ flexShrink: 0, width: '16px' }} />
+    <>
+      <section className="short-main">
+        <div className="short-section-divider" />
+        <div className="short-main__header">
+          <p className="short-main__eyebrow">Don't take our word for it</p>
+          <h2 className="short-main__title">Hear from TSSC Members</h2>
+          <p className="short-main__sub">Swipe through some of our full-length 1-1 interviews to hear it straight from the source.</p>
         </div>
-      </div>
-      <div className="short-swipe-hint"><span>SWIPE TO SEE MORE</span></div>
-      <div className="short-divider" />
-      <div className="short-faq-wrap">
-        <div className="short-faq-list">
-          {FAQS.map((item, i) => <FaqItem key={i} item={item} />)}
+        <div className="short-carousel-outer">
+          <div className="short-carousel-track">
+            {ALL_VIDEOS.map(vid => <VideoCard key={vid.id} vid={vid} />)}
+            <div style={{ flexShrink: 0, width: '16px' }} />
+          </div>
         </div>
-      </div>
-      <div className="short-final-cta">
-        {!formOpen && (
-          <button className="short-hero__cta" onClick={handleApply}>
-            Learn More About TSSC
-          </button>
-        )}
-        <div ref={formRef} className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
-          {formOpen && (
-            <div className="short-inline-form__inner">
-              <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
-            </div>
+        <div className="short-swipe-hint"><span>SWIPE TO SEE MORE</span></div>
+      </section>
+
+      <section className="short-faq-section">
+        <div className="short-section-divider" />
+        <div className="short-main__header">
+          <h2 className="short-main__title">Frequently Asked Questions</h2>
+          <p className="short-main__sub">You might have some questions, we've got answers. Here are some that we get pretty often.</p>
+        </div>
+        <div className="short-faq-wrap">
+          <div className="short-faq-list">
+            {FAQS.map((item, i) => <FaqItem key={i} item={item} />)}
+          </div>
+        </div>
+        <div className="short-final-cta">
+          {!formOpen && (
+            <button className="short-hero__cta" onClick={handleApply}>
+              Learn More About TSSC
+            </button>
           )}
+          <div ref={formRef} className={`short-inline-form${formOpen ? ' is-open' : ''}`}>
+            {formOpen && (
+              <div className="short-inline-form__inner">
+                <div data-tf-live="01KS3F4MKYJNQVE001P2WDFX49" />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
