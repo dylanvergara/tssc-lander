@@ -75,7 +75,14 @@ function VideoCard({ vid }) {
             <img
                 src={thumb}
                 alt={vid.label}
-                onError={() => setThumb(`https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`)}
+                onError={() => {
+                  const hq = `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`;
+                  if (thumb !== hq) setThumb(hq);
+                }}
+                onLoad={(e) => {
+                  const hq = `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`;
+                  if (e.currentTarget.naturalWidth <= 120 && thumb !== hq) setThumb(hq);
+                }}
               />
             <div className="short-card__play">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
