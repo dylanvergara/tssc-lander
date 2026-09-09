@@ -60,7 +60,7 @@ const FAQS = [
 
 function VideoCard({ vid }) {
   const [playing, setPlaying] = useState(false);
-  const thumb = `https://img.youtube.com/vi/${vid.videoId}/maxresdefault.jpg`;
+  const [thumb, setThumb] = useState(`https://img.youtube.com/vi/${vid.videoId}/maxresdefault.jpg`);
   return (
     <div className="short-card">
       <div className="short-card__text">
@@ -72,7 +72,11 @@ function VideoCard({ vid }) {
           <iframe src={`https://www.youtube.com/embed/${vid.videoId}?autoplay=1&rel=0&modestbranding=1`} allow="autoplay; fullscreen" allowFullScreen />
         ) : (
           <>
-            <img src={thumb} alt={vid.label} />
+            <img
+                src={thumb}
+                alt={vid.label}
+                onError={() => setThumb(`https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`)}
+              />
             <div className="short-card__play">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </div>
