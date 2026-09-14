@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import useEdgeHoverScroll from './useEdgeHoverScroll';
 
 const ALL_VIDEOS = [
   { id: 1,  label: '$54k commission month at 24',               sub: 'Before: Door-to-Door Food Sales',      videoId: 'cIKgkBmLNeg' },
@@ -109,6 +110,9 @@ function FaqItem({ item }) {
 
 export default function ShortMain({ data }) {
   const formRef = useRef(null);
+  const carouselWrapRef = useRef(null);
+  const carouselTrackRef = useRef(null);
+  useEdgeHoverScroll(carouselWrapRef, carouselTrackRef);
 
   const [formOpen, setFormOpen] = useState(false);
 
@@ -147,8 +151,8 @@ export default function ShortMain({ data }) {
           <h2 className="short-main__title">45x $10k/mo+ interviews</h2>
           <p className="short-main__sub">Swipe through full-length 1-1 interviews from members.</p>
         </div>
-        <div className="short-carousel-outer">
-          <div className="short-carousel-track">
+        <div className="short-carousel-outer" ref={carouselWrapRef}>
+          <div className="short-carousel-track" ref={carouselTrackRef}>
             {ALL_VIDEOS.map(vid => <VideoCard key={vid.id} vid={vid} />)}
             <div style={{ flexShrink: 0, width: '16px' }} />
           </div>
