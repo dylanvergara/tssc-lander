@@ -49,7 +49,7 @@ export default function VideoCarousel({ data, carouselIndex }) {
     <section className="carousel-section">
       <div className="col">
         <div className="carousel-header reveal">
-          <span className="eyebrow eyebrow--light">45x $10k/mo+ interviews</span>
+          <span className="eyebrow eyebrow--light">Here's over 45x $10k/mo+ interviews with TSSC Members</span>
           <h2 className="headline headline--white">{carousel.headline}</h2>
         </div>
       </div>
