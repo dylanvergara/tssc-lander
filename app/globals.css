@@ -203,6 +203,14 @@ ul   { list-style: none; }
 .carousel-section { padding: 32px 0; }
 .carousel-header { margin-bottom: 20px; }
 .carousel-track-wrap { overflow: hidden; overflow-y: visible; width: 100%; position: relative; padding-top: 20px; padding-bottom: 20px; margin-top: -20px; margin-bottom: -20px; }
+.carousel-track-wrap::before,
+.carousel-track-wrap::after { content: ''; position: absolute; top: 0; bottom: 0; width: 72px; pointer-events: none; z-index: 3; opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .carousel-track-wrap::before,
+  .carousel-track-wrap::after { opacity: 1; }
+  .carousel-track-wrap::before { left: 0; background: linear-gradient(to right, var(--dark) 0%, transparent 100%); }
+  .carousel-track-wrap::after { right: 0; background: linear-gradient(to left, var(--dark) 0%, transparent 100%); }
+}
 .carousel-track { display: flex; gap: 12px; overflow-x: auto; overflow-y: visible; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-top: 20px; padding-bottom: 20px; padding-right: 20px; overscroll-behavior-x: contain; align-items: flex-start; }
 .carousel-track::-webkit-scrollbar { display: none; }
 .carousel-card { flex: 0 0 270px; scroll-snap-align: center; background: linear-gradient(145deg, rgba(214,232,244,0.92) 0%, rgba(182,205,222,0.95) 40%, rgba(143,184,208,0.90) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 10px; overflow: hidden; border: 1px solid rgba(182,205,222,0.45); box-shadow: 0 0 0 1px rgba(182,205,222,0.08), 0 0 14px 3px rgba(182,205,222,0.14), 0 8px 32px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.35); display: flex; flex-direction: column; transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s cubic-bezier(0.22,1,0.36,1); cursor: pointer; }
@@ -494,7 +502,15 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 .short-main__eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue-dk); margin-bottom: 10px; }
 .short-main__title { font-family: var(--font-headline); font-size: clamp(22px, 5vw, 34px); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 12px; }
 .short-main__sub { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; }
-.short-carousel-outer { overflow: hidden; width: 100%; }
+.short-carousel-outer { overflow: hidden; width: 100%; position: relative; }
+.short-carousel-outer::before,
+.short-carousel-outer::after { content: ''; position: absolute; top: 0; bottom: 0; width: 72px; pointer-events: none; z-index: 3; opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .short-carousel-outer::before,
+  .short-carousel-outer::after { opacity: 1; }
+  .short-carousel-outer::before { left: 0; background: linear-gradient(to right, var(--dark) 0%, transparent 100%); }
+  .short-carousel-outer::after { right: 0; background: linear-gradient(to left, var(--dark) 0%, transparent 100%); }
+}
 .short-carousel-track { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 8px 20px 8px; overscroll-behavior-x: contain; align-items: flex-start; }
 .short-carousel-track::-webkit-scrollbar { display: none; }
 .short-card { flex: 0 0 240px; scroll-snap-align: center; background: linear-gradient(145deg, rgba(214,232,244,0.92) 0%, rgba(182,205,222,0.95) 40%, rgba(143,184,208,0.90) 100%); border-radius: 10px; overflow: hidden; border: 1px solid rgba(182,205,222,0.45); box-shadow: 0 0 14px 3px rgba(182,205,222,0.14), 0 8px 32px rgba(0,0,0,0.55); display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }

@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
 import VideoFacade from './VideoFacade';
+import useEdgeHoverScroll from './useEdgeHoverScroll';
 
 function CarouselCard({ vid }) {
   const [open, setOpen] = useState(false);
@@ -39,19 +40,21 @@ function CarouselCard({ vid }) {
 
 export default function VideoCarousel({ data, carouselIndex }) {
   const carousel = data.testimonialCarousels[carouselIndex];
+  const wrapRef = useRef(null);
   const trackRef = useRef(null);
+  useEdgeHoverScroll(wrapRef, trackRef);
   if (!carousel) return null;
 
   return (
     <section className="carousel-section">
       <div className="col">
         <div className="carousel-header reveal">
-          <span className="eyebrow eyebrow--light">Member Interviews</span>
+          <span className="eyebrow eyebrow--light">Here's over 45x $10k/mo+ interviews with TSSC Members</span>
           <h2 className="headline headline--white">{carousel.headline}</h2>
         </div>
       </div>
 
-      <div className="carousel-track-wrap reveal reveal--delay-1">
+      <div className="carousel-track-wrap reveal reveal--delay-1" ref={wrapRef}>
         <div
           className="carousel-track"
           ref={trackRef}
