@@ -224,6 +224,8 @@ ul   { list-style: none; }
 .carousel-card__video .video-facade img, .carousel-card__video .video-facade iframe { width: 100%; height: 100%; object-fit: cover; display: block; }
 .carousel-hint { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-top: 14px; }
 .carousel-hint::after { content: ''; flex: 1; height: 1px; background: var(--border-lt); }
+.carousel-swipe-cue { display: flex; flex-direction: column; align-items: flex-start; margin-top: 2px; }
+.carousel-swipe-cue .carousel-hint { margin-top: 2px; }
 /* ============================================================
    ABOUT
 ============================================================ */
@@ -524,7 +526,17 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 .short-card__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); transition: background 0.2s; }
 .short-card__video:hover .short-card__play { background: rgba(0,0,0,0.15); }
 .short-card__play svg { width: 40px; height: 40px; color: #fff; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
-.short-swipe-hint { text-align: center; padding: 10px 0 0; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); }
+.short-swipe-hint { text-align: center; padding: 2px 0 0; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.short-swipe-hint__arrow,
+.carousel-hint__arrow { width: 68px; height: auto; display: block; pointer-events: none; opacity: 0.92; animation: swipe-cue-nudge 2.6s ease-in-out infinite; }
+@keyframes swipe-cue-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .short-swipe-hint__arrow,
+  .carousel-hint__arrow { animation: none; }
+}
 .short-divider { height: 1px; background: rgba(182,205,222,0.18); margin: 32px 24px 0; border-radius: 1px; }
 .short-faq-wrap { padding: 0 20px; max-width: 680px; margin: 0 auto; }
 .short-faq-list { display: flex; flex-direction: column; gap: 2px; margin-top: 16px; }

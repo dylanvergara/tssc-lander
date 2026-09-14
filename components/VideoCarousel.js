@@ -68,8 +68,18 @@ export default function VideoCarousel({ data, carouselIndex }) {
       </div>
 
       <div className="col">
-        <div className="carousel-hint reveal reveal--delay-2">
-          <span>Swipe to see more</span>
+        <div className="carousel-swipe-cue reveal reveal--delay-2">
+          <img
+            className="carousel-hint__arrow"
+            src="/images/swipe-arrow.svg"
+            alt=""
+            width={72}
+            height={33}
+            aria-hidden="true"
+          />
+          <div className="carousel-hint">
+            <span>Swipe to see more</span>
+          </div>
         </div>
       </div>
     </section>

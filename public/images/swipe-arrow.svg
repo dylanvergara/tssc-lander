@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 42" fill="none" aria-hidden="true">
+  <!-- Hand-drawn swipe cue: sketchy ice-blue ink, curved right -->
+  <path
+    d="M7.4 27.8
+       C 13.2 18.6, 22.8 12.1, 34.6 10.6
+       C 46.8 9.1, 58.2 13.4, 69.6 20.1"
+    stroke="#b6cdde"
+    stroke-width="1.9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M8.8 28.6
+       C 15.1 19.8, 24.0 13.4, 35.4 11.8
+       C 47.0 10.2, 57.4 14.2, 68.2 20.6"
+    stroke="#d4e4ef"
+    stroke-width="0.85"
+    stroke-linecap="round"
+    opacity="0.58"
+  />
+  <path
+    d="M6.6 26.4
+       C 11.8 20.2, 18.6 15.8, 26.4 13.2"
+    stroke="#7fa8c0"
+    stroke-width="0.7"
+    stroke-linecap="round"
+    opacity="0.55"
+  />
+  <!-- Upper barb -->
+  <path
+    d="M58.2 10.2
+       C 62.6 13.4, 67.8 16.9, 74.8 20.0"
+    stroke="#b6cdde"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+  <path
+    d="M59.4 11.6
+       C 63.4 14.4, 68.2 17.4, 73.6 19.6"
+    stroke="#d4e4ef"
+    stroke-width="0.75"
+    stroke-linecap="round"
+    opacity="0.5"
+  />
+  <!-- Lower barb -->
+  <path
+    d="M74.4 19.8
+       C 68.6 22.4, 62.8 26.8, 58.6 33.2"
+    stroke="#7fa8c0"
+    stroke-width="1.75"
+    stroke-linecap="round"
+  />
+  <path
+    d="M73.2 20.8
+       C 68.4 23.2, 63.6 27.0, 60.0 31.8"
+    stroke="#b6cdde"
+    stroke-width="0.7"
+    stroke-linecap="round"
+    opacity="0.65"
+  />
+  <!-- Tip tick -->
+  <path
+    d="M72.0 17.8 C 73.8 19.0, 75.2 20.4, 75.6 22.0"
+    stroke="#d4e4ef"
+    stroke-width="0.95"
+    stroke-linecap="round"
+    opacity="0.75"
+  />
+</svg>
