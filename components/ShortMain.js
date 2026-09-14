@@ -1,49 +1,12 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import { siteData } from '../data/content.js';
 import useEdgeHoverScroll from './useEdgeHoverScroll';
 
-const ALL_VIDEOS = [
-  { id: 1,  label: '$54k commission month at 24',               sub: 'Before: Door-to-Door Food Sales',      videoId: 'cIKgkBmLNeg' },
-  { id: 2,  label: '$38k month, $20-30k sustained',             sub: 'Before: Real Estate Sales',            videoId: '0qkQzPdb40s' },
-  { id: 3,  label: 'Quit corporate, commissions > salary',      sub: 'Before: Corporate Tech SDR',           videoId: 'mEhWcYqac-U' },
-  { id: 4,  label: '$30-40k/mo, zero prior experience',         sub: 'Before: Missionary',                   videoId: 'ej2TCqn-FbA' },
-  { id: 5,  label: '$30k/mo before turning 21',                 sub: 'Before: Corporate Insurance SDR',      videoId: '07r72x6zNz0' },
-  { id: 6,  label: '$10k month from Portugal in month 3',       sub: 'Before: Engineering Student',          videoId: 'IgIlHG82HRc' },
-  { id: 7,  label: '$30k in first 90 days',                     sub: 'Before: Agency and Business Owner',    videoId: 'l5A5vnW7n_o' },
-  { id: 8,  label: '$14,800 month from home',                   sub: 'Before: Solar Door-to-Door',           videoId: 'u5Jt-M2BYmo' },
-  { id: 9,  label: '$12k month, 5x ROI in 6 months',            sub: 'Before: Corporate Finance',            videoId: '0EJvocphe1E' },
-  { id: 10, label: '$25k/mo closing, kept his W2',              sub: 'Before: Tech SDR (Cybersecurity)',     videoId: '8bJ2Jq-n1k4' },
-  { id: 11, label: '$15k/mo remote closing',                    sub: 'Before: Roofing and Construction',     videoId: 'UA3N3ulXwzQ' },
-  { id: 12, label: '$11.5k month + $50k base role',             sub: 'Before: Pipe Fitter',                  videoId: 'EnAfMcCT-gg' },
-  { id: 13, label: '10x ROI setting remotely',                  sub: 'Before: Public Speaker / Agency',      videoId: '8ZSGY5P14j8' },
-  { id: 14, label: 'Consistent 5-figure months at 22',          sub: 'Before: Day Trading and Reselling',    videoId: 'M7SDqaGnCuk' },
-  { id: 15, label: '$18k month from NYC',                       sub: 'Before: Corporate SDR Team Lead',      videoId: 'XfmfnANJ8vc' },
-  { id: 16, label: '$10k/mo setting from his phone',            sub: 'Before: Warehouse Worker',             videoId: 'w3DoRxHNzBs' },
-  { id: 17, label: '$270k/mo in revenue from Spain',            sub: 'Before: SaaS Account Executive',       videoId: '6Eu62BkCI7U' },
-  { id: 18, label: '$10k/mo DM closing, runs passively',        sub: 'Before: Solar Door-to-Door',           videoId: '8y1L6JnZu5k' },
-  { id: 19, label: '$10k/mo setting, $1.3M+ booked',            sub: 'Before: D1 Football / Manual Labor',   videoId: 'VcIFitTDRLE' },
-  { id: 20, label: '6 figures, doubled co. to $1M/mo',          sub: 'Before: Corporate Healthcare',         videoId: 'LRhqJEXoOZ4' },
-  { id: 21, label: '$8-14k/mo for an offer he loves',           sub: 'Before: Solar Sales',                  videoId: 'o_-dztM0OLA' },
-  { id: 22, label: '$13.3k/mo at 19, still in college',         sub: 'Before: Marketing Agency',             videoId: 'tBJTAuwHkFw' },
-  { id: 23, label: '$15k/mo on 3-4 calls a day',                sub: 'Before: Bank Teller / Gym Trainer',    videoId: 'H-1BVXB-vtQ' },
-  { id: 24, label: '$10k/mo within 60 days',                    sub: 'Before: Corporate Home Security',      videoId: 'CZ3ZZ_i_vmo' },
-  { id: 25, label: '$10k first month after quitting job',       sub: 'Before: Bank Teller / Failed Ecom',    videoId: 'tn-kzQohbhU' },
-  { id: 26, label: '$10k/mo as a setter',                       sub: 'Before: Pizza Delivery Driver',        videoId: 'WlA8HHM9_Zs' },
-  { id: 27, label: '$13k/mo by month two',                      sub: 'Before: Hospitality Management',       videoId: 'vHqWjtq4CVE' },
-  { id: 28, label: '$10k/mo in 90 days, role in 3 weeks',       sub: 'Before: Biomedical Engineer',          videoId: 'N_i2wRgC5EU' },
-  { id: 29, label: '$200k first year, $17k by month 3',         sub: 'Before: Tax Resolution Sales',         videoId: '1Wq1FSPYm5Q' },
-  { id: 30, label: '$10k part-time, 10x ROI in 4 months',       sub: 'Before: Software Sales SDR',           videoId: 'n74DuGv-dSg' },
-  { id: 31, label: 'Top setter to closer, launched own brand',  sub: 'Before: Email Marketer / Agency',      videoId: 'RH1tLrZeXqE' },
-  { id: 32, label: '$5-7k/mo from Maldives, $1M+ in sets',      sub: 'Before: High School Student',          videoId: 'LS2UzFdwTJE' },
-  { id: 33, label: '$1k+ commission days traveling US & Canada', sub: 'Before: Entertainment Sales',  videoId: 'pqkm1Pau9LY' },
-  { id: 34, label: '$5k/mo working just 7 hours a week',        sub: 'Before: Active Duty Military',         videoId: 'Lcwj3WlIQO8' },
-  { id: 35, label: 'Doubled income through remote closing',     sub: 'Before: Corp Account Mgmt', videoId: 'iDchGIpIH24' },
-  { id: 36, label: 'Consistent $10k/mo as a triage setter',    sub: 'Before: Watch Reseller',               videoId: '3bCy4fuABSs' },
-  { id: 37, label: '$6-10k/mo setting with a $3k base',         sub: 'Before: Real Estate Marketing',        videoId: 'ncLVggg5N_c' },
-  { id: 38, label: 'Landed closing role within 5 days',         sub: 'Before: SDR / Closer Abroad',          videoId: 'TXjOXmzzj6o' },
-  { id: 39, label: '$18k/mo closing remotely from Turkey',      sub: 'Before: Basketball + Marketing',  videoId: 'ignIURf-G-k' },
-  { id: 40, label: '6-figure remote role within one week',      sub: 'Before: Personal Trainer / Retail',    videoId: 'Zohndt8yRTI' },
-];
+function flattenInterviewVideos(data) {
+  const carousels = data?.testimonialCarousels || siteData.testimonialCarousels || [];
+  return carousels.flatMap((carousel) => carousel.videos || []);
+}
 
 const FAQS = [
   { q: 'Do I need a sales background?',                     a: "No, just manageable expectations. We've helped people with zero experience and people with 20 years. Both have gotten results they were satisfied with." },
@@ -112,6 +75,7 @@ export default function ShortMain({ data }) {
   const formRef = useRef(null);
   const carouselWrapRef = useRef(null);
   const carouselTrackRef = useRef(null);
+  const videos = flattenInterviewVideos(data);
   useEdgeHoverScroll(carouselWrapRef, carouselTrackRef);
 
   const [formOpen, setFormOpen] = useState(false);
@@ -153,7 +117,7 @@ export default function ShortMain({ data }) {
         </div>
         <div className="short-carousel-outer" ref={carouselWrapRef}>
           <div className="short-carousel-track" ref={carouselTrackRef}>
-            {ALL_VIDEOS.map(vid => <VideoCard key={vid.id} vid={vid} />)}
+            {videos.map(vid => <VideoCard key={vid.id} vid={vid} />)}
             <div style={{ flexShrink: 0, width: '16px' }} />
           </div>
         </div>
