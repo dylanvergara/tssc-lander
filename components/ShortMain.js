@@ -144,8 +144,8 @@ export default function ShortMain({ data }) {
         <div className="short-section-divider" />
         <div className="short-main__header">
           <p className="short-main__eyebrow">Don't take our word for it</p>
-          <h2 className="short-main__title">Hear from TSSC Members</h2>
-          <p className="short-main__sub">Swipe through some of our full-length 1-1 interviews to hear it straight from the source.</p>
+          <h2 className="short-main__title">45x $10k/mo+ interviews</h2>
+          <p className="short-main__sub">Swipe through full-length 1-1 interviews from members.</p>
         </div>
         <div className="short-carousel-outer">
           <div className="short-carousel-track">

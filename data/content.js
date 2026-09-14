@@ -217,7 +217,7 @@ export const siteData = {
       'Our mission is simple.',
       'We want to film one hundred confirmed $10,000/mo interviews with TSSC members.',
       '$1,000,000 in "first time" five-figure per month earnings through 1099 remote sales roles.',
-      'As of the beginning of 2026, we are around 50 and scaling.',
+      'As of now, we have 45x $10k/mo+ interviews filmed and are scaling toward 100.',
       'Many of the results you will see on this page meet this criteria.',
       'Will you be next?',
     ],
