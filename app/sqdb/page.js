@@ -431,7 +431,7 @@ export default function ChatPage() {
         <img src={LOGO} alt="TSSC Logo" className="sq-logo" />
         <div className="sq-header-text">
           <span className="sq-header-title">TSSC Success Query</span>
-          <span className="sq-header-sub">69 stories. 20+ hours of interviews. 1 chatbot ready to help.</span>
+          <span className="sq-header-sub">70 stories. 20+ hours of interviews. 1 chatbot ready to help.</span>
         </div>
       </div>
 
