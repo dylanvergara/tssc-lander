@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const PX_PER_SEC = 28;
+const PX_PER_SEC = 36;
 const RESUME_MS = 1400;
 
 function JobRows({ jobs, copy, hidden }) {
@@ -16,32 +16,27 @@ function JobRows({ jobs, copy, hidden }) {
 }
 
 export default function HiringChannel({ jobs, jobsPerDay }) {
-  const trackRef = useRef(null);
+  const viewportRef = useRef(null);
   const copyRef = useRef(null);
-  const pausedRef = useRef(false);
+  const innerRef = useRef(null);
   const resumeTimer = useRef(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    const copy = copyRef.current;
+    const inner = innerRef.current;
+    if (!copy || !inner) return;
+    const height = copy.offsetHeight;
+    if (!height) return;
+    inner.style.setProperty('--short-jobs-duration', `${Math.max(80, height / PX_PER_SEC)}s`);
+  }, [jobs]);
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let last = performance.now();
-    let raf = 0;
-    let startY = 0;
-
-    const loopHeight = () => copyRef.current?.offsetHeight || 0;
-
-    const wrap = () => {
-      const height = loopHeight();
-      if (!height) return;
-      if (track.scrollTop >= height) {
-        track.scrollTop -= height;
-      }
-    };
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
 
     const pause = () => {
-      pausedRef.current = true;
+      setPaused(true);
       if (resumeTimer.current) {
         clearTimeout(resumeTimer.current);
         resumeTimer.current = 0;
@@ -51,87 +46,43 @@ export default function HiringChannel({ jobs, jobsPerDay }) {
     const resumeSoon = () => {
       if (resumeTimer.current) clearTimeout(resumeTimer.current);
       resumeTimer.current = window.setTimeout(() => {
-        pausedRef.current = false;
+        setPaused(false);
         resumeTimer.current = 0;
       }, RESUME_MS);
     };
 
-    const tick = (now) => {
-      if (!reduceMotion.matches && !pausedRef.current) {
-        const dt = Math.min(48, now - last);
-        track.scrollTop += (PX_PER_SEC * dt) / 1000;
-        wrap();
-      }
-      last = now;
-      raf = requestAnimationFrame(tick);
-    };
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    raf = requestAnimationFrame(tick);
+    const isolate = (e) => {
+      e.stopPropagation();
+      if (!reduceMotion.matches && e.cancelable) e.preventDefault();
+    };
 
     const onWheel = (e) => {
-      pause();
-      e.stopPropagation();
-      const max = track.scrollHeight - track.clientHeight;
-      const next = track.scrollTop + e.deltaY;
-      if (max <= 0 || next <= 0 || next >= max) {
-        e.preventDefault();
-      }
-      requestAnimationFrame(wrap);
-      resumeSoon();
-    };
-
-    const onTouchStart = (e) => {
-      startY = e.touches[0].clientY;
-      pause();
-    };
-
-    const onTouchMove = (e) => {
-      e.stopPropagation();
-      const dy = e.touches[0].clientY - startY;
-      const atTop = track.scrollTop <= 0;
-      const atBottom = track.scrollTop + track.clientHeight >= track.scrollHeight - 1;
-      if ((atTop && dy > 0) || (atBottom && dy < 0)) {
-        e.preventDefault();
+      isolate(e);
+      if (!reduceMotion.matches) {
+        pause();
+        resumeSoon();
       }
     };
 
+    const onTouchStart = () => pause();
+    const onTouchMove = isolate;
     const onTouchEnd = () => resumeSoon();
 
-    const onPointerEnter = (e) => {
-      if (e.pointerType === 'mouse' || e.pointerType === '') pause();
-    };
-
-    const onPointerLeave = (e) => {
-      if (e.pointerType === 'mouse' || e.pointerType === '') resumeSoon();
-    };
-
-    const onFocusIn = () => pause();
-    const onFocusOut = (e) => {
-      if (!track.contains(e.relatedTarget)) resumeSoon();
-    };
-
-    track.addEventListener('wheel', onWheel, { passive: false });
-    track.addEventListener('touchstart', onTouchStart, { passive: true });
-    track.addEventListener('touchmove', onTouchMove, { passive: false });
-    track.addEventListener('touchend', onTouchEnd, { passive: true });
-    track.addEventListener('touchcancel', onTouchEnd, { passive: true });
-    track.addEventListener('pointerenter', onPointerEnter);
-    track.addEventListener('pointerleave', onPointerLeave);
-    track.addEventListener('focusin', onFocusIn);
-    track.addEventListener('focusout', onFocusOut);
+    viewport.addEventListener('wheel', onWheel, { passive: false });
+    viewport.addEventListener('touchstart', onTouchStart, { passive: true });
+    viewport.addEventListener('touchmove', onTouchMove, { passive: false });
+    viewport.addEventListener('touchend', onTouchEnd, { passive: true });
+    viewport.addEventListener('touchcancel', onTouchEnd, { passive: true });
 
     return () => {
-      cancelAnimationFrame(raf);
       if (resumeTimer.current) clearTimeout(resumeTimer.current);
-      track.removeEventListener('wheel', onWheel);
-      track.removeEventListener('touchstart', onTouchStart);
-      track.removeEventListener('touchmove', onTouchMove);
-      track.removeEventListener('touchend', onTouchEnd);
-      track.removeEventListener('touchcancel', onTouchEnd);
-      track.removeEventListener('pointerenter', onPointerEnter);
-      track.removeEventListener('pointerleave', onPointerLeave);
-      track.removeEventListener('focusin', onFocusIn);
-      track.removeEventListener('focusout', onFocusOut);
+      viewport.removeEventListener('wheel', onWheel);
+      viewport.removeEventListener('touchstart', onTouchStart);
+      viewport.removeEventListener('touchmove', onTouchMove);
+      viewport.removeEventListener('touchend', onTouchEnd);
+      viewport.removeEventListener('touchcancel', onTouchEnd);
     };
   }, []);
 
@@ -151,10 +102,13 @@ export default function HiringChannel({ jobs, jobsPerDay }) {
           <span>OTE</span>
           <span>Niche</span>
         </div>
-        <div className="short-jobs-viewport">
+        <div
+          ref={viewportRef}
+          className={`short-jobs-viewport${paused ? ' is-paused' : ''}`}
+        >
           <div
-            ref={trackRef}
-            className="short-jobs-track"
+            ref={innerRef}
+            className="short-jobs-marquee"
             tabIndex={0}
             role="region"
             aria-label="Scrolling hiring channel roles"

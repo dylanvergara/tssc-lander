@@ -557,13 +557,22 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 .short-jobs-viewport {
   position: relative;
   height: 260px;
+  max-height: 260px;
   border: 1px solid rgba(182,205,222,0.18);
   border-radius: var(--radius-sm);
   background: var(--dark-2);
   overflow: hidden;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   isolation: isolate;
+  scrollbar-width: none;
 }
-@media (min-width: 640px) { .short-jobs-viewport { height: 384px; } }
+@media (min-width: 640px) {
+  .short-jobs-viewport { height: 384px; max-height: 384px; }
+}
+.short-jobs-viewport::-webkit-scrollbar { display: none; }
 .short-jobs-viewport::before,
 .short-jobs-viewport::after {
   content: '';
@@ -575,21 +584,22 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
 }
 .short-jobs-viewport::before { top: 0; background: linear-gradient(to bottom, var(--dark-2) 0%, transparent 100%); }
 .short-jobs-viewport::after { bottom: 0; background: linear-gradient(to top, var(--dark-2) 0%, transparent 100%); }
-.short-jobs-track {
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  overscroll-behavior-y: contain;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(182,205,222,0.28) transparent;
+.short-jobs-marquee {
+  --short-jobs-duration: 220s;
+  animation: short-jobs-scroll var(--short-jobs-duration) linear infinite;
+  will-change: transform;
 }
-.short-jobs-track:focus { outline: none; }
-.short-jobs-track:focus-visible { box-shadow: inset 0 0 0 1px rgba(182,205,222,0.45); }
-.short-jobs-track::-webkit-scrollbar { width: 4px; }
-.short-jobs-track::-webkit-scrollbar-thumb { background: rgba(182,205,222,0.28); border-radius: 4px; }
+.short-jobs-marquee:focus { outline: none; }
+.short-jobs-marquee:focus-visible { box-shadow: inset 0 0 0 1px rgba(182,205,222,0.45); }
+.short-jobs-viewport:hover .short-jobs-marquee,
+.short-jobs-viewport:focus-within .short-jobs-marquee,
+.short-jobs-viewport.is-paused .short-jobs-marquee {
+  animation-play-state: paused;
+}
+@keyframes short-jobs-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -50%, 0); }
+}
 .short-jobs-list { margin: 0; padding: 0; list-style: none; }
 .short-jobs-row {
   display: grid;
@@ -627,7 +637,14 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
   line-height: 1.35;
 }
 @media (prefers-reduced-motion: reduce) {
-  .short-jobs-track { scroll-behavior: auto; }
+  .short-jobs-marquee { animation: none; }
+  .short-jobs-viewport {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(182,205,222,0.28) transparent;
+  }
+  .short-jobs-viewport::-webkit-scrollbar { display: block; width: 4px; }
+  .short-jobs-viewport::-webkit-scrollbar-thumb { background: rgba(182,205,222,0.28); border-radius: 4px; }
 }
 .short-faq-wrap { padding: 0 20px; max-width: 680px; margin: 0 auto; }
 .short-faq-list { display: flex; flex-direction: column; gap: 2px; margin-top: 16px; }
