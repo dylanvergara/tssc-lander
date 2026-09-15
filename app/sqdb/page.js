@@ -906,6 +906,60 @@ export default function ChatPage() {
             border-right: 1px solid rgba(255,255,255,0.05);
           }
         }
+
+        /* Desktop: full-viewport shell + ChatGPT/Claude-like centered reading column.
+           Mobile / tablet rules above stay as-is. */
+        @media (min-width: 768px) {
+          .sq-app {
+            --sq-col: 800px;
+            --sq-gutter: max(32px, calc((100% - var(--sq-col)) / 2));
+            max-width: none;
+            width: 100%;
+            border-left: none;
+            border-right: none;
+          }
+
+          .sq-header {
+            padding: 20px var(--sq-gutter) 18px;
+          }
+
+          .sq-messages-wrap {
+            padding: 28px var(--sq-gutter) 16px;
+            gap: 14px;
+          }
+
+          .sq-empty-state {
+            padding: 40px 0 28px;
+            gap: 28px;
+            width: 100%;
+          }
+
+          .sq-empty-title {
+            max-width: 720px;
+          }
+
+          .sq-empty-sub {
+            max-width: 540px;
+          }
+
+          .sq-empty-suggestions {
+            max-width: 800px;
+          }
+
+          .sq-suggestions-scroll {
+            padding: 12px var(--sq-gutter) 10px;
+          }
+
+          .sq-input-row {
+            padding: 12px var(--sq-gutter) 24px;
+            gap: 12px;
+          }
+
+          .sq-input-box {
+            padding: 13px 18px;
+            min-height: 50px;
+          }
+        }
       `}</style>
     </div>
   );
