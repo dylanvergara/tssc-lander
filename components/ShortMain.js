@@ -104,7 +104,7 @@ export default function ShortMain({ data }) {
         <div className="short-section-divider" />
         <div className="short-main__header">
           <p className="short-main__eyebrow">Don't take our word for it</p>
-          <h2 className="short-main__title">Here's over 45x $10k/mo+ interviews with TSSC Members</h2>
+          <h2 className="short-main__title">Here's over 45x $10k/mo+<br />interviews with TSSC Members</h2>
           <p className="short-main__sub">Swipe through full-length 1-1 interviews from members.</p>
         </div>
         <div className="short-carousel-outer" ref={carouselWrapRef}>
@@ -124,6 +124,13 @@ export default function ShortMain({ data }) {
           />
           <span>SWIPE TO SEE MORE</span>
         </div>
+        {!formOpen && (
+          <div className="short-jobs-cta">
+            <button type="button" className="short-hero__cta" onClick={handleApply}>
+              Learn more about our Community
+            </button>
+          </div>
+        )}
       </section>
 
       <HiringChannel jobs={hiringJobs} onApply={handleApply} formOpen={formOpen} />
