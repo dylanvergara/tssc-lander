@@ -383,7 +383,7 @@ ul   { list-style: none; }
 /* ============================================================
    FOOTER
 ============================================================ */
-.footer { background: var(--black); border-top: 1px solid rgba(255,255,255,0.04); padding: 36px 20px; text-align: center; }
+.footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.04); padding: 36px 20px; text-align: center; }
 .footer__logo { height: 40px; width: auto; margin: 0 auto 16px; border-radius: 6px; opacity: 0.6; }
 .footer__tagline { font-size: 11px; color: rgba(255,255,255,0.22); margin-bottom: 16px; letter-spacing: 0.04em; }
 .footer__links { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; }
