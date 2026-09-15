@@ -73,8 +73,8 @@ export default function VideoCarousel({ data, carouselIndex }) {
             className="carousel-hint__arrow"
             src="/images/swipe-arrow.svg"
             alt=""
-            width={72}
-            height={33}
+            width={78}
+            height={37}
             aria-hidden="true"
           />
           <div className="carousel-hint">
