@@ -126,8 +126,8 @@ export default function ShortMain({ data }) {
             className="short-swipe-hint__arrow"
             src="/images/swipe-arrow.svg"
             alt=""
-            width={78}
-            height={37}
+            width={96}
+            height={32}
             aria-hidden="true"
           />
           <span>SWIPE TO SEE MORE</span>
