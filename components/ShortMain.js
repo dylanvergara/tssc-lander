@@ -124,6 +124,13 @@ export default function ShortMain({ data }) {
           />
           <span>SWIPE TO SEE MORE</span>
         </div>
+        {!formOpen && (
+          <div className="short-jobs-cta">
+            <button type="button" className="short-hero__cta" onClick={handleApply}>
+              Learn more about our Community
+            </button>
+          </div>
+        )}
       </section>
 
       <HiringChannel jobs={hiringJobs} onApply={handleApply} formOpen={formOpen} />
