@@ -151,7 +151,7 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
       {!formOpen && (
         <div className="short-jobs-cta">
           <button type="button" className="short-hero__cta" onClick={onApply}>
-            Learn More About TSSC
+            Get Access to Daily Job Flow
           </button>
         </div>
       )}
