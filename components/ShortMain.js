@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { siteData } from '../data/content.js';
-import { headlineJobsPerDay, hiringJobs } from '../data/hiringJobs.js';
+import { hiringJobs } from '../data/hiringJobs.js';
 import HiringChannel from './HiringChannel';
 import useEdgeHoverScroll from './useEdgeHoverScroll';
 import useYoutubeThumb from './useYoutubeThumb';
@@ -126,7 +126,7 @@ export default function ShortMain({ data }) {
         </div>
       </section>
 
-      <HiringChannel jobs={hiringJobs} jobsPerDay={headlineJobsPerDay} />
+      <HiringChannel jobs={hiringJobs} onApply={handleApply} formOpen={formOpen} />
 
       <section className="short-faq-section">
         <div className="short-section-divider" />
