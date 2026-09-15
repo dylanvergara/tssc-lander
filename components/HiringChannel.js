@@ -120,7 +120,8 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
           over the last 12mos.&nbsp;23/day on avg.
         </h2>
         <p className="short-main__sub">
-          Here&apos;s a peek inside at real roles from our hiring channel. You&apos;ll find the role, type, OTE, and niche below.
+          Here&apos;s a peek inside at real roles from our hiring channel.<br />
+          You&apos;ll find the role, type, OTE, and niche below.
         </p>
       </div>
       <div className="short-jobs-frame">
@@ -146,13 +147,13 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
           </div>
         </div>
       </div>
-      <p className="short-main__sub short-jobs-note">
-        These roles are sourced through a combination of recruiters and sales agencies, Dylan&apos;s personal network, inbound requests through social media, public posts, members inside who are managing or selling directly for these teams, and more.
+      <p className="short-jobs-note">
+        Roles sourced through recruiters, sales agencies, growth businesses, Dylan&apos;s personal network, inbound requests, social media, public posts, members selling for these teams, and more.
       </p>
       {!formOpen && (
         <div className="short-jobs-cta">
           <button type="button" className="short-hero__cta" onClick={onApply}>
-            Get Access to Daily Job Flow
+            Access Daily TSSC Job Flow
           </button>
         </div>
       )}
