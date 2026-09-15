@@ -114,12 +114,12 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
     <section className="short-jobs-section" aria-labelledby="short-jobs-title">
       <div className="short-section-divider" />
       <div className="short-main__header">
-        <p className="short-main__eyebrow">Hiring channel</p>
+        <p className="short-main__eyebrow">Our Hiring Channel</p>
         <h2 id="short-jobs-title" className="short-main__title">
           8,081 1099 WFH sales gigs sourced over the last 12 months. 23/day on average.
         </h2>
         <p className="short-main__sub">
-          Here&apos;s a peek inside real roles from our hiring channel. You&apos;ll find the role, type, OTE, and niche below.
+          Here&apos;s a peek inside at real roles from our hiring channel. You&apos;ll find the role, type, OTE, and niche below.
         </p>
       </div>
       <div className="short-jobs-frame">
@@ -145,10 +145,13 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
           </div>
         </div>
       </div>
+      <p className="short-main__sub short-jobs-note">
+        These roles are sourced through a combination of recruiters and sales agencies, Dylan&apos;s personal network, inbound requests through social media, public posts, members inside who are managing or selling directly for these teams, and more.
+      </p>
       {!formOpen && (
         <div className="short-jobs-cta">
           <button type="button" className="short-hero__cta" onClick={onApply}>
-            Learn More About TSSC
+            Get Access to Daily Job Flow
           </button>
         </div>
       )}
