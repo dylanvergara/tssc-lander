@@ -1,17 +1,16 @@
 'use client';
 import { useState } from 'react';
+import useYoutubeThumb from './useYoutubeThumb';
 
 export default function VideoFacade({ videoId, platform = 'youtube', title, small = false }) {
   const [playing, setPlaying] = useState(false);
-
-  const hqThumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-  const [thumb, setThumb] = useState(
+  const youtubeThumb = useYoutubeThumb(platform === 'youtube' ? videoId : '');
+  const thumb =
     platform === 'youtube'
-      ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+      ? youtubeThumb
       : platform === 'wistia'
       ? `https://fast.wistia.com/embed/medias/${videoId}/swatch`
-      : '/images/thumb-placeholder.jpg'
-  );
+      : '/images/thumb-placeholder.jpg';
 
   // Wistia uses a web component — render it directly when playing
   if (playing && platform === 'wistia') {
@@ -50,8 +49,6 @@ export default function VideoFacade({ videoId, platform = 'youtube', title, smal
         alt={title || 'Play video'}
         className="video-facade__thumb"
         loading="lazy"
-        onError={platform === 'youtube' ? () => { if (thumb !== hqThumb) setThumb(hqThumb); } : undefined}
-        onLoad={platform === 'youtube' ? (e) => { if (e.currentTarget.naturalWidth <= 120 && thumb !== hqThumb) setThumb(hqThumb); } : undefined}
       />
       <div className="video-facade__overlay">
         <button className={`play-btn${small ? ' play-btn--sm' : ''}`} aria-label="Play video">

@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { siteData } from '../data/content.js';
 import useEdgeHoverScroll from './useEdgeHoverScroll';
+import useYoutubeThumb from './useYoutubeThumb';
 
 function flattenInterviewVideos(data) {
   const carousels = data?.testimonialCarousels || siteData.testimonialCarousels || [];
@@ -24,7 +25,7 @@ const FAQS = [
 
 function VideoCard({ vid }) {
   const [playing, setPlaying] = useState(false);
-  const [thumb, setThumb] = useState(`https://img.youtube.com/vi/${vid.videoId}/maxresdefault.jpg`);
+  const thumb = useYoutubeThumb(vid.videoId);
   return (
     <div className="short-card">
       <div className="short-card__text">
@@ -36,18 +37,7 @@ function VideoCard({ vid }) {
           <iframe src={`https://www.youtube.com/embed/${vid.videoId}?autoplay=1&rel=0&modestbranding=1`} allow="autoplay; fullscreen" allowFullScreen />
         ) : (
           <>
-            <img
-                src={thumb}
-                alt={vid.label}
-                onError={() => {
-                  const hq = `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`;
-                  if (thumb !== hq) setThumb(hq);
-                }}
-                onLoad={(e) => {
-                  const hq = `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`;
-                  if (e.currentTarget.naturalWidth <= 120 && thumb !== hq) setThumb(hq);
-                }}
-              />
+            <img src={thumb} alt={vid.label} />
             <div className="short-card__play">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </div>
