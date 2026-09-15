@@ -121,7 +121,17 @@ export default function ShortMain({ data }) {
             <div style={{ flexShrink: 0, width: '16px' }} />
           </div>
         </div>
-        <div className="short-swipe-hint"><span>SWIPE TO SEE MORE</span></div>
+        <div className="short-swipe-hint">
+          <img
+            className="short-swipe-hint__arrow"
+            src="/images/swipe-arrow.svg"
+            alt=""
+            width={78}
+            height={37}
+            aria-hidden="true"
+          />
+          <span>SWIPE TO SEE MORE</span>
+        </div>
       </section>
 
       <section className="short-faq-section">
