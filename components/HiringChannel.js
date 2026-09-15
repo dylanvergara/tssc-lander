@@ -116,7 +116,7 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
       <div className="short-main__header">
         <p className="short-main__eyebrow">Our Hiring Channel</p>
         <h2 id="short-jobs-title" className="short-main__title">
-          8,081 1099 WFH sales gigs sourced over the last 12 months. 23/day on average.
+          8,081 1099 WFH sales gigs sourced over the last 12mos. 23/day on avg.
         </h2>
         <p className="short-main__sub">
           Here&apos;s a peek inside at real roles from our hiring channel. You&apos;ll find the role, type, OTE, and niche below.
