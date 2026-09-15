@@ -1,10 +1,13 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import { formatGetSqdbMeta } from '../../lib/playlist-stats';
+import usePlaylistStats from '../../lib/usePlaylistStats';
 
 // Beehiiv subscribe form + attribution tracking for the SQDB access lead magnet.
 const BEEHIIV_FORM_ID = '19518e8b-bc7f-4d3e-a21a-469832811553';
 
 export default function GetSqdbPage() {
+  const playlistStats = usePlaylistStats();
   const formRef = useRef(null);
 
   useEffect(() => {
@@ -36,14 +39,14 @@ export default function GetSqdbPage() {
           <img src="/images/dylan-headshot.jpg" alt="Dylan Vergara" className="lm15__avatar" />
           <span className="lm15__eyebrow">Free Access</span>
           <h1 className="lm15__headline">
-            24/7 Access to 69x $10,000+/mo earners, in your pocket.
+            24/7 Access to {playlistStats.people_count}x $10,000+/mo earners, in your pocket.
           </h1>
           <p className="lm15__sub">
-            The SQDB is an AI trained on 69 real interviews with TSSC members who broke into remote
+            The SQDB is an AI trained on {playlistStats.people_count} real interviews with TSSC members who broke into remote
             appointment setting and closing, and scaled past $10,000/mo in earnings. Ask it anything
             and get real answers around what it takes.
           </p>
-          <p className="lm15__meta">69 member interviews, 25+ hours of stories, 1 chatbot</p>
+          <p className="lm15__meta">{formatGetSqdbMeta(playlistStats)}</p>
         </header>
 
         {/* Middle media slot: animated demo of the SQDB. Swap /public/images/get-sqdb-demo.gif to change it. */}

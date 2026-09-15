@@ -1,5 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import { formatSqdbHeaderSub } from '../../lib/playlist-stats';
+import usePlaylistStats from '../../lib/usePlaylistStats';
 
 const SYSTEM_PROMPT = `You answer questions about real results from members of The Serial Sales Community. You have interview data from 70 members. Your job is to give straight, specific answers using real names and real numbers.
 
@@ -326,6 +328,7 @@ const SUGGESTIONS = [
 ];
 
 export default function ChatPage() {
+  const playlistStats = usePlaylistStats();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -431,7 +434,7 @@ export default function ChatPage() {
         <img src={LOGO} alt="TSSC Logo" className="sq-logo" />
         <div className="sq-header-text">
           <span className="sq-header-title">TSSC Success Query</span>
-          <span className="sq-header-sub">70 stories. 20+ hours of interviews. 1 chatbot ready to help.</span>
+          <span className="sq-header-sub">{formatSqdbHeaderSub(playlistStats)}</span>
         </div>
       </div>
 
