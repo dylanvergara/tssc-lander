@@ -213,7 +213,7 @@ Chris C.: https://www.youtube.com/watch?v=ej2TCqn-FbA&list=PLZ9SGNF-tCG3zwAu8lrp
 Somil M.: https://www.youtube.com/watch?v=07r72x6zNz0&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=4
 Valentim D.: https://www.youtube.com/watch?v=IgIlHG82HRc&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=5
 David L.: https://www.youtube.com/watch?v=l5A5vnW7n_o&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=6
-Franklyn P.: https://www.youtube.com/watch?v=l5A5vnW7n_o&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=6
+Franklyn P.: https://www.youtube.com/watch?v=9h4AomeCIjY
 Noah M.: https://www.youtube.com/watch?v=u5Jt-M2BYmo&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=1
 Robbie B.: https://www.youtube.com/watch?v=0EJvocphe1E&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
 Paul S.: https://www.youtube.com/watch?v=0EJvocphe1E&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
@@ -265,6 +265,10 @@ Kendra: https://www.youtube.com/watch?v=tPWQK3P1nvM&list=PLZ9SGNF-tCG3zwAu8lrpR9
 Fernando A.: https://www.youtube.com/watch?v=9ui_0lbNYcE&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=50
 Justin S.: https://www.youtube.com/watch?v=pGS14kXemxk&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=51
 Marco G.: https://www.youtube.com/watch?v=q9HWqDHy0s8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=35
+Austin L.: https://www.youtube.com/watch?v=tIzn1qr_4lg
+Kade T.: https://www.youtube.com/watch?v=7JMXVr4FCfs
+Josh C.: https://www.youtube.com/watch?v=2KHqnY1xpFA
+Luka K.: https://www.youtube.com/watch?v=pgTv6T0joKQ
 
 When answering:
 - Always use real member names and real numbers
