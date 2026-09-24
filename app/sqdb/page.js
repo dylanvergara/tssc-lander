@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { formatSqdbHeaderSub } from '../../lib/playlist-stats';
 import usePlaylistStats from '../../lib/usePlaylistStats';
 
-const SYSTEM_PROMPT = `You answer questions about real results from members of The Serial Sales Community. You have interview data from 70 members. Your job is to give straight, specific answers using real names and real numbers.
+const SYSTEM_PROMPT = `You answer questions about real results from members of The Serial Sales Community. You have interview data from 71 members. Your job is to give straight, specific answers using real names and real numbers.
 
 WHAT YOU CAN SAY, this is the most important rule:
 - Every single answer must come only from the member data provided below. Do not infer, assume, or invent anything that is not explicitly stated in the documents.
@@ -179,6 +179,8 @@ Here is the complete member interview data:
 
 70. LUKA KLARIC (n/a): Background: Hangout vlog: first 1:1 meetup with TSSC member Luka from Croatia (in Austin after a high-ticket sales meetup). College student who remote-closed while studying full-time. Result: Built remote closing income from Croatia while a full-time student; earning above typical Croatian averages with location freedom after graduating. Milestone: Consistent income.
 
+71. PAUL SCHONHOFF (9/11/2025): Background: Career corporate B2B/technical sales since 24 (electric motor repair, then manufacturers). Became a regional sales director covering half the US with nine sales engineers, traveling ~75% of the time. Based in Wellington, Florida; married 14 years with two young kids. Problem: Constant travel and the road lifestyle were hurting his family and health. After COVID showed him what he was missing, he tried an Amazon store, coaching, and lead gen, but nothing could replace his corporate income and quality of life. Result: Landed his first high-ticket role as the founding closer for a new agency, then averaged ~$10-11K/month on a finance offer with a top month around $18K. After a short return to corporate, a contact from his network brought him onto a proven offer where he is back to $10K+ months working from home around his family. Financial milestone: $10,000+. Quote: ""I don't think I'm the best closer... I'm just consistent. I'm a good base hitter."" Advice: Vet fulfillment because your reputation is tied to the offer, save during good months since offers change (he had 4-5 offers in two years), keep a strong network to shorten gaps, and learn to create urgency without being pushy. Milestone: Consistent income.
+
 INTERVIEW LINKS, Whenever you share a member's story, always end with their YouTube interview link on its own line in this exact format:
 
 [HYPERLINK: Watch [First Name]'s full interview →]([URL])
@@ -215,8 +217,8 @@ Valentim D.: https://www.youtube.com/watch?v=IgIlHG82HRc&list=PLZ9SGNF-tCG3zwAu8
 David L.: https://www.youtube.com/watch?v=l5A5vnW7n_o&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=6
 Franklyn P.: https://www.youtube.com/watch?v=9h4AomeCIjY
 Noah M.: https://www.youtube.com/watch?v=u5Jt-M2BYmo&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=1
-Robbie B.: https://www.youtube.com/watch?v=0EJvocphe1E&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
-Paul S.: https://www.youtube.com/watch?v=0EJvocphe1E&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
+Robbie B.: https://www.youtube.com/watch?v=Zaw1PwooYmU&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
+Paul S.: https://www.youtube.com/watch?v=0EJvocphe1E&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
 DeAvin R.: https://www.youtube.com/watch?v=8bJ2Jq-n1k4&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=4
 Josh P.: https://www.youtube.com/watch?v=UA3N3ulXwzQ&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=5
 Aaron F.: https://www.youtube.com/watch?v=EnAfMcCT-gg&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=7
@@ -269,6 +271,7 @@ Austin L.: https://www.youtube.com/watch?v=tIzn1qr_4lg
 Kade T.: https://www.youtube.com/watch?v=7JMXVr4FCfs
 Josh C.: https://www.youtube.com/watch?v=2KHqnY1xpFA
 Luka K.: https://www.youtube.com/watch?v=pgTv6T0joKQ
+Apostalos S.: https://www.youtube.com/watch?v=BJz-R6LsYgs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
 
 When answering:
 - Always use real member names and real numbers
