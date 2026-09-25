@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { formatSqdbHeaderSub } from '../../lib/playlist-stats';
 import usePlaylistStats from '../../lib/usePlaylistStats';
 
-const SYSTEM_PROMPT = `You answer questions about real results from members of The Serial Sales Community. You have interview data from 71 members. Your job is to give straight, specific answers using real names and real numbers.
+const SYSTEM_PROMPT = `You answer questions about real results from members of The Serial Sales Community. You have interview data from 72 members. Your job is to give straight, specific answers using real names and real numbers.
 
 WHAT YOU CAN SAY, this is the most important rule:
 - Every single answer must come only from the member data provided below. Do not infer, assume, or invent anything that is not explicitly stated in the documents.
@@ -181,6 +181,8 @@ Here is the complete member interview data:
 
 71. PAUL SCHONHOFF (9/11/2025): Background: Career corporate B2B/technical sales since 24 (electric motor repair, then manufacturers). Became a regional sales director covering half the US with nine sales engineers, traveling ~75% of the time. Based in Wellington, Florida; married 14 years with two young kids. Problem: Constant travel and the road lifestyle were hurting his family and health. After COVID showed him what he was missing, he tried an Amazon store, coaching, and lead gen, but nothing could replace his corporate income and quality of life. Result: Landed his first high-ticket role as the founding closer for a new agency, then averaged ~$10-11K/month on a finance offer with a top month around $18K. After a short return to corporate, a contact from his network brought him onto a proven offer where he is back to $10K+ months working from home around his family. Financial milestone: $10,000+. Quote: ""I don't think I'm the best closer... I'm just consistent. I'm a good base hitter."" Advice: Vet fulfillment because your reputation is tied to the offer, save during good months since offers change (he had 4-5 offers in two years), keep a strong network to shorten gaps, and learn to create urgency without being pushy. Milestone: Consistent income.
 
+72. TRETT JOLES (9/25/2026): Background: Finance graduate (finished school in December) who played college baseball in Indiana and Iowa. Got his start in sales knocking on 100-150 farmers' doors asking permission to bow hunt their land, then did door-to-door roofing sales. Joined TSSC in January with no remote sales experience. Problem: Door-to-door meant a lot of time on the road, cold doors, and long insurance-driven sales cycles, so he wanted remote inbound work. Along the way his first offer was discontinued, several launches he joined didn't pan out, and he spread himself thin studying for wealth management licensing exams (life and health, SIE, series exams) while managing a sales team for a friend's roofing company. Result: After fixing his resume and sending Loom applications, he landed his first role right away as a setter on an NIL (name, image, likeness) consulting offer and was promoted to closer when setting volume dropped and other closers moved on. After that offer was discontinued and a few launches, he joined a proven offer inside an agency run by a community member, got to ~$5K months quickly, and about 2.5 months in hit $10,500 in a month across two offers (~$9K on the main offer plus ~$2K on a second), roughly 9 months after joining. Takes about 2-6 calls a day plus team sales meetings a couple times a week, with flexible hours. Next goal is a consistent $15K-$20K+ per month. Financial milestone: $10,500. Quote: ""If anyone takes anything from this, it's be careful when joining launches... you can waste some time if you're hopping on launches as opposed to offers that already are profitable."" Advice: Train outside of calls by recording and reviewing your calls, which he believes can 2-3x your earnings. Favor offers that are already profitable over launches, and consider a smaller, growing team to move from setter to closer faster. Avoid spreading yourself thin: put 80%+ of your time in, cut distractions, and use the community to get connected with strong sales managers. Milestone: Consistent income.
+
 INTERVIEW LINKS, Whenever you share a member's story, always end with their YouTube interview link on its own line in this exact format:
 
 [HYPERLINK: Watch [First Name]'s full interview →]([URL])
@@ -272,6 +274,7 @@ Kade T.: https://www.youtube.com/watch?v=7JMXVr4FCfs
 Josh C.: https://www.youtube.com/watch?v=2KHqnY1xpFA
 Luka K.: https://www.youtube.com/watch?v=pgTv6T0joKQ
 Apostalos S.: https://www.youtube.com/watch?v=BJz-R6LsYgs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
+Trett J.: https://www.youtube.com/watch?v=TZf3RzkJn2k
 
 When answering:
 - Always use real member names and real numbers
