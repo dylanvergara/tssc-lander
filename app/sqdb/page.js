@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { formatSqdbHeaderSub } from '../../lib/playlist-stats';
 import usePlaylistStats from '../../lib/usePlaylistStats';
+import { INTERVIEW_LINKS_PROMPT, canonicalizeInterviewLinks, splitTrailingPunctuation } from '../../lib/interview-links';
 
 const SYSTEM_PROMPT = `You answer questions about real results from members of The Serial Sales Community. You have interview data from 72 members. Your job is to give straight, specific answers using real names and real numbers.
 
@@ -198,83 +199,9 @@ Use natural variation in the call-to-action text. Examples:
 Format it as a markdown-style hyperlink using this exact syntax: [CTA text](URL)
 The renderer will convert this into a clickable hyperlink automatically.
 
-If you mention multiple members, include a link for each one. Only include links for members listed below.
+If you mention multiple members, include a link for each one. Only include links for members listed below, and copy each URL exactly as listed.
 
-Sarith S.: https://www.youtube.com/watch?v=by5RzbjxiO8&feature=youtu.be
-Reda T.: https://www.youtube.com/watch?v=mziE3tvVzdM&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=1
-Miriam C.: https://www.youtube.com/watch?v=PVfqwyuHNTQ&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=2
-Jake M.: https://www.youtube.com/watch?v=sF9xm4Na2yQ&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
-Jase S.: https://www.youtube.com/watch?v=2HzfzaJ__QU&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=4
-Ethan Z.: https://www.youtube.com/watch?v=aAx8DWwdIiQ&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=5
-Josh H.: https://www.youtube.com/watch?v=UUM_Kf6rlRY&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=1
-Zach S.: https://www.youtube.com/watch?v=fiRZj6Pt8To&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=2
-Jordan W.: https://www.youtube.com/watch?v=ZBfGJmzLWoM&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
-Joe E.: https://www.youtube.com/watch?v=K2jGMM0KkD8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=4
-Chris P.: https://www.youtube.com/watch?v=0qkQzPdb40s&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=5
-Jordan Z.: https://www.youtube.com/watch?v=cIKgkBmLNeg&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=1
-Dalton M.: https://www.youtube.com/watch?v=mEhWcYqac-U&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=2
-Chris C.: https://www.youtube.com/watch?v=ej2TCqn-FbA&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=3
-Somil M.: https://www.youtube.com/watch?v=07r72x6zNz0&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=4
-Valentim D.: https://www.youtube.com/watch?v=IgIlHG82HRc&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=5
-David L.: https://www.youtube.com/watch?v=l5A5vnW7n_o&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=6
-Franklyn P.: https://www.youtube.com/watch?v=9h4AomeCIjY
-Noah M.: https://www.youtube.com/watch?v=u5Jt-M2BYmo&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=1
-Robbie B.: https://www.youtube.com/watch?v=Zaw1PwooYmU&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
-Paul S.: https://www.youtube.com/watch?v=0EJvocphe1E&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
-DeAvin R.: https://www.youtube.com/watch?v=8bJ2Jq-n1k4&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=4
-Josh P.: https://www.youtube.com/watch?v=UA3N3ulXwzQ&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=5
-Aaron F.: https://www.youtube.com/watch?v=EnAfMcCT-gg&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=7
-Julian D.: https://www.youtube.com/watch?v=8ZSGY5P14j8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=7
-Burhan A.: https://www.youtube.com/watch?v=M7SDqaGnCuk&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=25
-Noah S.: https://www.youtube.com/watch?v=RH1tLrZeXqE&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=8
-Moe I.: https://www.youtube.com/watch?v=LS2UzFdwTJE&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=9
-Jake S.: https://www.youtube.com/watch?v=XfmfnANJ8vc&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=10
-Brady B.: https://www.youtube.com/watch?v=w3DoRxHNzBs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=11
-Mauricio G.: https://www.youtube.com/watch?v=8y1L6JnZu5k&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=12
-Apostalos S.: https://www.youtube.com/watch?v=6Eu62BkCI7U&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=13
-Kam I.: https://www.youtube.com/watch?v=VcIFitTDRLE&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=14
-Drew D.: https://www.youtube.com/watch?v=LRhqJEXoOZ4&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=16
-Jaryd J.: https://www.youtube.com/watch?v=n74DuGv-dSg&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=15
-Gary R.: https://www.youtube.com/watch?v=o_-dztM0OLA&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=17
-Caden H.: https://www.youtube.com/watch?v=tBJTAuwHkFw&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=18
-Nick V.: https://www.youtube.com/watch?v=pqkm1Pau9LY&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=19
-Angel M.: https://www.youtube.com/watch?v=H-1BVXB-vtQ&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=20
-Sam W.: https://www.youtube.com/watch?v=CZ3ZZ_i_vmo&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=21
-Diego M.: https://www.youtube.com/watch?v=tn-kzQohbhU&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=22
-Ty N.: https://www.youtube.com/watch?v=WlA8HHM9_Zs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=23
-Garret T.: https://www.youtube.com/watch?v=vHqWjtq4CVE&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=24
-Noah B.: https://www.youtube.com/watch?v=Lcwj3WlIQO8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=26
-Jake P.: https://www.youtube.com/watch?v=iDchGIpIH24&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=28
-Daniel F.: https://www.youtube.com/watch?v=3bCy4fuABSs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=29
-David H.: https://www.youtube.com/watch?v=ncLVggg5N_c&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=30
-Jon B.: https://www.youtube.com/watch?v=N_i2wRgC5EU&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=31
-Benny S.: https://www.youtube.com/watch?v=TXjOXmzzj6o&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=32
-George D.: https://www.youtube.com/watch?v=1Wq1FSPYm5Q&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=33
-Deniz T.: https://www.youtube.com/watch?v=ignIURf-G-k&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=34
-Jason S.: https://www.youtube.com/watch?v=Zohndt8yRTI&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=27
-Ian M.: https://www.youtube.com/watch?v=3E57483fJBI&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=36
-George K.: https://www.youtube.com/watch?v=BG0WkZV6_Rs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=37
-Cole A.: https://www.youtube.com/watch?v=toAXtjogewg&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=38
-Daniel B.: https://www.youtube.com/watch?v=9kQw7-4BvhM&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=39
-Tristen N.: https://www.youtube.com/watch?v=LbBabkwOnH8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=40
-Meelod R.: https://www.youtube.com/watch?v=oGBRnxPIkS4&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=41
-Dan R.: https://www.youtube.com/watch?v=RJLy5buhlM4&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=42
-DeAvin R.: https://www.youtube.com/watch?v=wgX8ltp5AEI&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=43
-Terry E.: https://www.youtube.com/watch?v=PE4aEXb3uNA&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=44
-Drew L.: https://www.youtube.com/watch?v=BxABlacPKRc&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=45
-Camilo M.: https://www.youtube.com/watch?v=n1wOAEm4sS4&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=46
-Fardeed A.: https://www.youtube.com/watch?v=LY86VWoqoV8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=47
-Jordan W.: https://www.youtube.com/watch?v=Gh181tLC92A&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=48
-Kendra: https://www.youtube.com/watch?v=tPWQK3P1nvM&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=49
-Fernando A.: https://www.youtube.com/watch?v=9ui_0lbNYcE&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=50
-Justin S.: https://www.youtube.com/watch?v=pGS14kXemxk&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=51
-Marco G.: https://www.youtube.com/watch?v=q9HWqDHy0s8&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W&index=35
-Austin L.: https://www.youtube.com/watch?v=tIzn1qr_4lg
-Kade T.: https://www.youtube.com/watch?v=7JMXVr4FCfs
-Josh C.: https://www.youtube.com/watch?v=2KHqnY1xpFA
-Luka K.: https://www.youtube.com/watch?v=pgTv6T0joKQ
-Apostalos S.: https://www.youtube.com/watch?v=BJz-R6LsYgs&list=PLZ9SGNF-tCG3zwAu8lrpR9N_WbL4JQn3W
-Trett J.: https://www.youtube.com/watch?v=TZf3RzkJn2k
+${INTERVIEW_LINKS_PROMPT}
 
 When answering:
 - Always use real member names and real numbers
@@ -376,7 +303,9 @@ export default function ChatPage() {
         }),
       });
       const data = await res.json();
-      const reply = data.content?.[0]?.text || 'Something went wrong.';
+      // Every YouTube link is rewritten to the canonical watch?v=ID for that member,
+      // so a mistyped or stale link from the model never reaches the user.
+      const reply = canonicalizeInterviewLinks(data.content?.[0]?.text || 'Something went wrong.');
       
       // Typewriter effect
       setLoading(false);
@@ -472,29 +401,33 @@ export default function ChatPage() {
           <div key={i} className={`sq-bubble-row ${m.role}`}>
             <div className={`sq-bubble ${m.role}`}>
               {m.content.split('\n').map((line, j) => {
-                // Parse [text](url) markdown links and bare URLs
-                const mdLinkRegex = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
-                const urlRegex = /(https?:\/\/[^\s]+|serialsalescommunity\.co[^\s]*)/g;
-                
+                // Parse [text](url) markdown links, bare URLs and **bold**.
+                // YouTube URLs were already canonicalized in sendMessage.
+                const renderBold = (text, keyBase) =>
+                  text.split(/\*\*([^*]+)\*\*/g).map((seg, k) =>
+                    k % 2 === 1 ? <strong key={`${keyBase}-b${k}`} style={{fontWeight: '600'}}>{seg}</strong> : seg
+                  );
                 const renderLine = (text) => {
                   const parts = [];
                   let last = 0;
                   let match;
-                  const combined = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)|(https?:\/\/[^\s]+|serialsalescommunity\.co[^\s]*)/g;
+                  const combined = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)|(https?:\/\/[^\s]+|serialsalescommunity\.co[^\s]*)/g;
                   while ((match = combined.exec(text)) !== null) {
-                    if (match.index > last) parts.push(text.slice(last, match.index));
+                    if (match.index > last) parts.push(...renderBold(text.slice(last, match.index), `t${match.index}`));
                     if (match[1] && match[2]) {
-                      parts.push(<a key={match.index} href={match[2]} target="_blank" rel="noopener noreferrer" style={{color: '#b6cdde', textDecoration: 'underline', fontWeight: '500'}}>{match[1]}</a>);
+                      parts.push(<a key={match.index} href={match[2]} target="_blank" rel="noopener noreferrer" style={{color: '#b6cdde', textDecoration: 'underline', fontWeight: '500'}}>{match[1].replace(/\*\*/g, '')}</a>);
                     } else {
-                      const href = match[3].startsWith('http') ? match[3] : 'https://' + match[3];
-                      parts.push(<a key={match.index} href={href} target="_blank" rel="noopener noreferrer" style={{color: '#b6cdde', textDecoration: 'underline'}}>{match[3]}</a>);
+                      // Keep trailing punctuation (". ) ,") out of the href.
+                      const [url, trailing] = splitTrailingPunctuation(match[3]);
+                      const href = url.startsWith('http') ? url : 'https://' + url;
+                      parts.push(<a key={match.index} href={href} target="_blank" rel="noopener noreferrer" style={{color: '#b6cdde', textDecoration: 'underline'}}>{url}</a>);
+                      if (trailing) parts.push(trailing);
                     }
                     last = match.index + match[0].length;
                   }
-                  if (last < text.length) parts.push(text.slice(last));
+                  if (last < text.length) parts.push(...renderBold(text.slice(last), 'tail'));
                   return parts;
                 };
-
                 return (
                   <span key={j}>
                     {renderLine(line)}
