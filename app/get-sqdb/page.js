@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { formatGetSqdbMeta } from '../../lib/playlist-stats';
+import { formatGetSqdbMeta, interviewCountOf } from '../../lib/playlist-stats';
 import usePlaylistStats from '../../lib/usePlaylistStats';
 
 // Beehiiv subscribe form + attribution tracking for the SQDB access lead magnet.
@@ -42,7 +42,7 @@ export default function GetSqdbPage() {
             24/7 Access to {playlistStats.people_count}x $10,000+/mo earners, in your pocket.
           </h1>
           <p className="lm15__sub">
-            The SQDB is an AI trained on {playlistStats.people_count} real interviews with TSSC members who broke into remote
+            The SQDB is an AI trained on {interviewCountOf(playlistStats)} real interviews with TSSC members who broke into remote
             appointment setting and closing, and scaled past $10,000/mo in earnings. Ask it anything
             and get real answers around what it takes.
           </p>

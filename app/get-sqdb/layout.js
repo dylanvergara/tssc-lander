@@ -1,9 +1,10 @@
-import { FALLBACK_PLAYLIST_STATS, fetchPlaylistStats } from '../../lib/playlist-stats';
+import { FALLBACK_PLAYLIST_STATS, fetchPlaylistStats, interviewCountOf } from '../../lib/playlist-stats';
 
 export async function generateMetadata() {
   const stats = await fetchPlaylistStats();
   const people = stats.people_count || FALLBACK_PLAYLIST_STATS.people_count;
-  const description = `The SQDB is an AI trained on ${people} real interviews with paying TSSC members. Ask it anything about landing a remote appointment setting or closing job. 100% free.`;
+  const interviews = interviewCountOf(stats);
+  const description = `The SQDB is an AI trained on ${interviews} real interviews with paying TSSC members. Ask it anything about landing a remote appointment setting or closing job. 100% free.`;
   const ogDescription = `An AI trained on ${people} real member success stories. Ask it anything about breaking into remote sales. 100% free, unsubscribe anytime.`;
 
   return {
