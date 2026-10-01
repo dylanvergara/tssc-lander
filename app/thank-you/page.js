@@ -16,9 +16,14 @@ import Longevity     from '../../components/Longevity';
 import FAQ           from '../../components/FAQ';
 import SocialFooter  from '../../components/SocialFooter';
 import Footer        from '../../components/Footer';
+import { fetchPlaylistStats, tenkCountOf, withTenkInterviewCopy } from '../../lib/playlist-stats';
 
-export default function ThankYou() {
-  const d = siteData;
+export const revalidate = 600;
+
+export default async function ThankYou() {
+  const stats = await fetchPlaylistStats({ revalidate: 600 });
+  const tenkCount = tenkCountOf(stats);
+  const d = withTenkInterviewCopy(siteData, tenkCount);
   // Pass hideCta=true to suppress all Apply Now buttons
   const noCtaData = { ...d, ctaUrl: null };
   return (
@@ -30,19 +35,19 @@ export default function ThankYou() {
           <StatBar />
         </div>
         <div>                  <Disclaimer      data={d} /></div>
-        <div id="carousel-1">  <VideoCarousel   data={d} carouselIndex={0} /></div>
+        <div id="carousel-1">  <VideoCarousel   data={d} carouselIndex={0} tenkCount={tenkCount} /></div>
         <div id="about">       <About           data={noCtaData} /></div>
         <div id="process">     <Process         data={d} /></div>
-        <div id="carousel-2">  <VideoCarousel   data={d} carouselIndex={1} /></div>
+        <div id="carousel-2">  <VideoCarousel   data={d} carouselIndex={1} tenkCount={tenkCount} /></div>
         <div id="differentiator"><Differentiator data={noCtaData} /></div>
         <div id="proof">       <ProofWall       data={d} /></div>
         <div id="mission">     <Mission         data={noCtaData} /></div>
-        <div id="carousel-3">  <VideoCarousel   data={d} carouselIndex={2} /></div>
+        <div id="carousel-3">  <VideoCarousel   data={d} carouselIndex={2} tenkCount={tenkCount} /></div>
         <div id="wins">        <Wins            data={noCtaData} /></div>
         <div id="events">      <Events          data={d} /></div>
         <div id="team">        <OurTeam /></div>
         <div id="longevity">   <Longevity       data={noCtaData} /></div>
-        <div id="carousel-4">  <VideoCarousel   data={d} carouselIndex={3} /></div>
+        <div id="carousel-4">  <VideoCarousel   data={d} carouselIndex={3} tenkCount={tenkCount} /></div>
         <div id="faq">         <FAQ             data={d} /></div>
       </main>
       <SocialFooter />

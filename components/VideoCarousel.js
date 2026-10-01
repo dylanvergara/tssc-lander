@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react';
 import VideoFacade from './VideoFacade';
 import useEdgeHoverScroll from './useEdgeHoverScroll';
+import { FALLBACK_TENK_COUNT } from '../lib/playlist-stats';
 
 function CarouselCard({ vid }) {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ function CarouselCard({ vid }) {
   );
 }
 
-export default function VideoCarousel({ data, carouselIndex }) {
+export default function VideoCarousel({ data, carouselIndex, tenkCount = FALLBACK_TENK_COUNT }) {
   const carousel = data.testimonialCarousels[carouselIndex];
   const wrapRef = useRef(null);
   const trackRef = useRef(null);
@@ -49,7 +50,7 @@ export default function VideoCarousel({ data, carouselIndex }) {
     <section className="carousel-section">
       <div className="col">
         <div className="carousel-header reveal">
-          <span className="eyebrow eyebrow--light">Here's over 45x $10k/mo+ interviews with TSSC Members</span>
+          <span className="eyebrow eyebrow--light">Here's over {tenkCount}x $10k/mo+ interviews with TSSC Members</span>
           <h2 className="headline headline--white">{carousel.headline}</h2>
         </div>
       </div>

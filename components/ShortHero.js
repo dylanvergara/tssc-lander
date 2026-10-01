@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 import ShortMain from './ShortMain';
 
-export default function ShortHero({ data }) {
+export default function ShortHero({ data, tenkCount }) {
   const { hero } = data;
   const [formOpen, setFormOpen] = useState(false);
   const formRef = useRef(null);
@@ -88,7 +88,7 @@ export default function ShortHero({ data }) {
       </section>
 
       {/* ShortMain manages its own independent form state */}
-      <ShortMain data={data} />
+      <ShortMain data={data} tenkCount={tenkCount} />
     </>
   );
 }
