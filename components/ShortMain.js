@@ -5,6 +5,7 @@ import { hiringJobs } from '../data/hiringJobs.js';
 import HiringChannel from './HiringChannel';
 import useEdgeHoverScroll from './useEdgeHoverScroll';
 import useYoutubeThumb from './useYoutubeThumb';
+import { FALLBACK_TENK_COUNT } from '../lib/playlist-stats';
 
 function flattenInterviewVideos(data) {
   const carousels = data?.testimonialCarousels || siteData.testimonialCarousels || [];
@@ -63,7 +64,7 @@ function FaqItem({ item }) {
   );
 }
 
-export default function ShortMain({ data }) {
+export default function ShortMain({ data, tenkCount = FALLBACK_TENK_COUNT }) {
   const formRef = useRef(null);
   const carouselWrapRef = useRef(null);
   const carouselTrackRef = useRef(null);
@@ -104,7 +105,7 @@ export default function ShortMain({ data }) {
         <div className="short-section-divider" />
         <div className="short-main__header">
           <p className="short-main__eyebrow">Don't take our word for it</p>
-          <h2 className="short-main__title">Here's over 45x $10k/mo+<br />interviews with TSSC Members</h2>
+          <h2 className="short-main__title">Here's over {tenkCount}x $10k/mo+<br />interviews with TSSC Members</h2>
           <p className="short-main__sub">Swipe through full-length 1-1 interviews from members.</p>
         </div>
         <div className="short-carousel-outer" ref={carouselWrapRef}>
