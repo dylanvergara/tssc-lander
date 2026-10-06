@@ -6,15 +6,16 @@
 // by origin, size and per-IP rate.
 import { SYSTEM_PROMPT, SQDB_MODEL, SQDB_MAX_TOKENS } from '../../../lib/sqdb-system-prompt';
 import { logChatTurn } from '../../../lib/sqdb-chat-log';
+import { SQDB_CHAT_LIMITS, trimConversation } from '../../../lib/sqdb-chat-limits';
 
 export const dynamic = 'force-dynamic';
+// Long pasted inputs (e.g. a full call transcript) take longer to answer.
+export const maxDuration = 60;
 
-const LIMITS = {
-  maxBodyBytes: 128 * 1024,
-  maxMessages: 40,
-  maxCharsPerMessage: 8000,
-  maxTotalChars: 60000,
-};
+// Request size limits shared with the /sqdb page (lib/sqdb-chat-limits.js).
+const LIMITS = SQDB_CHAT_LIMITS;
+// Give up on Anthropic a little before the function itself would time out.
+const UPSTREAM_TIMEOUT_MS = 55 * 1000;
 
 // Anonymous client-generated conversation id (crypto.randomUUID() on the page).
 const SESSION_ID_RE = /^[A-Za-z0-9-]{16,64}$/;
@@ -166,17 +167,23 @@ export async function POST(request) {
   }
 
   // Rebuild the conversation from scratch so nothing but role/content reaches Anthropic.
-  const messages = body.messages.map(({ role, content }) => ({ role, content }));
+  const conversation = body.messages.map(({ role, content }) => ({ role, content }));
   const turn = {
     sessionId: body.session_id,
-    turnIndex: messages.filter((m) => m.role === 'user').length - 1,
-    question: messages[messages.length - 1].content,
+    turnIndex: conversation.filter((m) => m.role === 'user').length - 1,
+    question: conversation[conversation.length - 1].content,
     model: SQDB_MODEL,
   };
+  // Sliding window: only the most recent turns that fit the context budget are
+  // sent, so one huge paste can't permanently break (or bloat) the conversation.
+  const messages = trimConversation(conversation, { maxChars: LIMITS.maxContextChars, maxMessages: LIMITS.maxMessages });
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': process.env.ANTHROPIC_API_KEY,
@@ -200,9 +207,16 @@ export async function POST(request) {
     logChatTurn(request, { ...turn, status: 'ok', httpStatus: 200, latencyMs: Date.now() - started, reply: content.map((c) => c.text).join('\n\n') });
     return json(200, { content });
   } catch (e) {
+    if (e?.name === 'AbortError') {
+      console.error('Chat upstream timeout', UPSTREAM_TIMEOUT_MS);
+      logFailure('upstream_error', 504, turn);
+      return json(504, { error: 'The chat took too long to answer. Please try again.' });
+    }
     console.error('Chat upstream failure', e);
     logFailure('error', 502, turn);
     return json(502, { error: 'The chat service is unavailable right now. Please try again.' });
+  } finally {
+    clearTimeout(timer);
   }
 }
 
