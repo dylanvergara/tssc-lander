@@ -2,6 +2,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import ScrollReveal from '../components/ScrollReveal';
 import NoSave from '../components/NoSave';
+import { EARLY_ID_SCRIPT } from '../lib/early-id-script';
 
 export async function generateMetadata() {
   const { siteData } = await import('../data/content.js');
@@ -26,6 +27,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Must stay first: strips subscriber ids / emails from the URL before GTM reads it. */}
+        <script dangerouslySetInnerHTML={{ __html: EARLY_ID_SCRIPT }} />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
