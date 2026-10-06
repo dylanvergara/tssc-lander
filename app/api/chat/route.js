@@ -5,6 +5,7 @@
 // conversation ({ messages: [{ role, content }] }), and requests are limited
 // by origin, size and per-IP rate.
 import { SYSTEM_PROMPT, SQDB_MODEL, SQDB_MAX_TOKENS } from '../../../lib/sqdb-system-prompt';
+import { logChatTurn } from '../../../lib/sqdb-chat-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,9 @@ const LIMITS = {
   maxCharsPerMessage: 8000,
   maxTotalChars: 60000,
 };
+
+// Anonymous client-generated conversation id (crypto.randomUUID() on the page).
+const SESSION_ID_RE = /^[A-Za-z0-9-]{16,64}$/;
 
 // Per-IP rate limit (in-memory, per serverless instance: a lightweight speed bump).
 const RATE = { windowMs: 60 * 1000, max: 12, dayMs: 24 * 60 * 60 * 1000, dayMax: 200 };
@@ -79,11 +83,27 @@ function rateLimited(ip) {
   return 0;
 }
 
+// Blocked/failed attempts are logged too, but at most a few per IP per minute
+// so a misbehaving client cannot flood the log. The IP itself is never stored.
+const failLogHits = new Map();
+function shouldLogFailure(ip) {
+  const now = Date.now();
+  const times = (failLogHits.get(ip) || []).filter((t) => now - t < 60 * 1000);
+  if (times.length >= 3) return false;
+  times.push(now);
+  failLogHits.set(ip, times);
+  if (failLogHits.size > 5000) failLogHits.clear();
+  return true;
+}
+
 // Returns an error string, or null when the body is a valid conversation.
 function validate(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return 'Body must be a JSON object.';
-  const extra = Object.keys(body).filter((k) => k !== 'messages');
-  if (extra.length) return `Unsupported field(s): ${extra.join(', ')}. Only "messages" is accepted.`;
+  const extra = Object.keys(body).filter((k) => k !== 'messages' && k !== 'session_id');
+  if (extra.length) return `Unsupported field(s): ${extra.join(', ')}. Only "messages" and "session_id" are accepted.`;
+  if (body.session_id !== undefined && (typeof body.session_id !== 'string' || !SESSION_ID_RE.test(body.session_id))) {
+    return '"session_id" must be 16-64 letters, digits or dashes.';
+  }
   const { messages } = body;
   if (!Array.isArray(messages) || messages.length === 0) return '"messages" must be a non-empty array.';
   if (messages.length > LIMITS.maxMessages) return `Too many messages (max ${LIMITS.maxMessages}).`;
@@ -104,27 +124,55 @@ function validate(body) {
 }
 
 export async function POST(request) {
-  if (!originAllowed(request)) return json(403, { error: 'Forbidden origin.' });
+  const started = Date.now();
+  const ip = clientIp(request);
+  const logFailure = (status, httpStatus, extra = {}) => {
+    if (shouldLogFailure(ip)) logChatTurn(request, { status, httpStatus, latencyMs: Date.now() - started, ...extra });
+  };
 
-  const retryAfter = rateLimited(clientIp(request));
-  if (retryAfter) return json(429, { error: 'Too many requests. Please wait a moment and try again.' }, { 'Retry-After': String(retryAfter) });
+  if (!originAllowed(request)) {
+    logFailure('blocked_origin', 403);
+    return json(403, { error: 'Forbidden origin.' });
+  }
+
+  const retryAfter = rateLimited(ip);
+  if (retryAfter) {
+    logFailure('rate_limited', 429);
+    return json(429, { error: 'Too many requests. Please wait a moment and try again.' }, { 'Retry-After': String(retryAfter) });
+  }
 
   const declared = Number(request.headers.get('content-length') || 0);
-  if (declared > LIMITS.maxBodyBytes) return json(400, { error: 'Request body too large.' });
+  if (declared > LIMITS.maxBodyBytes) {
+    logFailure('bad_request', 400);
+    return json(400, { error: 'Request body too large.' });
+  }
   const raw = await request.text();
-  if (raw.length > LIMITS.maxBodyBytes) return json(400, { error: 'Request body too large.' });
+  if (raw.length > LIMITS.maxBodyBytes) {
+    logFailure('bad_request', 400);
+    return json(400, { error: 'Request body too large.' });
+  }
 
   let body;
   try {
     body = JSON.parse(raw);
   } catch {
+    logFailure('bad_request', 400);
     return json(400, { error: 'Invalid JSON.' });
   }
   const problem = validate(body);
-  if (problem) return json(400, { error: problem });
+  if (problem) {
+    logFailure('bad_request', 400);
+    return json(400, { error: problem });
+  }
 
   // Rebuild the conversation from scratch so nothing but role/content reaches Anthropic.
   const messages = body.messages.map(({ role, content }) => ({ role, content }));
+  const turn = {
+    sessionId: body.session_id,
+    turnIndex: messages.filter((m) => m.role === 'user').length - 1,
+    question: messages[messages.length - 1].content,
+    model: SQDB_MODEL,
+  };
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -144,12 +192,16 @@ export async function POST(request) {
     const data = await response.json();
     if (!response.ok) {
       console.error('Anthropic error', response.status, data?.error?.type, data?.error?.message);
+      logFailure('upstream_error', 502, turn);
       return json(502, { error: 'The chat service is unavailable right now. Please try again.' });
     }
     // Same shape the page already reads: data.content[0].text
-    return json(200, { content: (data.content || []).filter((c) => c.type === 'text').map((c) => ({ type: 'text', text: c.text })) });
+    const content = (data.content || []).filter((c) => c.type === 'text').map((c) => ({ type: 'text', text: c.text }));
+    logChatTurn(request, { ...turn, status: 'ok', httpStatus: 200, latencyMs: Date.now() - started, reply: content.map((c) => c.text).join('\n\n') });
+    return json(200, { content });
   } catch (e) {
     console.error('Chat upstream failure', e);
+    logFailure('error', 502, turn);
     return json(502, { error: 'The chat service is unavailable right now. Please try again.' });
   }
 }
