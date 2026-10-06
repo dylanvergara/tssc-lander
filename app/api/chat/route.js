@@ -6,6 +6,7 @@
 // by origin, size and per-IP rate.
 import { SYSTEM_PROMPT, SQDB_MODEL, SQDB_MAX_TOKENS } from '../../../lib/sqdb-system-prompt';
 import { logChatTurn } from '../../../lib/sqdb-chat-log';
+import { originAllowed, clientIp } from '../../../lib/request-guard';
 import { SQDB_CHAT_LIMITS, trimConversation } from '../../../lib/sqdb-chat-limits';
 
 export const dynamic = 'force-dynamic';
@@ -19,48 +20,18 @@ const UPSTREAM_TIMEOUT_MS = 55 * 1000;
 
 // Anonymous client-generated conversation id (crypto.randomUUID() on the page).
 const SESSION_ID_RE = /^[A-Za-z0-9-]{16,64}$/;
+// Random first-party browser id (localStorage 'tssc_vid'): a lowercase UUID.
+const VISITOR_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+// beehiiv subscription id from an email link (?sid=), canonical 'sub_<uuid>'.
+const SUBSCRIBER_REF_RE = /^sub_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const BODY_FIELDS = new Set(['messages', 'session_id', 'visitor_id', 'subscriber_ref']);
 
 // Per-IP rate limit (in-memory, per serverless instance: a lightweight speed bump).
 const RATE = { windowMs: 60 * 1000, max: 12, dayMs: 24 * 60 * 60 * 1000, dayMax: 200 };
 const hits = new Map();
 
-const ALLOWED_HOSTS = new Set(['serialsalescommunity.co', 'www.serialsalescommunity.co']);
-// Vercel production + preview URLs for this project, e.g.
-// tssc-lander-t9bc.vercel.app, tssc-lander-t9bc-<hash>-dylans-projects-c06688cc.vercel.app,
-// tssc-lander-t9bc-git-<branch>-dylans-projects-c06688cc.vercel.app
-const VERCEL_HOST_RE = /^tssc-lander-t9bc(?:-[a-z0-9-]+)?\.vercel\.app$/;
-
 function json(status, body, headers = {}) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store', ...headers } });
-}
-
-function hostOf(value) {
-  if (!value) return null;
-  try {
-    return new URL(value).hostname.toLowerCase();
-  } catch {
-    return null;
-  }
-}
-
-function isAllowedHost(host) {
-  if (!host) return false;
-  if (ALLOWED_HOSTS.has(host) || VERCEL_HOST_RE.test(host)) return true;
-  if (process.env.NODE_ENV !== 'production' && (host === 'localhost' || host === '127.0.0.1')) return true;
-  return false;
-}
-
-function originAllowed(request) {
-  const origin = request.headers.get('origin');
-  if (origin) return isAllowedHost(hostOf(origin));
-  // Some browsers omit Origin on same-origin requests; fall back to Referer.
-  return isAllowedHost(hostOf(request.headers.get('referer')));
-}
-
-function clientIp(request) {
-  const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
-  return request.headers.get('x-real-ip') || 'unknown';
 }
 
 function rateLimited(ip) {
@@ -100,10 +71,16 @@ function shouldLogFailure(ip) {
 // Returns an error string, or null when the body is a valid conversation.
 function validate(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return 'Body must be a JSON object.';
-  const extra = Object.keys(body).filter((k) => k !== 'messages' && k !== 'session_id');
-  if (extra.length) return `Unsupported field(s): ${extra.join(', ')}. Only "messages" and "session_id" are accepted.`;
+  const extra = Object.keys(body).filter((k) => !BODY_FIELDS.has(k));
+  if (extra.length) return `Unsupported field(s): ${extra.join(', ')}. Only "messages", "session_id", "visitor_id" and "subscriber_ref" are accepted.`;
   if (body.session_id !== undefined && (typeof body.session_id !== 'string' || !SESSION_ID_RE.test(body.session_id))) {
     return '"session_id" must be 16-64 letters, digits or dashes.';
+  }
+  if (body.visitor_id !== undefined && body.visitor_id !== null && (typeof body.visitor_id !== 'string' || !VISITOR_ID_RE.test(body.visitor_id))) {
+    return '"visitor_id" must be a lowercase UUID.';
+  }
+  if (body.subscriber_ref !== undefined && body.subscriber_ref !== null && (typeof body.subscriber_ref !== 'string' || !SUBSCRIBER_REF_RE.test(body.subscriber_ref))) {
+    return '"subscriber_ref" must look like sub_<lowercase uuid>.';
   }
   const { messages } = body;
   if (!Array.isArray(messages) || messages.length === 0) return '"messages" must be a non-empty array.';
@@ -170,6 +147,8 @@ export async function POST(request) {
   const conversation = body.messages.map(({ role, content }) => ({ role, content }));
   const turn = {
     sessionId: body.session_id,
+    visitorId: body.visitor_id || null,
+    subscriberRef: body.subscriber_ref || null,
     turnIndex: conversation.filter((m) => m.role === 'user').length - 1,
     question: conversation[conversation.length - 1].content,
     model: SQDB_MODEL,

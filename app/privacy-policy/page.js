@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
           <div className="legal-header">
             <p className="legal-meta">The Serial Sales Community</p>
             <h1 className="legal-title">Privacy Policy</h1>
-            <p className="legal-meta">Effective Date: May 22, 2026 &nbsp;·&nbsp; Last Updated: May 22, 2026</p>
+            <p className="legal-meta">Effective Date: May 22, 2026 &nbsp;·&nbsp; Last Updated: October 6, 2026</p>
           </div>
 
           <h2>1. Introduction</h2>
@@ -82,6 +82,7 @@ export default function PrivacyPolicy() {
           <p>Our chatbot allows prospective members to query information about TSSC and member experiences. Please be aware:</p>
           <ul>
             <li>Conversations may be logged for quality assurance, debugging, and improvement of chatbot responses.</li>
+            <li>On the Success Query Database (SQDB) chat, we save each question and the chatbot&apos;s reply. Your browser also stores a random identifier locally (it is not your name or email). If you arrive from one of our emails or after signing up for the SQDB, we may link your newsletter subscriber ID to that chat activity to improve the resource. We do not store your email address, name, or IP address with these logs, we keep them only as long as they are useful for that purpose (see Section 7), and we will delete them on request at <a href="mailto:dylan@serialsales.co">dylan@serialsales.co</a>.</li>
             <li>Do not submit sensitive personal information (such as financial account numbers, Social Security numbers, or confidential third-party information) to the chatbot.</li>
             <li>Chatbot responses are illustrative, based on documented member interviews. They reflect individual stories and are not guarantees, promises, or representations of outcomes you will personally achieve.</li>
             <li>The chatbot uses third-party AI infrastructure, and inputs may be processed by those providers in accordance with their respective privacy policies.</li>

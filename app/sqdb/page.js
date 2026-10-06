@@ -37,6 +37,29 @@ function getSessionId() {
   }
 }
 
+// Opt-in tie-back ids, set by the inline <head> script (lib/early-id-script.js):
+// a random first-party browser id and, if the visitor arrived from an email
+// link, the beehiiv subscription id. Re-validated here; sent only if well-formed.
+const VISITOR_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const SUBSCRIBER_REF_RE = /^sub_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+function getTrackingIds() {
+  const out = {};
+  let vid = null;
+  let ref = null;
+  try {
+    vid = window.localStorage.getItem('tssc_vid');
+    ref = window.localStorage.getItem('tssc_subscriber_ref');
+  } catch {
+    // storage blocked: fall back to the in-memory copies from the head script
+  }
+  vid = vid || window.__tsscVid || null;
+  ref = ref || window.__tsscSubRef || null;
+  if (vid && VISITOR_ID_RE.test(vid)) out.visitor_id = vid;
+  if (ref && SUBSCRIBER_REF_RE.test(ref)) out.subscriber_ref = ref;
+  return out;
+}
+
 // Friendly, specific messages for failed requests (shown in the chat, never resent).
 const CHAT_ERRORS = {
   tooLong: 'That message is too long. Try pasting a shorter section.',
@@ -104,9 +127,9 @@ export default function ChatPage() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // The server owns the system prompt, model and limits; only the conversation
-        // and the anonymous session id are sent.
-        body: JSON.stringify({ messages: conversationForRequest(newMessages), session_id: getSessionId() }),
+        // The server owns the system prompt, model and limits; only the conversation,
+        // the anonymous session id and the opt-in tie-back ids are sent.
+        body: JSON.stringify({ messages: conversationForRequest(newMessages), session_id: getSessionId(), ...getTrackingIds() }),
       });
       if (!res.ok) {
         let errorText = '';
