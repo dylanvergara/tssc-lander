@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { formatSqdbHeaderSub } from '../../lib/playlist-stats';
 import usePlaylistStats from '../../lib/usePlaylistStats';
 import { canonicalizeInterviewLinks, splitTrailingPunctuation } from '../../lib/interview-links';
+import { SQDB_CHAT_LIMITS, trimConversation } from '../../lib/sqdb-chat-limits';
 
 const SPEAK_TO_TEAM_URL = 'https://www.serialsalescommunity.co?utm_source=sqdb&utm_medium=organic&utm_campaign=sqdb&utm_content=speak_to_team';
 
@@ -59,6 +60,28 @@ function getTrackingIds() {
   return out;
 }
 
+// Friendly, specific messages for failed requests (shown in the chat, never resent).
+const CHAT_ERRORS = {
+  tooLong: 'That message is too long. Try pasting a shorter section.',
+  rateLimited: "You're sending messages too fast, try again in a minute.",
+  trouble: 'The chat had trouble answering, please try again.',
+};
+
+function chatErrorMessage(status, errorText) {
+  if (status === 413) return CHAT_ERRORS.tooLong;
+  if (status === 400 && /too long|too large|too many/i.test(errorText || '')) return CHAT_ERRORS.tooLong;
+  if (status === 429) return CHAT_ERRORS.rateLimited;
+  return CHAT_ERRORS.trouble;
+}
+
+// What gets sent: failed user messages and error bubbles are dropped, only
+// role/content is kept, and the oldest turns are trimmed so the request always
+// fits the server's limits.
+function conversationForRequest(messages) {
+  const sendable = messages.filter((m) => !m.failed && !m.error).map(({ role, content }) => ({ role, content }));
+  return trimConversation(sendable, { maxChars: SQDB_CHAT_LIMITS.maxTotalChars, maxMessages: SQDB_CHAT_LIMITS.maxMessages });
+}
+
 const SUGGESTIONS = [
   { label: "Tell me about someone like me", prompt: "tell_me" },
   { label: "Give me advice on my situation", prompt: "advice" },
@@ -93,18 +116,40 @@ export default function ChatPage() {
     setInput('');
     setLoading(true);
 
+    // On failure, keep the user's message on screen but mark it (and the error
+    // bubble) so neither is resent with the next message.
+    const showError = (text) => {
+      setLoading(false);
+      setMessages([...newMessages.slice(0, -1), { role: 'user', content: userText, failed: true }, { role: 'assistant', content: text, error: true }]);
+    };
+
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // The server owns the system prompt, model and limits; only the conversation,
         // the anonymous session id and the opt-in tie-back ids are sent.
-        body: JSON.stringify({ messages: newMessages, session_id: getSessionId(), ...getTrackingIds() }),
+        body: JSON.stringify({ messages: conversationForRequest(newMessages), session_id: getSessionId(), ...getTrackingIds() }),
       });
+      if (!res.ok) {
+        let errorText = '';
+        try {
+          errorText = (await res.json())?.error || '';
+        } catch {
+          // non-JSON error page (e.g. a platform timeout)
+        }
+        showError(chatErrorMessage(res.status, errorText));
+        return;
+      }
       const data = await res.json();
+      const text = data.content?.[0]?.text;
+      if (!text) {
+        showError(CHAT_ERRORS.trouble);
+        return;
+      }
       // Every YouTube link is rewritten to the canonical watch?v=ID for that member,
       // so a mistyped or stale link from the model never reaches the user.
-      const reply = canonicalizeInterviewLinks(data.content?.[0]?.text || 'Something went wrong.');
+      const reply = canonicalizeInterviewLinks(text);
       
       // Typewriter effect
       setLoading(false);
@@ -131,8 +176,7 @@ export default function ChatPage() {
       };
       typeChar();
     } catch (e) {
-      setLoading(false);
-      setMessages([...newMessages, { role: 'assistant', content: 'Connection error. Please try again.' }]);
+      showError(CHAT_ERRORS.trouble);
     }
   };
 
