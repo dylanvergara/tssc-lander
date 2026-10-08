@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { headlineJobsPerDay, headlineJobsTotal } from '../data/hiringJobs.js';
 
 const PX_PER_SEC = 96;
 const SLOW_RATE = 0.28;
@@ -116,8 +117,8 @@ export default function HiringChannel({ jobs, onApply, formOpen }) {
       <div className="short-main__header">
         <p className="short-main__eyebrow">Our Hiring Channel</p>
         <h2 id="short-jobs-title" className="short-main__title">
-          8,081 1099 WFH sales gigs sourced<br />
-          over the last 12mos.&nbsp;23/day on avg.
+          {headlineJobsTotal.toLocaleString('en-US')} 1099 WFH sales gigs sourced<br />
+          over the last 12 months.&nbsp;{headlineJobsPerDay}/day on avg.
         </h2>
         <p className="short-main__sub">
           Here&apos;s a peek inside at real roles from our hiring channel.<br />
