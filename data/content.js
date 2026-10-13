@@ -41,6 +41,8 @@ export const siteData = {
       headline: 'A look into TSSC...',
       subhead: 'Swipe to hear from members',
       videos: [
+        { id: 56, label: '$11.5k/mo remote closing',             sub: 'Before: Construction',              videoId: 'VdPAEWxCzHk', platform: 'youtube',
+          bio: 'Mike spent 15 years in construction in Sarasota before a community member referred him to TSSC. He quit to work from home as a remote closer and hit $11.5k last month, his first $10k month.' },
         { id: 1,  label: '$100k as a closer, funded his robotics co.', sub: 'Before: Looking to fund a business', videoId: 'tIzn1qr_4lg', platform: 'youtube',
           bio: 'Austin joined TSSC in early 2025 and cleared six figures as a remote closer. He used that income to fund the robotics company he’s building now.' },
         { id: 2,  label: '$54k commission month at 24',          sub: 'Before: Door-to-Door Food Sales',   videoId: 'cIKgkBmLNeg', platform: 'youtube',
@@ -219,7 +221,7 @@ export const siteData = {
       'Our mission is simple.',
       'We want to film one hundred confirmed $10,000/mo interviews with TSSC members.',
       '$1,000,000 in "first time" five-figure per month earnings through 1099 remote sales roles.',
-      'As of now, we have over 45x $10k/mo+ interviews filmed and are scaling toward 100.',
+      'As of now, we have over 48x $10k/mo+ interviews filmed and are scaling toward 100.',
       'Many of the results you will see on this page meet this criteria.',
       'Will you be next?',
     ],
