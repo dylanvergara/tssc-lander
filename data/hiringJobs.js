@@ -1,9 +1,9 @@
 /**
  * Headline numbers from the "Hiring Channel Posts" sheet, Overall Numbers tab,
- * as of Oct 8, 2026: 8,606 posts in the last 12 months, 32.48 per day rounded to 32.
+ * counted Oct 27, 2025 to Oct 26, 2026: 8,520 posts in the last 12 months, 23.3 per day rounded to 23.
  */
-export const headlineJobsPerDay = 32;
-export const headlineJobsTotal = 8606;
+export const headlineJobsPerDay = 23;
+export const headlineJobsTotal = 8520;
 
 export const hiringJobs = [
   { role: 'Setter', ote: '$1,500 - $3,000/mo +$500 base', niche: 'Home Services Marketing Agency' },
