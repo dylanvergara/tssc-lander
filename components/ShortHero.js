@@ -30,7 +30,7 @@ export default function ShortHero({ data, tenkCount }) {
     if (!formOpen) return;
     const timer = setTimeout(() => {
       if (formRef.current) {
-        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
       if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
         const s = document.createElement('script');

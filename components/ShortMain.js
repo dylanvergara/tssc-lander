@@ -83,7 +83,7 @@ export default function ShortMain({ data, tenkCount = FALLBACK_TENK_COUNT }) {
     if (!formOpen) return;
     const timer = setTimeout(() => {
       if (formRef.current) {
-        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
       // Load Typeform script if not yet present
       if (!document.querySelector('script[src="//embed.typeform.com/next/embed.js"]')) {
