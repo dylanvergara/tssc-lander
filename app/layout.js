@@ -1,5 +1,5 @@
 import './globals.css';
-import { Analytics } from '@vercel/analytics/react';
+import TsscAnalytics from '../components/TsscAnalytics';
 import ScrollReveal from '../components/ScrollReveal';
 import NoSave from '../components/NoSave';
 import { EARLY_ID_SCRIPT } from '../lib/early-id-script';
@@ -61,7 +61,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <ScrollReveal />
         <NoSave />
         {children}
-        <Analytics />
+        <TsscAnalytics />
       </body>
     </html>
   );
