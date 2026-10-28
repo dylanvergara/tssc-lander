@@ -706,6 +706,54 @@ img { -webkit-user-drag: none; user-drag: none; -webkit-user-select: none; user-
   .short-inline-form__inner { min-height: 580px; border-radius: 16px; }
   .short-inline-form__inner iframe { min-height: 580px; }
 }
+/* Homepage embeds: the fixed nav (73px) stays outside the form block, and the
+   iframe fills whatever is left of the small viewport. Typeform writes an
+   inline height on a nested wrapper; !important is what overrides it. */
+.short-hero .short-inline-form.is-open,
+.short-final-cta .short-inline-form.is-open {
+  --form-offset: 73px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--form-offset));
+  height: calc(100svh - var(--form-offset));
+  max-height: calc(100vh - var(--form-offset));
+  max-height: calc(100svh - var(--form-offset));
+  margin-top: 0;
+  scroll-margin-top: var(--form-offset);
+}
+.short-hero .short-inline-form.is-open .short-inline-form__inner,
+.short-final-cta .short-inline-form.is-open .short-inline-form__inner {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.short-hero .short-inline-form.is-open .short-inline-form__inner div,
+.short-final-cta .short-inline-form.is-open .short-inline-form__inner div {
+  flex: 1 1 auto;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+}
+/* Typeform's first screen is about 820px tall. On shorter viewports the iframe
+   is laid out at that height and scaled back into the slot, so the question
+   fits without a scrollbar inside the frame. */
+.short-hero .short-inline-form.is-open .short-inline-form__inner iframe,
+.short-final-cta .short-inline-form.is-open .short-inline-form__inner iframe {
+  --tf-fit: min(1, (100vh - var(--form-offset)) / 820px);
+  --tf-fit: min(1, (100svh - var(--form-offset)) / 820px);
+  display: block;
+  flex: 1 1 auto;
+  width: calc(100% / var(--tf-fit)) !important;
+  height: max(820px, 100%) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  border: none !important;
+  transform: scale(var(--tf-fit)) !important;
+  transform-origin: top left !important;
+}
 /* ============================================================
    BOOKING PAGE
 ============================================================ */
