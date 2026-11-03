@@ -10,6 +10,7 @@ import {
   formatShare,
   initials,
   landingRotation,
+  memberStory,
   memberWord,
   pickWeighted,
   pointWord,
@@ -335,6 +336,91 @@ function MoneyRain() {
   }, []);
 
   return <canvas ref={ref} className="wc-bills" aria-hidden="true" />;
+}
+
+function WinnerModal({
+  winner, selected, months, total, billsOn, saving, saveError, storageReady, dialogRef, onAbsent, onFinal,
+}) {
+  const story = memberStory(months, winner.memberId);
+  const maxPoints = story.played.reduce((max, row) => Math.max(max, row.points), 0) || 1;
+
+  return (
+    <div className="wc-modal">
+      {billsOn && <MoneyRain />}
+      <div
+        className="wc-modal__card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="wc-winner-name"
+        tabIndex={-1}
+        ref={dialogRef}
+      >
+        <div className="wc-modal__scroll">
+          <p className="wc-eyebrow">On the wheel</p>
+          <div className="wc-modal__avatar">
+            <Avatar name={winner.name} url={winner.avatarUrl} size={96} />
+          </div>
+          <h2 className="wc-modal__name" id="wc-winner-name">{winner.name}</h2>
+          <p className="wc-modal__month">{selected.label}</p>
+          <p className="wc-modal__points">
+            {winner.points} {pointWord(winner.points)}, {formatShare(winner.points, total)} of this wheel.
+          </p>
+          {winner.circleProfileUrl && (
+            <a className="wc-profile" href={winner.circleProfileUrl} target="_blank" rel="noopener noreferrer">
+              Circle profile
+            </a>
+          )}
+
+          <h3 className="wc-modal__h">Challenge history</h3>
+          {story.played.length === 0 ? (
+            <p className="wc-modal__empty">No months on the board yet.</p>
+          ) : (
+            <ul className="wc-bars">
+              {story.played.map((row) => (
+                <li className="wc-bar" key={row.month}>
+                  <span className="wc-bar__label">{row.label}</span>
+                  <span className="wc-bar__track" aria-hidden="true">
+                    <span className="wc-bar__fill" style={{ width: `${Math.max(6, (row.points / maxPoints) * 100)}%` }} />
+                  </span>
+                  <span className="wc-bar__pts">{row.points} pts · {row.entries} {row.entries === 1 ? 'entry' : 'entries'}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <h3 className="wc-modal__h">Called before</h3>
+          {story.won.length === 0 && story.missed.length === 0 ? (
+            <p className="wc-modal__empty">No called wins yet.</p>
+          ) : (
+            <ul className="wc-called">
+              {story.won.map((row) => (
+                <li key={`won-${row.month}`}><span>Won</span> {row.label}</li>
+              ))}
+              {story.missed.map((row) => (
+                <li key={`miss-${row.month}`}><span>Not present</span> {row.label}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="wc-modal__actions">
+          {saveError && <p className="wc-save-error">{saveError}</p>}
+          {storageReady ? (
+            <>
+              <button type="button" className="wc-btn-ghost" onClick={onAbsent} disabled={saving}>
+                {saving ? 'Saving' : 'Not present - spin again'}
+              </button>
+              <button type="button" className="btn-brand" onClick={onFinal} disabled={saving}>
+                {saving ? 'Saving' : 'Final winner'}
+              </button>
+            </>
+          ) : (
+            <p className="wc-modal__empty">Drawing storage is not configured.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function WinsChallenge({ data }) {
@@ -801,50 +887,19 @@ export default function WinsChallenge({ data }) {
       </main>
 
       {winner && selected && (
-        <div className="wc-modal">
-          {billsOn && <MoneyRain />}
-          <div
-            className="wc-modal__card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="wc-winner-name"
-            tabIndex={-1}
-            ref={dialogRef}
-          >
-            <p className="wc-eyebrow">On the wheel</p>
-            <div className="wc-modal__avatar">
-              <Avatar name={winner.name} url={winner.avatarUrl} size={84} />
-            </div>
-            <h2 className="wc-modal__name" id="wc-winner-name">{winner.name}</h2>
-            <p className="wc-modal__month">{selected.label}</p>
-            <p className="wc-modal__points">
-              {winner.points} {pointWord(winner.points)}, {formatShare(winner.points, total)} of the wheel.
-            </p>
-            <Chips items={winner.breakdown} />
-            <p className="wc-modal__note">
-              Not present takes them off this drawing and spins again. Final winner locks the month.
-            </p>
-            {saveError && <p className="wc-save-error">{saveError}</p>}
-            <div className="wc-modal__actions">
-              <button
-                type="button"
-                className="wc-btn-ghost"
-                onClick={() => record('absent')}
-                disabled={saving || !data.storageReady}
-              >
-                {saving ? 'Saving' : 'Not present - spin again'}
-              </button>
-              <button
-                type="button"
-                className="btn-brand"
-                onClick={() => record('final')}
-                disabled={saving || !data.storageReady}
-              >
-                {saving ? 'Saving' : 'Final winner'}
-              </button>
-            </div>
-          </div>
-        </div>
+        <WinnerModal
+          winner={winner}
+          selected={selected}
+          months={months}
+          total={total}
+          billsOn={billsOn}
+          saving={saving}
+          saveError={saveError}
+          storageReady={data.storageReady}
+          dialogRef={dialogRef}
+          onAbsent={() => record('absent')}
+          onFinal={() => record('final')}
+        />
       )}
     </>
   );

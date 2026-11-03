@@ -1428,16 +1428,19 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 
 .wc-modal {
   position: fixed; inset: 0; z-index: 400;
-  display: flex; align-items: flex-end; justify-content: center;
-  padding: 12px; background: rgba(0,0,0,0.72);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px; background: rgba(0,0,0,0.72);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
 .wc-modal__card {
-  position: relative; z-index: 2; width: 100%; max-width: 420px; max-height: 92vh; overflow-y: auto;
+  position: relative; z-index: 2; width: 100%; max-width: 440px;
+  max-height: min(92dvh, 760px);
+  display: flex; flex-direction: column;
   background: #141414; border: 1px solid rgba(182,205,222,0.28); border-radius: 16px;
-  padding: 28px 20px 20px; text-align: center;
+  padding: 22px 18px 14px; text-align: center;
   box-shadow: 0 24px 70px rgba(0,0,0,0.55);
 }
+.wc-modal__scroll { overflow-y: auto; min-height: 0; padding-bottom: 4px; }
 .wc-modal__card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, var(--blue-dk), var(--blue-lt));
@@ -1453,7 +1456,32 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 .wc-modal__points { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.82); margin-bottom: 4px; }
 .wc-modal__card .wc-chips { justify-content: center; margin: 12px 0 4px; }
 .wc-modal__note { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.48); margin: 14px 0 16px; }
-.wc-modal__actions { display: flex; flex-direction: column; gap: 10px; }
+.wc-modal__actions {
+  display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;
+  padding-top: 12px; background: #141414;
+}
+.wc-modal__h {
+  margin: 18px 0 8px; text-align: left;
+  font-family: var(--font-display); font-size: 13px; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase; color: rgba(182,205,222,0.8);
+}
+.wc-modal__empty { font-size: 13px; color: rgba(255,255,255,0.45); text-align: left; margin: 0; }
+.wc-profile {
+  display: inline-block; margin-top: 8px; color: var(--blue); font-size: 13px; font-weight: 700;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.wc-profile:hover { color: var(--blue-lt); }
+.wc-bars, .wc-called { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.wc-bar { display: grid; grid-template-columns: 92px 1fr; grid-template-rows: auto auto; column-gap: 8px; align-items: center; }
+.wc-bar__label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.82); grid-column: 1; grid-row: 1 / span 2; }
+.wc-bar__track { grid-column: 2; height: 8px; border-radius: 100px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.wc-bar__fill { display: block; height: 100%; border-radius: 100px; background: linear-gradient(90deg, #3a7fa8, #b6cdde); }
+.wc-bar__pts { grid-column: 2; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); }
+.wc-called li { font-size: 13px; color: rgba(255,255,255,0.78); }
+.wc-called span {
+  display: inline-block; min-width: 92px; margin-right: 8px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue);
+}
 .wc-btn-ghost {
   display: block; width: 100%; padding: 16px 28px; text-align: center;
   font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
@@ -1474,7 +1502,8 @@ body:has(.tpt-page) > .formkit-form { margin: 0 auto !important; display: block 
 }
 
 @media (min-width: 700px) {
-  .wc-modal { align-items: center; padding: 24px; }
+  .wc-modal { padding: 24px; }
+  .wc-modal__card { padding: 28px 24px 18px; }
 }
 @media (min-width: 900px) {
   .wc-wrap { padding: 20px 32px 40px; }

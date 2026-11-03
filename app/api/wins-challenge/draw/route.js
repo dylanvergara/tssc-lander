@@ -1,9 +1,9 @@
-import { getWinsRaw } from '../../../../lib/wins-challenge';
+import { getMemberRegistry, getWinsRaw } from '../../../../lib/wins-challenge';
 import { adminAuthorized } from '../../../../lib/wins-admin';
 import { applyOutcome } from '../../../../lib/wins-drawings';
 import { updateDrawings } from '../../../../lib/wins-store';
 import { clientIp, originAllowed } from '../../../../lib/request-guard';
-import { displayName, safeHttpsUrl } from '../../../../lib/wins-format';
+import { resolveProfile } from '../../../../lib/wins-format';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,10 +47,12 @@ export async function POST(request) {
   }
 
   const raw = getWinsRaw();
+  const registry = getMemberRegistry(raw);
   const month = (raw.months || []).find((item) => item.month === monthKey);
   if (!month) return fail(404, 'That month is not on the board.');
   const member = (month.tally || []).find((item) => String(item.memberId) === memberId);
   if (!member) return fail(400, 'That member is not on this month.');
+  const profile = resolveProfile(registry, memberId, member);
 
   const at = new Date().toISOString();
   try {
@@ -58,11 +60,7 @@ export async function POST(request) {
       const result = applyOutcome(current, {
         month,
         action,
-        member: {
-          memberId: String(member.memberId),
-          name: displayName(member.name),
-          avatarUrl: safeHttpsUrl(member.avatarUrl),
-        },
+        member: profile,
         at,
       });
       if (!result.ok) {

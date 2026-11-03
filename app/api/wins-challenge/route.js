@@ -1,4 +1,4 @@
-import { getWinsRaw } from '../../../lib/wins-challenge';
+import { getMemberRegistry, getWinsRaw } from '../../../lib/wins-challenge';
 import { mergeWinsPayload } from '../../../lib/wins-drawings';
 import { loadDrawings } from '../../../lib/wins-store';
 
@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const raw = getWinsRaw();
   const { drawings } = await loadDrawings();
-  return Response.json(mergeWinsPayload(raw, drawings), {
+  return Response.json(mergeWinsPayload(raw, drawings, getMemberRegistry(raw)), {
     headers: { 'Cache-Control': 'no-store' },
   });
 }
