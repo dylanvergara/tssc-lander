@@ -3,39 +3,44 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   activeTally,
-  buildSlices,
   canSpin,
   drawingLine,
+  expandEntries,
   fallbackColor,
   formatShare,
   initials,
   landingRotation,
+  layoutEqualSlices,
   memberStory,
-  memberWord,
-  pickWeighted,
   pointWord,
   withRanks,
 } from '../lib/wins-format';
 
 const ADMIN_STORAGE = 'tssc-wins-admin-key';
+const MUTE_STORAGE = 'tssc-wins-mute';
 
-const SLICE_COLORS = [
-  '#18445f',
-  '#c5dcea',
-  '#0f2c3d',
-  '#8fb4c9',
-  '#245773',
-  '#e7f2f8',
-  '#326888',
-  '#d5e5ef',
-  '#16384c',
-  '#a9c9da',
+const WHEEL_COLORS = [
+  { fill: '#1F7FBF', text: '#ffffff' },
+  { fill: '#F4C95D', text: '#1A1408' },
+  { fill: '#2EC4B6', text: '#08211E' },
+  { fill: '#F7FBFE', text: '#10202c' },
+  { fill: '#0E4C73', text: '#ffffff' },
+  { fill: '#F08A5D', text: '#2A1208' },
+  { fill: '#8FD3F4', text: '#10202c' },
+  { fill: '#2F6F4E', text: '#ffffff' },
+  { fill: '#FFE8A3', text: '#2A2208' },
+  { fill: '#3D4F9F', text: '#ffffff' },
 ];
 
-function restRotation(slices) {
-  if (!slices.length) return 0;
-  const two = Math.PI * 2;
-  return ((-slices[0].sweep / 2) % two + two) % two;
+function colorFor(id) {
+  const text = String(id || '');
+  let hash = 0;
+  for (let index = 0; index < text.length; index += 1) hash = (hash * 33 + text.charCodeAt(index)) >>> 0;
+  return WHEEL_COLORS[hash % WHEEL_COLORS.length];
+}
+
+function easeOutQuart(amount) {
+  return 1 - ((1 - amount) ** 4);
 }
 
 function cryptoRandom() {
@@ -50,25 +55,6 @@ function cryptoRandom() {
 function prefersReducedMotion() {
   return typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-function isLight(hex) {
-  const n = parseInt(hex.slice(1), 16);
-  const r = (n >> 16) & 255;
-  const g = (n >> 8) & 255;
-  const b = n & 255;
-  return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 150;
-}
-
-function sliceColor(index, count) {
-  let colorIndex = index % SLICE_COLORS.length;
-  if (index === count - 1 && count > 1) {
-    const firstLight = isLight(SLICE_COLORS[0]);
-    if (isLight(SLICE_COLORS[colorIndex]) === firstLight) {
-      colorIndex = (colorIndex + 1) % SLICE_COLORS.length;
-    }
-  }
-  return SLICE_COLORS[colorIndex];
 }
 
 function drawWheel(canvas, slices) {
@@ -96,8 +82,9 @@ function drawWheel(canvas, slices) {
     return;
   }
 
-  slices.forEach((slice, index) => {
-    const color = sliceColor(index, slices.length);
+  const hubRadius = radius * 0.2;
+  slices.forEach((slice) => {
+    const color = colorFor(slice.member.memberId);
     ctx.beginPath();
     if (slice.sweep >= Math.PI * 1.999) {
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -106,50 +93,35 @@ function drawWheel(canvas, slices) {
       ctx.arc(cx, cy, radius, slice.start, slice.end);
       ctx.closePath();
     }
-    ctx.fillStyle = color;
+    ctx.fillStyle = color.fill;
     ctx.fill();
-    // Stroke only the outer arc. A miter join on a thin wedge throws a spike
-    // from the center through the slice.
     if (slice.sweep < Math.PI * 1.999) {
       ctx.beginPath();
-      ctx.arc(cx, cy, radius, slice.start, slice.end);
-      ctx.strokeStyle = '#080808';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      const hub = radius * 0.3;
-      ctx.beginPath();
-      ctx.moveTo(cx + Math.cos(slice.start) * hub, cy + Math.sin(slice.start) * hub);
+      ctx.moveTo(cx + Math.cos(slice.start) * hubRadius, cy + Math.sin(slice.start) * hubRadius);
       ctx.lineTo(cx + Math.cos(slice.start) * radius, cy + Math.sin(slice.start) * radius);
+      ctx.strokeStyle = 'rgba(8, 16, 24, 0.45)';
+      ctx.lineWidth = slices.length > 40 ? 1 : 1.6;
       ctx.stroke();
     }
 
-    if (slice.sweep < 0.5) return;
-
+    const arcWidth = slice.sweep * radius * 0.72;
+    if (arcWidth < 13) return;
     const text = slice.member.name;
-    const light = isLight(color);
-    ctx.fillStyle = light ? '#10202c' : '#f7f7f5';
-    ctx.textBaseline = 'middle';
-
-    if (slice.sweep > Math.PI * 1.8) {
-      ctx.font = '700 18px Montserrat, "DM Sans", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(text, cx, cy - radius * 0.42);
-      return;
-    }
-
-    const fontPx = Math.max(10, Math.min(14, Math.round(slice.sweep * radius * 0.11)));
+    const fontPx = Math.max(10, Math.min(20, Math.floor(arcWidth * 0.7)));
     ctx.font = `700 ${fontPx}px Montserrat, "DM Sans", sans-serif`;
+    ctx.fillStyle = color.text;
+    ctx.textBaseline = 'middle';
     const mid = slice.start + slice.sweep / 2;
     const norm = ((mid % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
     const onLeft = norm > Math.PI / 2 && norm < (Math.PI * 3) / 2;
+    const outer = radius - 16;
+    const maxWidth = outer - hubRadius - 10;
+    if (ctx.measureText(text).width > maxWidth) return;
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(onLeft ? mid + Math.PI : mid);
     ctx.textAlign = onLeft ? 'left' : 'right';
-    const outer = radius - 46;
-    const maxWidth = Math.max(36, outer - radius * 0.34);
-    if (ctx.measureText(text).width > maxWidth) return;
-    ctx.fillText(text, onLeft ? -outer : outer, 0);
+    ctx.fillText(text, onLeft ? -(outer - 8) : outer - 8, 0);
     ctx.restore();
   });
 
@@ -160,11 +132,11 @@ function drawWheel(canvas, slices) {
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(cx, cy, radius * 0.3, 0, Math.PI * 2);
-  ctx.fillStyle = '#163044';
+  ctx.arc(cx, cy, hubRadius, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
   ctx.fill();
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = 'rgba(182,205,222,0.55)';
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(16, 32, 44, 0.08)';
   ctx.stroke();
 }
 
@@ -462,11 +434,20 @@ export default function WinsChallenge({ data }) {
   const spinBtnRef = useRef(null);
   const adminRef = useRef(false);
   const spinRef = useRef(() => {});
+  const audioRef = useRef(null);
+  const mutedRef = useRef(false);
+  const rafRef = useRef(0);
+  const tickIndexRef = useRef(-1);
   adminRef.current = admin;
+  mutedRef.current = muted;
 
   const selected = months.find((month) => month.month === monthKey) || null;
   const pool = useMemo(() => activeTally(selected), [selected]);
-  const slices = useMemo(() => buildSlices(pool), [pool]);
+  const sortedEntries = useMemo(() => expandEntries(pool), [pool]);
+  const [entryOrder, setEntryOrder] = useState(null);
+  const [muted, setMuted] = useState(false);
+  const entries = entryOrder || sortedEntries;
+  const slices = useMemo(() => layoutEqualSlices(entries), [entries]);
   const total = pool.reduce((sum, member) => sum + member.points, 0);
   const history = useMemo(() => [...months].reverse(), [months]);
   const absentIds = useMemo(
@@ -492,14 +473,36 @@ export default function WinsChallenge({ data }) {
     };
   }, [slices]);
 
+  useEffect(() => {
+    setEntryOrder(null);
+  }, [sortedEntries]);
+
   useLayoutEffect(() => {
-    const rest = restRotation(slices);
-    rotRef.current = rest;
+    rotRef.current = 0;
+    tickIndexRef.current = -1;
     const el = rotorRef.current;
     if (!el) return;
     el.style.transition = 'none';
-    el.style.transform = `rotate(${rest}rad)`;
-  }, [monthKey, slices]);
+    el.style.transform = 'rotate(0rad)';
+  }, [monthKey]);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(MUTE_STORAGE) === '1';
+    setMuted(saved);
+    mutedRef.current = saved;
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key !== 'Enter') return;
+      const tag = event.target && event.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      event.preventDefault();
+      spinRef.current();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   useEffect(() => {
     let cancel = false;
@@ -594,26 +597,105 @@ export default function WinsChallenge({ data }) {
     setMonthKey(key);
   }
 
+  function playTick() {
+    if (mutedRef.current) return;
+    const Context = window.AudioContext || window.webkitAudioContext;
+    if (!Context) return;
+    if (!audioRef.current) audioRef.current = new Context();
+    const ctx = audioRef.current;
+    if (ctx.state === 'suspended') ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = 740;
+    gain.gain.setValueAtTime(0.035, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.028);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.03);
+  }
+
+  function sliceUnderPointer(list, rotation) {
+    if (!list.length) return -1;
+    const twoPi = Math.PI * 2;
+    const angle = ((0 - rotation) % twoPi + twoPi) % twoPi;
+    for (let index = 0; index < list.length; index += 1) {
+      const slice = list[index];
+      const start = ((slice.start % twoPi) + twoPi) % twoPi;
+      let delta = angle - start;
+      if (delta < 0) delta += twoPi;
+      if (delta < slice.sweep - 1e-8) return index;
+    }
+    return 0;
+  }
+
+  function nudgeWheel() {
+    const el = rotorRef.current;
+    if (!el || prefersReducedMotion()) return;
+    const from = rotRef.current;
+    const to = from + 0.85;
+    const start = performance.now();
+    const tick = (now) => {
+      if (spinningRef.current) return;
+      const amount = Math.min(1, (now - start) / 420);
+      const angle = from + (to - from) * easeOutQuart(amount);
+      el.style.transform = `rotate(${angle}rad)`;
+      if (amount < 1) requestAnimationFrame(tick);
+      else rotRef.current = to;
+    };
+    rotRef.current = to;
+    requestAnimationFrame(tick);
+  }
+
+  function shuffleEntries() {
+    if (spinningRef.current || entries.length < 2) return;
+    const next = entries.slice();
+    for (let index = next.length - 1; index > 0; index -= 1) {
+      const swap = Math.floor(cryptoRandom() * (index + 1));
+      [next[index], next[swap]] = [next[swap], next[index]];
+    }
+    setEntryOrder(next);
+    nudgeWheel();
+  }
+
+  function sortEntries() {
+    if (spinningRef.current || !entryOrder) return;
+    setEntryOrder(null);
+    nudgeWheel();
+  }
+
+  function toggleMute() {
+    setMuted((value) => {
+      const next = !value;
+      mutedRef.current = next;
+      window.localStorage.setItem(MUTE_STORAGE, next ? '1' : '0');
+      return next;
+    });
+  }
+
   function spin() {
     if (spinningRef.current || !slices.length || !selected) return;
     const random = cryptoRandom;
-    const member = pickWeighted(slices.map((slice) => slice.member), random);
-    const slice = slices.find((item) => item.member.memberId === member.memberId) || slices[0];
+    const slice = slices[Math.floor(random() * slices.length)];
+    const member = slice.member;
     const reduced = prefersReducedMotion();
-    const duration = reduced ? 0 : 5600 + Math.floor(random() * 1400);
+    const duration = reduced ? 0 : 7000 + Math.floor(random() * 2500);
     const { next } = landingRotation({
       currentRotation: rotRef.current,
       slice,
       random,
-      minTurns: reduced ? 0 : 6,
-      maxExtraTurns: reduced ? 0 : 2,
+      minTurns: reduced ? 0 : 5,
+      maxExtraTurns: reduced ? 0 : 3,
     });
+    const from = rotRef.current;
     rotRef.current = next;
     const token = tokenRef.current + 1;
     tokenRef.current = token;
     spinningRef.current = true;
     setSpinning(true);
     setWinner(null);
+    cancelAnimationFrame(rafRef.current);
 
     const finish = () => {
       if (tokenRef.current !== token) return;
@@ -626,24 +708,26 @@ export default function WinsChallenge({ data }) {
 
     const el = rotorRef.current;
     if (!el || duration === 0) {
-      if (el) {
-        el.style.transition = 'none';
-        el.style.transform = `rotate(${next}rad)`;
-      }
+      if (el) el.style.transform = `rotate(${next}rad)`;
       finish();
       return;
     }
 
-    const onEnd = (event) => {
-      if (event.propertyName !== 'transform') return;
-      el.removeEventListener('transitionend', onEnd);
-      finish();
+    const started = performance.now();
+    const frame = (now) => {
+      if (tokenRef.current !== token) return;
+      const amount = Math.min(1, (now - started) / duration);
+      const angle = from + (next - from) * easeOutQuart(amount);
+      el.style.transform = `rotate(${angle}rad)`;
+      const under = sliceUnderPointer(slices, angle);
+      if (under !== tickIndexRef.current) {
+        tickIndexRef.current = under;
+        playTick();
+      }
+      if (amount < 1) rafRef.current = requestAnimationFrame(frame);
+      else finish();
     };
-    el.addEventListener('transitionend', onEnd);
-    el.style.transition = `transform ${duration}ms cubic-bezier(0.12, 0.68, 0.04, 1)`;
-    // Restart the transition if the rotor was previously un-transitioned.
-    void el.offsetWidth;
-    el.style.transform = `rotate(${next}rad)`;
+    rafRef.current = requestAnimationFrame(frame);
   }
   spinRef.current = spin;
 
@@ -730,10 +814,11 @@ export default function WinsChallenge({ data }) {
               ))}
             </select>
 
-            <div className="wc-stage" ref={stageRef}>
+            <div className="wc-stage" ref={stageRef} onClick={spin} role="presentation">
               <svg className="wc-pointer" viewBox="0 0 36 32" aria-hidden="true">
-                <path d="M18 30 L2.5 6.5 Q18 0 33.5 6.5 Z" fill="#f7f7f5" stroke="#0c2230" strokeWidth="2.4" />
+                <path d="M18 30 L2.5 6.5 Q18 0 33.5 6.5 Z" fill="#2BB3E0" stroke="#ffffff" strokeWidth="2.2" />
               </svg>
+              <p className="wc-entries">{slices.length} {slices.length === 1 ? 'entry' : 'entries'}</p>
               <div className="wc-rotor" ref={rotorRef}>
                 <canvas ref={canvasRef} role="img" aria-label={wheelLabel} />
               </div>
@@ -748,9 +833,13 @@ export default function WinsChallenge({ data }) {
               </button>
             </div>
 
-            <p className="wc-wheel__meta">
-              {slices.length} {memberWord(slices.length)} · {total} {total === 1 ? 'entry' : 'entries'}
-            </p>
+            <div className="wc-tools">
+              <button type="button" className="wc-tool" onClick={shuffleEntries} disabled={spinning || entries.length < 2}>Shuffle</button>
+              <button type="button" className="wc-tool" onClick={sortEntries} disabled={spinning || !entryOrder}>Sort</button>
+              <button type="button" className="wc-tool" onClick={toggleMute} aria-pressed={muted}>
+                {muted ? 'Sound off' : 'Sound on'}
+              </button>
+            </div>
 
             <button
               type="button"
