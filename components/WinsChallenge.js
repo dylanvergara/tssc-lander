@@ -123,7 +123,7 @@ function drawWheel(canvas, slices) {
       ctx.stroke();
     }
 
-    if (slice.sweep < 0.22) return;
+    if (slice.sweep < 0.5) return;
 
     const text = slice.member.name;
     const light = isLight(color);
@@ -148,11 +148,8 @@ function drawWheel(canvas, slices) {
     ctx.textAlign = onLeft ? 'left' : 'right';
     const outer = radius - 46;
     const maxWidth = Math.max(36, outer - radius * 0.34);
-    let label = text;
-    while (label.length > 1 && ctx.measureText(label).width > maxWidth) {
-      label = `${label.slice(0, -2)}…`;
-    }
-    ctx.fillText(label, onLeft ? -outer : outer, 0);
+    if (ctx.measureText(text).width > maxWidth) return;
+    ctx.fillText(text, onLeft ? -outer : outer, 0);
     ctx.restore();
   });
 
@@ -242,11 +239,11 @@ function TallyList({ tally, total, absentIds }) {
             <Chips items={member.breakdown} />
           </div>
           <div className="wc-points">
-            <span className="wc-points__num">{member.points}</span>
-            <span className="wc-points__label">{pointWord(member.points)}</span>
-            {total > 0 && (
-              <span className="wc-points__share">{formatShare(member.points, total)}</span>
-            )}
+            <span className="wc-points__odds">
+              {out
+                ? 'Not present'
+                : `${member.points} ${member.points === 1 ? 'entry' : 'entries'}, ${total > 0 ? formatShare(member.points, total) : '0%'} chance`}
+            </span>
           </div>
         </li>
         );
@@ -339,7 +336,7 @@ function MoneyRain() {
 }
 
 function WinnerModal({
-  winner, selected, months, total, billsOn, saving, saveError, storageReady, dialogRef, onAbsent, onFinal,
+  winner, selected, months, total, billsOn, saving, saveError, canRecord, dialogRef, onAbsent, onFinal, onSpinAgain, onClose,
 }) {
   const story = memberStory(months, winner.memberId);
   const maxPoints = story.played.reduce((max, row) => Math.max(max, row.points), 0) || 1;
@@ -405,8 +402,9 @@ function WinnerModal({
 
         <div className="wc-modal__actions">
           {saveError && <p className="wc-save-error">{saveError}</p>}
-          {storageReady ? (
+          {canRecord ? (
             <>
+              <p className="wc-modal__save">Save the official result</p>
               <button type="button" className="wc-btn-ghost" onClick={onAbsent} disabled={saving}>
                 {saving ? 'Saving' : 'Not present - spin again'}
               </button>
@@ -415,7 +413,10 @@ function WinnerModal({
               </button>
             </>
           ) : (
-            <p className="wc-modal__empty">Drawing storage is not configured.</p>
+            <>
+              <button type="button" className="btn-brand" onClick={onSpinAgain}>Spin again</button>
+              <button type="button" className="wc-btn-ghost" onClick={onClose}>Close</button>
+            </>
           )}
         </div>
       </div>
@@ -425,15 +426,19 @@ function WinnerModal({
 
 export default function WinsChallenge({ data }) {
   const selectId = useId();
-  const noteId = useId();
   const [months, setMonths] = useState(data.months);
-  const spinMonths = useMemo(
-    () => months.filter((month) => canSpin(month)),
-    [months],
+  const monthOptions = useMemo(() => {
+    return [...months]
+      .filter((month) => (month.tally || []).length > 0 || month.month === data.nowMonth)
+      .sort((a, b) => b.month.localeCompare(a.month));
+  }, [months, data.nowMonth]);
+  const openMonths = useMemo(
+    () => monthOptions.filter((month) => canSpin(month)),
+    [monthOptions],
   );
-  const initialMonth = spinMonths.some((month) => month.month === data.nowMonth)
+  const initialMonth = openMonths.some((month) => month.month === data.nowMonth)
     ? data.nowMonth
-    : (spinMonths[0]?.month || data.nowMonth);
+    : (openMonths[0]?.month || data.nowMonth);
 
   const [monthKey, setMonthKey] = useState(initialMonth);
   const [spinning, setSpinning] = useState(false);
@@ -460,20 +465,13 @@ export default function WinsChallenge({ data }) {
   adminRef.current = admin;
 
   const selected = months.find((month) => month.month === monthKey) || null;
-  const current = months.find((month) => month.month === data.nowMonth) || null;
   const pool = useMemo(() => activeTally(selected), [selected]);
   const slices = useMemo(() => buildSlices(pool), [pool]);
   const total = pool.reduce((sum, member) => sum + member.points, 0);
-  const selectedTotal = (selected?.tally || []).reduce((sum, member) => sum + member.points, 0);
-  const currentTotal = (current?.tally || []).reduce((sum, member) => sum + member.points, 0);
   const history = useMemo(() => [...months].reverse(), [months]);
   const absentIds = useMemo(
     () => new Set((selected?.absent || []).map((person) => person.memberId)),
     [selected],
-  );
-  const currentAbsentIds = useMemo(
-    () => new Set((current?.absent || []).map((person) => person.memberId)),
-    [current],
   );
 
   useEffect(() => {
@@ -555,13 +553,6 @@ export default function WinsChallenge({ data }) {
   }, [respin]);
 
   useEffect(() => {
-    if (spinningRef.current || winner) return undefined;
-    if (spinMonths.some((month) => month.month === monthKey)) return undefined;
-    if (spinMonths[0]) setMonthKey(spinMonths[0].month);
-    return undefined;
-  }, [spinMonths, monthKey, winner]);
-
-  useEffect(() => {
     if (!winner) {
       setBillsOn(false);
       return undefined;
@@ -604,7 +595,7 @@ export default function WinsChallenge({ data }) {
   }
 
   function spin() {
-    if (!adminRef.current || spinningRef.current || !slices.length || !selected || selected.winner) return;
+    if (spinningRef.current || !slices.length || !selected) return;
     const random = cryptoRandom;
     const member = pickWeighted(slices.map((slice) => slice.member), random);
     const slice = slices.find((item) => item.member.memberId === member.memberId) || slices[0];
@@ -703,9 +694,8 @@ export default function WinsChallenge({ data }) {
   }
 
   const wheelLabel = selected
-    ? `Prize wheel for ${selected.label}, slice size follows points`
+    ? `Prize wheel for ${selected.label}`
     : 'Prize wheel';
-  const showPastBoard = selected && current && selected.month !== current.month;
   let historyYear = '';
 
   return (
@@ -720,45 +710,22 @@ export default function WinsChallenge({ data }) {
         <p className="wc-sr" aria-live="polite">{announce}</p>
 
         <section className="wc-hero" id="wheel">
-          <div className="wc-hero__copy">
-            <span className="wc-eyebrow">Every month</span>
-            <h1 className="wc-h1">Wins <span className="wc-accent">Challenge</span></h1>
-            <p className="wc-lead">
-              Post a qualifying win in the Wins channel. Points decide how big your slice is. End of the month, one name gets pulled.
-            </p>
-            <p className="wc-note" id={noteId}>
-              {admin
-                ? 'Drawing mode. A name is not final until you lock it.'
-                : 'The drawing gets called from this page. The winner shows up in the history once it is locked.'}
-            </p>
-            <nav className="wc-jumps" aria-label="On this page">
-              <a href="#wheel">Spin</a>
-              <a href="#tally">Tally</a>
-              <a href="#history">Winners</a>
-            </nav>
-            {data.spaceUrl && (
-              <a className="wc-textlink" href={data.spaceUrl} target="_blank" rel="noopener noreferrer">
-                Open the Wins channel
-              </a>
-            )}
-          </div>
-
           <div className="wc-hero__wheel">
-            <span className="wc-eyebrow">{admin ? 'Drawing mode' : 'The wheel'}</span>
-            <h2 className="wc-h2">{admin ? 'Spin the wheel' : 'The odds'}</h2>
-            <p className="wc-help">Months with a locked winner are not on this list.</p>
+            <span className="wc-eyebrow">Wins Challenge</span>
+            <h1 className="wc-h1">Spin the wheel</h1>
+            <p className="wc-lead">Bigger slice, better odds.</p>
+            {admin && <p className="wc-admin">Recording the official drawing</p>}
             {adminError && <p className="wc-save-error">{adminError}</p>}
 
             <label className="wc-select-label" htmlFor={selectId}>Month</label>
             <select
               id={selectId}
               className="wc-select"
-              value={spinMonths.some((month) => month.month === selected?.month) ? selected.month : ''}
-              disabled={spinning || spinMonths.length === 0}
+              value={selected?.month || ''}
+              disabled={spinning || monthOptions.length === 0}
               onChange={(event) => selectMonth(event.target.value)}
             >
-              {spinMonths.length === 0 && <option value="">No open month</option>}
-              {spinMonths.map((month) => (
+              {monthOptions.map((month) => (
                 <option key={month.month} value={month.month}>{month.label}</option>
               ))}
             </select>
@@ -770,66 +737,39 @@ export default function WinsChallenge({ data }) {
               <div className="wc-rotor" ref={rotorRef}>
                 <canvas ref={canvasRef} role="img" aria-label={wheelLabel} />
               </div>
-              {admin && (
-                <button
-                  type="button"
-                  className="wc-hub"
-                  onClick={spin}
-                  disabled={spinning || slices.length === 0}
-                  aria-describedby={noteId}
-                >
-                  {spinning ? <span className="wc-hub__spinner" /> : 'Spin'}
-                </button>
-              )}
+              <button
+                type="button"
+                className="wc-hub"
+                onClick={spin}
+                disabled={spinning || slices.length === 0}
+                aria-label={spinning ? 'Spinning' : 'Spin'}
+              >
+                {spinning ? <span className="wc-hub__spinner" /> : 'Spin'}
+              </button>
             </div>
 
             <p className="wc-wheel__meta">
-              {slices.length} {memberWord(slices.length)} · {total} {pointWord(total)}
+              {slices.length} {memberWord(slices.length)} · {total} {total === 1 ? 'entry' : 'entries'}
             </p>
-            {!!selected?.absent?.length && (
-              <p className="wc-offwheel">Off this spin: {selected.absent.map((person) => person.name).join(', ')}</p>
-            )}
 
-            {admin && (
-              <button
-                type="button"
-                className="btn-brand wc-spin"
-                onClick={spin}
-                disabled={!adminReady || spinning || slices.length === 0 || !data.storageReady}
-                ref={spinBtnRef}
-                aria-describedby={noteId}
-              >
-                {spinning ? 'Spinning' : slices.length && selected ? `Spin ${selected.label}` : 'Nothing to spin'}
-              </button>
-            )}
-            {admin && !data.storageReady && (
-              <p className="wc-save-error">Drawing storage is not configured.</p>
-            )}
+            <button
+              type="button"
+              className="btn-brand wc-spin"
+              onClick={spin}
+              disabled={spinning || slices.length === 0}
+              ref={spinBtnRef}
+            >
+              {spinning ? 'Spinning' : 'Spin'}
+            </button>
           </div>
         </section>
 
-        {showPastBoard && (
-          <section className="wc-block" aria-label={`${selected.label} field`}>
-            <h3 className="wc-h3">{selected.label} field</h3>
-            <p className="wc-sub">
-              No recorded winner. This is the board the wheel is using.
-            </p>
-            <TallyList tally={selected.tally} total={selectedTotal} absentIds={absentIds} />
-          </section>
-        )}
-
         <section className="wc-block" id="tally">
-          <span className="wc-eyebrow">This month</span>
-          <h2 className="wc-h2">Running tally</h2>
-          <p className="wc-sub">
-            {current ? current.label : 'This month'}, sorted by points. Ties keep the same rank.
-            {showPastBoard ? ' This stays on the live month, even if the wheel is on another one.' : ''}
-          </p>
-          {data.updatedLabel && (
-            <p className="wc-updated">Updated {data.updatedLabel}.</p>
-          )}
+          <h2 className="wc-h2">This month&apos;s leaderboard</h2>
+          <p className="wc-sub">{selected ? selected.label : 'This month'}. Sorted by entries.</p>
+          <TallyList tally={selected?.tally || []} total={total} absentIds={absentIds} />
 
-          <h3 className="wc-h3">Point values</h3>
+          <h3 className="wc-h3 wc-h3--legend">How points work</h3>
           <ul className="wc-legend">
             {data.tiers.map((tier) => (
               <li className="wc-legend__item" key={tier.topic}>
@@ -838,16 +778,11 @@ export default function WinsChallenge({ data }) {
               </li>
             ))}
           </ul>
-
-          <TallyList tally={current?.tally || []} total={currentTotal} absentIds={currentAbsentIds} />
         </section>
 
         <section className="wc-block" id="history">
-          <span className="wc-eyebrow">On the books</span>
-          <h2 className="wc-h2">Winner history</h2>
-          <p className="wc-sub">
-            January 2025 through now. If we never called a winner, it says Unknown.
-          </p>
+          <h2 className="wc-h2">Past winners</h2>
+          <p className="wc-sub">If we never called a winner, it says Unknown.</p>
           <ol className="wc-hist">
             {history.map((month) => {
               const year = month.month.slice(0, 4);
@@ -895,10 +830,12 @@ export default function WinsChallenge({ data }) {
           billsOn={billsOn}
           saving={saving}
           saveError={saveError}
-          storageReady={data.storageReady}
+          canRecord={admin && data.storageReady && selected && !selected.winner}
           dialogRef={dialogRef}
           onAbsent={() => record('absent')}
           onFinal={() => record('final')}
+          onSpinAgain={() => { setWinner(null); setTimeout(spin, 40); }}
+          onClose={() => setWinner(null)}
         />
       )}
     </>
