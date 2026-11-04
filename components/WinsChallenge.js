@@ -423,6 +423,8 @@ export default function WinsChallenge({ data }) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [respin, setRespin] = useState(false);
+  const [entryOrder, setEntryOrder] = useState(null);
+  const [muted, setMuted] = useState(false);
 
   const spinningRef = useRef(false);
   const rotRef = useRef(0);
@@ -444,8 +446,6 @@ export default function WinsChallenge({ data }) {
   const selected = months.find((month) => month.month === monthKey) || null;
   const pool = useMemo(() => activeTally(selected), [selected]);
   const sortedEntries = useMemo(() => expandEntries(pool), [pool]);
-  const [entryOrder, setEntryOrder] = useState(null);
-  const [muted, setMuted] = useState(false);
   const entries = entryOrder || sortedEntries;
   const slices = useMemo(() => layoutEqualSlices(entries), [entries]);
   const total = pool.reduce((sum, member) => sum + member.points, 0);
