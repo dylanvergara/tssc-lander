@@ -3,38 +3,44 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   activeTally,
-  buildSlices,
   canSpin,
   drawingLine,
+  expandEntries,
   fallbackColor,
   formatShare,
   initials,
   landingRotation,
-  memberWord,
-  pickWeighted,
+  layoutEqualSlices,
+  memberStory,
   pointWord,
   withRanks,
 } from '../lib/wins-format';
 
 const ADMIN_STORAGE = 'tssc-wins-admin-key';
+const MUTE_STORAGE = 'tssc-wins-mute';
 
-const SLICE_COLORS = [
-  '#18445f',
-  '#c5dcea',
-  '#0f2c3d',
-  '#8fb4c9',
-  '#245773',
-  '#e7f2f8',
-  '#326888',
-  '#d5e5ef',
-  '#16384c',
-  '#a9c9da',
+const WHEEL_COLORS = [
+  { fill: '#1F7FBF', text: '#ffffff' },
+  { fill: '#F4C95D', text: '#1A1408' },
+  { fill: '#2EC4B6', text: '#08211E' },
+  { fill: '#F7FBFE', text: '#10202c' },
+  { fill: '#0E4C73', text: '#ffffff' },
+  { fill: '#F08A5D', text: '#2A1208' },
+  { fill: '#8FD3F4', text: '#10202c' },
+  { fill: '#2F6F4E', text: '#ffffff' },
+  { fill: '#FFE8A3', text: '#2A2208' },
+  { fill: '#3D4F9F', text: '#ffffff' },
 ];
 
-function restRotation(slices) {
-  if (!slices.length) return 0;
-  const two = Math.PI * 2;
-  return ((-slices[0].sweep / 2) % two + two) % two;
+function colorFor(id) {
+  const text = String(id || '');
+  let hash = 0;
+  for (let index = 0; index < text.length; index += 1) hash = (hash * 33 + text.charCodeAt(index)) >>> 0;
+  return WHEEL_COLORS[hash % WHEEL_COLORS.length];
+}
+
+function easeOutQuart(amount) {
+  return 1 - ((1 - amount) ** 4);
 }
 
 function cryptoRandom() {
@@ -49,25 +55,6 @@ function cryptoRandom() {
 function prefersReducedMotion() {
   return typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-function isLight(hex) {
-  const n = parseInt(hex.slice(1), 16);
-  const r = (n >> 16) & 255;
-  const g = (n >> 8) & 255;
-  const b = n & 255;
-  return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 150;
-}
-
-function sliceColor(index, count) {
-  let colorIndex = index % SLICE_COLORS.length;
-  if (index === count - 1 && count > 1) {
-    const firstLight = isLight(SLICE_COLORS[0]);
-    if (isLight(SLICE_COLORS[colorIndex]) === firstLight) {
-      colorIndex = (colorIndex + 1) % SLICE_COLORS.length;
-    }
-  }
-  return SLICE_COLORS[colorIndex];
 }
 
 function drawWheel(canvas, slices) {
@@ -95,8 +82,9 @@ function drawWheel(canvas, slices) {
     return;
   }
 
-  slices.forEach((slice, index) => {
-    const color = sliceColor(index, slices.length);
+  const hubRadius = radius * 0.2;
+  slices.forEach((slice) => {
+    const color = colorFor(slice.member.memberId);
     ctx.beginPath();
     if (slice.sweep >= Math.PI * 1.999) {
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -105,53 +93,35 @@ function drawWheel(canvas, slices) {
       ctx.arc(cx, cy, radius, slice.start, slice.end);
       ctx.closePath();
     }
-    ctx.fillStyle = color;
+    ctx.fillStyle = color.fill;
     ctx.fill();
-    // Stroke only the outer arc. A miter join on a thin wedge throws a spike
-    // from the center through the slice.
     if (slice.sweep < Math.PI * 1.999) {
       ctx.beginPath();
-      ctx.arc(cx, cy, radius, slice.start, slice.end);
-      ctx.strokeStyle = '#080808';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      const hub = radius * 0.3;
-      ctx.beginPath();
-      ctx.moveTo(cx + Math.cos(slice.start) * hub, cy + Math.sin(slice.start) * hub);
+      ctx.moveTo(cx + Math.cos(slice.start) * hubRadius, cy + Math.sin(slice.start) * hubRadius);
       ctx.lineTo(cx + Math.cos(slice.start) * radius, cy + Math.sin(slice.start) * radius);
+      ctx.strokeStyle = 'rgba(8, 16, 24, 0.45)';
+      ctx.lineWidth = slices.length > 40 ? 1 : 1.6;
       ctx.stroke();
     }
 
-    if (slice.sweep < 0.22) return;
-
+    const arcWidth = slice.sweep * radius * 0.72;
+    if (arcWidth < 13) return;
     const text = slice.member.name;
-    const light = isLight(color);
-    ctx.fillStyle = light ? '#10202c' : '#f7f7f5';
-    ctx.textBaseline = 'middle';
-
-    if (slice.sweep > Math.PI * 1.8) {
-      ctx.font = '700 18px Montserrat, "DM Sans", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(text, cx, cy - radius * 0.42);
-      return;
-    }
-
-    const fontPx = Math.max(10, Math.min(14, Math.round(slice.sweep * radius * 0.11)));
+    const fontPx = Math.max(10, Math.min(20, Math.floor(arcWidth * 0.7)));
     ctx.font = `700 ${fontPx}px Montserrat, "DM Sans", sans-serif`;
+    ctx.fillStyle = color.text;
+    ctx.textBaseline = 'middle';
     const mid = slice.start + slice.sweep / 2;
     const norm = ((mid % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
     const onLeft = norm > Math.PI / 2 && norm < (Math.PI * 3) / 2;
+    const outer = radius - 16;
+    const maxWidth = outer - hubRadius - 10;
+    if (ctx.measureText(text).width > maxWidth) return;
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(onLeft ? mid + Math.PI : mid);
     ctx.textAlign = onLeft ? 'left' : 'right';
-    const outer = radius - 46;
-    const maxWidth = Math.max(36, outer - radius * 0.34);
-    let label = text;
-    while (label.length > 1 && ctx.measureText(label).width > maxWidth) {
-      label = `${label.slice(0, -2)}…`;
-    }
-    ctx.fillText(label, onLeft ? -outer : outer, 0);
+    ctx.fillText(text, onLeft ? -(outer - 8) : outer - 8, 0);
     ctx.restore();
   });
 
@@ -162,11 +132,11 @@ function drawWheel(canvas, slices) {
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(cx, cy, radius * 0.3, 0, Math.PI * 2);
-  ctx.fillStyle = '#163044';
+  ctx.arc(cx, cy, hubRadius, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
   ctx.fill();
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = 'rgba(182,205,222,0.55)';
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(16, 32, 44, 0.08)';
   ctx.stroke();
 }
 
@@ -241,11 +211,11 @@ function TallyList({ tally, total, absentIds }) {
             <Chips items={member.breakdown} />
           </div>
           <div className="wc-points">
-            <span className="wc-points__num">{member.points}</span>
-            <span className="wc-points__label">{pointWord(member.points)}</span>
-            {total > 0 && (
-              <span className="wc-points__share">{formatShare(member.points, total)}</span>
-            )}
+            <span className="wc-points__odds">
+              {out
+                ? 'Not present'
+                : `${member.points} ${member.points === 1 ? 'entry' : 'entries'}, ${total > 0 ? formatShare(member.points, total) : '0%'} chance`}
+            </span>
           </div>
         </li>
         );
@@ -337,17 +307,110 @@ function MoneyRain() {
   return <canvas ref={ref} className="wc-bills" aria-hidden="true" />;
 }
 
+function WinnerModal({
+  winner, selected, months, total, billsOn, saving, saveError, canRecord, dialogRef, onAbsent, onFinal, onSpinAgain, onClose,
+}) {
+  const story = memberStory(months, winner.memberId);
+  const maxPoints = story.played.reduce((max, row) => Math.max(max, row.points), 0) || 1;
+
+  return (
+    <div className="wc-modal">
+      {billsOn && <MoneyRain />}
+      <div
+        className="wc-modal__card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="wc-winner-name"
+        tabIndex={-1}
+        ref={dialogRef}
+      >
+        <div className="wc-modal__scroll">
+          <p className="wc-eyebrow">On the wheel</p>
+          <div className="wc-modal__avatar">
+            <Avatar name={winner.name} url={winner.avatarUrl} size={96} />
+          </div>
+          <h2 className="wc-modal__name" id="wc-winner-name">{winner.name}</h2>
+          <p className="wc-modal__month">{selected.label}</p>
+          <p className="wc-modal__points">
+            {winner.points} {pointWord(winner.points)}, {formatShare(winner.points, total)} of this wheel.
+          </p>
+          {winner.circleProfileUrl && (
+            <a className="wc-profile" href={winner.circleProfileUrl} target="_blank" rel="noopener noreferrer">
+              Circle profile
+            </a>
+          )}
+
+          <h3 className="wc-modal__h">Challenge history</h3>
+          {story.played.length === 0 ? (
+            <p className="wc-modal__empty">No months on the board yet.</p>
+          ) : (
+            <ul className="wc-bars">
+              {story.played.map((row) => (
+                <li className="wc-bar" key={row.month}>
+                  <span className="wc-bar__label">{row.label}</span>
+                  <span className="wc-bar__track" aria-hidden="true">
+                    <span className="wc-bar__fill" style={{ width: `${Math.max(6, (row.points / maxPoints) * 100)}%` }} />
+                  </span>
+                  <span className="wc-bar__pts">{row.points} pts · {row.entries} {row.entries === 1 ? 'entry' : 'entries'}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <h3 className="wc-modal__h">Called before</h3>
+          {story.won.length === 0 && story.missed.length === 0 ? (
+            <p className="wc-modal__empty">No called wins yet.</p>
+          ) : (
+            <ul className="wc-called">
+              {story.won.map((row) => (
+                <li key={`won-${row.month}`}><span>Won</span> {row.label}</li>
+              ))}
+              {story.missed.map((row) => (
+                <li key={`miss-${row.month}`}><span>Not present</span> {row.label}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="wc-modal__actions">
+          {saveError && <p className="wc-save-error">{saveError}</p>}
+          {canRecord ? (
+            <>
+              <p className="wc-modal__save">Save the official result</p>
+              <button type="button" className="wc-btn-ghost" onClick={onAbsent} disabled={saving}>
+                {saving ? 'Saving' : 'Not present - spin again'}
+              </button>
+              <button type="button" className="btn-brand" onClick={onFinal} disabled={saving}>
+                {saving ? 'Saving' : 'Final winner'}
+              </button>
+            </>
+          ) : (
+            <>
+              <button type="button" className="btn-brand" onClick={onSpinAgain}>Spin again</button>
+              <button type="button" className="wc-btn-ghost" onClick={onClose}>Close</button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function WinsChallenge({ data }) {
   const selectId = useId();
-  const noteId = useId();
   const [months, setMonths] = useState(data.months);
-  const spinMonths = useMemo(
-    () => months.filter((month) => canSpin(month)),
-    [months],
+  const monthOptions = useMemo(() => {
+    return [...months]
+      .filter((month) => (month.tally || []).length > 0 || month.month === data.nowMonth)
+      .sort((a, b) => b.month.localeCompare(a.month));
+  }, [months, data.nowMonth]);
+  const openMonths = useMemo(
+    () => monthOptions.filter((month) => canSpin(month)),
+    [monthOptions],
   );
-  const initialMonth = spinMonths.some((month) => month.month === data.nowMonth)
+  const initialMonth = openMonths.some((month) => month.month === data.nowMonth)
     ? data.nowMonth
-    : (spinMonths[0]?.month || data.nowMonth);
+    : (openMonths[0]?.month || data.nowMonth);
 
   const [monthKey, setMonthKey] = useState(initialMonth);
   const [spinning, setSpinning] = useState(false);
@@ -360,6 +423,8 @@ export default function WinsChallenge({ data }) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [respin, setRespin] = useState(false);
+  const [entryOrder, setEntryOrder] = useState(null);
+  const [muted, setMuted] = useState(false);
 
   const spinningRef = useRef(false);
   const rotRef = useRef(0);
@@ -371,23 +436,23 @@ export default function WinsChallenge({ data }) {
   const spinBtnRef = useRef(null);
   const adminRef = useRef(false);
   const spinRef = useRef(() => {});
+  const audioRef = useRef(null);
+  const mutedRef = useRef(false);
+  const rafRef = useRef(0);
+  const tickIndexRef = useRef(-1);
   adminRef.current = admin;
+  mutedRef.current = muted;
 
   const selected = months.find((month) => month.month === monthKey) || null;
-  const current = months.find((month) => month.month === data.nowMonth) || null;
   const pool = useMemo(() => activeTally(selected), [selected]);
-  const slices = useMemo(() => buildSlices(pool), [pool]);
+  const sortedEntries = useMemo(() => expandEntries(pool), [pool]);
+  const entries = entryOrder || sortedEntries;
+  const slices = useMemo(() => layoutEqualSlices(entries), [entries]);
   const total = pool.reduce((sum, member) => sum + member.points, 0);
-  const selectedTotal = (selected?.tally || []).reduce((sum, member) => sum + member.points, 0);
-  const currentTotal = (current?.tally || []).reduce((sum, member) => sum + member.points, 0);
   const history = useMemo(() => [...months].reverse(), [months]);
   const absentIds = useMemo(
     () => new Set((selected?.absent || []).map((person) => person.memberId)),
     [selected],
-  );
-  const currentAbsentIds = useMemo(
-    () => new Set((current?.absent || []).map((person) => person.memberId)),
-    [current],
   );
 
   useEffect(() => {
@@ -408,14 +473,36 @@ export default function WinsChallenge({ data }) {
     };
   }, [slices]);
 
+  useEffect(() => {
+    setEntryOrder(null);
+  }, [sortedEntries]);
+
   useLayoutEffect(() => {
-    const rest = restRotation(slices);
-    rotRef.current = rest;
+    rotRef.current = 0;
+    tickIndexRef.current = -1;
     const el = rotorRef.current;
     if (!el) return;
     el.style.transition = 'none';
-    el.style.transform = `rotate(${rest}rad)`;
-  }, [monthKey, slices]);
+    el.style.transform = 'rotate(0rad)';
+  }, [monthKey]);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(MUTE_STORAGE) === '1';
+    setMuted(saved);
+    mutedRef.current = saved;
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key !== 'Enter') return;
+      const tag = event.target && event.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      event.preventDefault();
+      spinRef.current();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   useEffect(() => {
     let cancel = false;
@@ -469,13 +556,6 @@ export default function WinsChallenge({ data }) {
   }, [respin]);
 
   useEffect(() => {
-    if (spinningRef.current || winner) return undefined;
-    if (spinMonths.some((month) => month.month === monthKey)) return undefined;
-    if (spinMonths[0]) setMonthKey(spinMonths[0].month);
-    return undefined;
-  }, [spinMonths, monthKey, winner]);
-
-  useEffect(() => {
     if (!winner) {
       setBillsOn(false);
       return undefined;
@@ -517,26 +597,105 @@ export default function WinsChallenge({ data }) {
     setMonthKey(key);
   }
 
+  function playTick() {
+    if (mutedRef.current) return;
+    const Context = window.AudioContext || window.webkitAudioContext;
+    if (!Context) return;
+    if (!audioRef.current) audioRef.current = new Context();
+    const ctx = audioRef.current;
+    if (ctx.state === 'suspended') ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = 740;
+    gain.gain.setValueAtTime(0.035, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.028);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.03);
+  }
+
+  function sliceUnderPointer(list, rotation) {
+    if (!list.length) return -1;
+    const twoPi = Math.PI * 2;
+    const angle = ((0 - rotation) % twoPi + twoPi) % twoPi;
+    for (let index = 0; index < list.length; index += 1) {
+      const slice = list[index];
+      const start = ((slice.start % twoPi) + twoPi) % twoPi;
+      let delta = angle - start;
+      if (delta < 0) delta += twoPi;
+      if (delta < slice.sweep - 1e-8) return index;
+    }
+    return 0;
+  }
+
+  function nudgeWheel() {
+    const el = rotorRef.current;
+    if (!el || prefersReducedMotion()) return;
+    const from = rotRef.current;
+    const to = from + 0.85;
+    const start = performance.now();
+    const tick = (now) => {
+      if (spinningRef.current) return;
+      const amount = Math.min(1, (now - start) / 420);
+      const angle = from + (to - from) * easeOutQuart(amount);
+      el.style.transform = `rotate(${angle}rad)`;
+      if (amount < 1) requestAnimationFrame(tick);
+      else rotRef.current = to;
+    };
+    rotRef.current = to;
+    requestAnimationFrame(tick);
+  }
+
+  function shuffleEntries() {
+    if (spinningRef.current || entries.length < 2) return;
+    const next = entries.slice();
+    for (let index = next.length - 1; index > 0; index -= 1) {
+      const swap = Math.floor(cryptoRandom() * (index + 1));
+      [next[index], next[swap]] = [next[swap], next[index]];
+    }
+    setEntryOrder(next);
+    nudgeWheel();
+  }
+
+  function sortEntries() {
+    if (spinningRef.current || !entryOrder) return;
+    setEntryOrder(null);
+    nudgeWheel();
+  }
+
+  function toggleMute() {
+    setMuted((value) => {
+      const next = !value;
+      mutedRef.current = next;
+      window.localStorage.setItem(MUTE_STORAGE, next ? '1' : '0');
+      return next;
+    });
+  }
+
   function spin() {
-    if (!adminRef.current || spinningRef.current || !slices.length || !selected || selected.winner) return;
+    if (spinningRef.current || !slices.length || !selected) return;
     const random = cryptoRandom;
-    const member = pickWeighted(slices.map((slice) => slice.member), random);
-    const slice = slices.find((item) => item.member.memberId === member.memberId) || slices[0];
+    const slice = slices[Math.floor(random() * slices.length)];
+    const member = slice.member;
     const reduced = prefersReducedMotion();
-    const duration = reduced ? 0 : 5600 + Math.floor(random() * 1400);
+    const duration = reduced ? 0 : 7000 + Math.floor(random() * 2500);
     const { next } = landingRotation({
       currentRotation: rotRef.current,
       slice,
       random,
-      minTurns: reduced ? 0 : 6,
-      maxExtraTurns: reduced ? 0 : 2,
+      minTurns: reduced ? 0 : 5,
+      maxExtraTurns: reduced ? 0 : 3,
     });
+    const from = rotRef.current;
     rotRef.current = next;
     const token = tokenRef.current + 1;
     tokenRef.current = token;
     spinningRef.current = true;
     setSpinning(true);
     setWinner(null);
+    cancelAnimationFrame(rafRef.current);
 
     const finish = () => {
       if (tokenRef.current !== token) return;
@@ -549,24 +708,26 @@ export default function WinsChallenge({ data }) {
 
     const el = rotorRef.current;
     if (!el || duration === 0) {
-      if (el) {
-        el.style.transition = 'none';
-        el.style.transform = `rotate(${next}rad)`;
-      }
+      if (el) el.style.transform = `rotate(${next}rad)`;
       finish();
       return;
     }
 
-    const onEnd = (event) => {
-      if (event.propertyName !== 'transform') return;
-      el.removeEventListener('transitionend', onEnd);
-      finish();
+    const started = performance.now();
+    const frame = (now) => {
+      if (tokenRef.current !== token) return;
+      const amount = Math.min(1, (now - started) / duration);
+      const angle = from + (next - from) * easeOutQuart(amount);
+      el.style.transform = `rotate(${angle}rad)`;
+      const under = sliceUnderPointer(slices, angle);
+      if (under !== tickIndexRef.current) {
+        tickIndexRef.current = under;
+        playTick();
+      }
+      if (amount < 1) rafRef.current = requestAnimationFrame(frame);
+      else finish();
     };
-    el.addEventListener('transitionend', onEnd);
-    el.style.transition = `transform ${duration}ms cubic-bezier(0.12, 0.68, 0.04, 1)`;
-    // Restart the transition if the rotor was previously un-transitioned.
-    void el.offsetWidth;
-    el.style.transform = `rotate(${next}rad)`;
+    rafRef.current = requestAnimationFrame(frame);
   }
   spinRef.current = spin;
 
@@ -617,9 +778,8 @@ export default function WinsChallenge({ data }) {
   }
 
   const wheelLabel = selected
-    ? `Prize wheel for ${selected.label}, slice size follows points`
+    ? `Prize wheel for ${selected.label}`
     : 'Prize wheel';
-  const showPastBoard = selected && current && selected.month !== current.month;
   let historyYear = '';
 
   return (
@@ -634,116 +794,71 @@ export default function WinsChallenge({ data }) {
         <p className="wc-sr" aria-live="polite">{announce}</p>
 
         <section className="wc-hero" id="wheel">
-          <div className="wc-hero__copy">
-            <span className="wc-eyebrow">Every month</span>
-            <h1 className="wc-h1">Wins <span className="wc-accent">Challenge</span></h1>
-            <p className="wc-lead">
-              Post a qualifying win in the Wins channel. Points decide how big your slice is. End of the month, one name gets pulled.
-            </p>
-            <p className="wc-note" id={noteId}>
-              {admin
-                ? 'Drawing mode. A name is not final until you lock it.'
-                : 'The drawing gets called from this page. The winner shows up in the history once it is locked.'}
-            </p>
-            <nav className="wc-jumps" aria-label="On this page">
-              <a href="#wheel">Spin</a>
-              <a href="#tally">Tally</a>
-              <a href="#history">Winners</a>
-            </nav>
-            {data.spaceUrl && (
-              <a className="wc-textlink" href={data.spaceUrl} target="_blank" rel="noopener noreferrer">
-                Open the Wins channel
-              </a>
-            )}
-          </div>
-
           <div className="wc-hero__wheel">
-            <span className="wc-eyebrow">{admin ? 'Drawing mode' : 'The wheel'}</span>
-            <h2 className="wc-h2">{admin ? 'Spin the wheel' : 'The odds'}</h2>
-            <p className="wc-help">Months with a locked winner are not on this list.</p>
+            <span className="wc-eyebrow">Wins Challenge</span>
+            <h1 className="wc-h1">Spin the wheel</h1>
+            <p className="wc-lead">Bigger slice, better odds.</p>
+            {admin && <p className="wc-admin">Recording the official drawing</p>}
             {adminError && <p className="wc-save-error">{adminError}</p>}
 
             <label className="wc-select-label" htmlFor={selectId}>Month</label>
             <select
               id={selectId}
               className="wc-select"
-              value={spinMonths.some((month) => month.month === selected?.month) ? selected.month : ''}
-              disabled={spinning || spinMonths.length === 0}
+              value={selected?.month || ''}
+              disabled={spinning || monthOptions.length === 0}
               onChange={(event) => selectMonth(event.target.value)}
             >
-              {spinMonths.length === 0 && <option value="">No open month</option>}
-              {spinMonths.map((month) => (
+              {monthOptions.map((month) => (
                 <option key={month.month} value={month.month}>{month.label}</option>
               ))}
             </select>
 
-            <div className="wc-stage" ref={stageRef}>
+            <div className="wc-stage" ref={stageRef} onClick={spin} role="presentation">
               <svg className="wc-pointer" viewBox="0 0 36 32" aria-hidden="true">
-                <path d="M18 30 L2.5 6.5 Q18 0 33.5 6.5 Z" fill="#f7f7f5" stroke="#0c2230" strokeWidth="2.4" />
+                <path d="M18 30 L2.5 6.5 Q18 0 33.5 6.5 Z" fill="#2BB3E0" stroke="#ffffff" strokeWidth="2.2" />
               </svg>
+              <p className="wc-entries">{slices.length} {slices.length === 1 ? 'entry' : 'entries'}</p>
               <div className="wc-rotor" ref={rotorRef}>
                 <canvas ref={canvasRef} role="img" aria-label={wheelLabel} />
               </div>
-              {admin && (
-                <button
-                  type="button"
-                  className="wc-hub"
-                  onClick={spin}
-                  disabled={spinning || slices.length === 0}
-                  aria-describedby={noteId}
-                >
-                  {spinning ? <span className="wc-hub__spinner" /> : 'Spin'}
-                </button>
-              )}
-            </div>
-
-            <p className="wc-wheel__meta">
-              {slices.length} {memberWord(slices.length)} · {total} {pointWord(total)}
-            </p>
-            {!!selected?.absent?.length && (
-              <p className="wc-offwheel">Off this spin: {selected.absent.map((person) => person.name).join(', ')}</p>
-            )}
-
-            {admin && (
               <button
                 type="button"
-                className="btn-brand wc-spin"
+                className="wc-hub"
                 onClick={spin}
-                disabled={!adminReady || spinning || slices.length === 0 || !data.storageReady}
-                ref={spinBtnRef}
-                aria-describedby={noteId}
+                disabled={spinning || slices.length === 0}
+                aria-label={spinning ? 'Spinning' : 'Spin'}
               >
-                {spinning ? 'Spinning' : slices.length && selected ? `Spin ${selected.label}` : 'Nothing to spin'}
+                {spinning ? <span className="wc-hub__spinner" /> : 'Spin'}
               </button>
-            )}
-            {admin && !data.storageReady && (
-              <p className="wc-save-error">Drawing storage is not configured.</p>
-            )}
+            </div>
+
+            <div className="wc-tools">
+              <button type="button" className="wc-tool" onClick={shuffleEntries} disabled={spinning || entries.length < 2}>Shuffle</button>
+              <button type="button" className="wc-tool" onClick={sortEntries} disabled={spinning || !entryOrder}>Sort</button>
+              <button type="button" className="wc-tool" onClick={toggleMute} aria-pressed={muted}>
+                {muted ? 'Sound off' : 'Sound on'}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              className="btn-brand wc-spin"
+              onClick={spin}
+              disabled={spinning || slices.length === 0}
+              ref={spinBtnRef}
+            >
+              {spinning ? 'Spinning' : 'Spin'}
+            </button>
           </div>
         </section>
 
-        {showPastBoard && (
-          <section className="wc-block" aria-label={`${selected.label} field`}>
-            <h3 className="wc-h3">{selected.label} field</h3>
-            <p className="wc-sub">
-              No recorded winner. This is the board the wheel is using.
-            </p>
-            <TallyList tally={selected.tally} total={selectedTotal} absentIds={absentIds} />
-          </section>
-        )}
-
         <section className="wc-block" id="tally">
-          <span className="wc-eyebrow">This month</span>
-          <h2 className="wc-h2">Running tally</h2>
-          <p className="wc-sub">
-            {current ? current.label : 'This month'}, sorted by points. Ties keep the same rank.
-            {showPastBoard ? ' This stays on the live month, even if the wheel is on another one.' : ''}
-          </p>
-          {data.updatedLabel && (
-            <p className="wc-updated">Updated {data.updatedLabel}.</p>
-          )}
+          <h2 className="wc-h2">This month&apos;s leaderboard</h2>
+          <p className="wc-sub">{selected ? selected.label : 'This month'}. Sorted by entries.</p>
+          <TallyList tally={selected?.tally || []} total={total} absentIds={absentIds} />
 
-          <h3 className="wc-h3">Point values</h3>
+          <h3 className="wc-h3 wc-h3--legend">How points work</h3>
           <ul className="wc-legend">
             {data.tiers.map((tier) => (
               <li className="wc-legend__item" key={tier.topic}>
@@ -752,16 +867,11 @@ export default function WinsChallenge({ data }) {
               </li>
             ))}
           </ul>
-
-          <TallyList tally={current?.tally || []} total={currentTotal} absentIds={currentAbsentIds} />
         </section>
 
         <section className="wc-block" id="history">
-          <span className="wc-eyebrow">On the books</span>
-          <h2 className="wc-h2">Winner history</h2>
-          <p className="wc-sub">
-            January 2025 through now. If we never called a winner, it says Unknown.
-          </p>
+          <h2 className="wc-h2">Past winners</h2>
+          <p className="wc-sub">If we never called a winner, it says Unknown.</p>
           <ol className="wc-hist">
             {history.map((month) => {
               const year = month.month.slice(0, 4);
@@ -801,50 +911,21 @@ export default function WinsChallenge({ data }) {
       </main>
 
       {winner && selected && (
-        <div className="wc-modal">
-          {billsOn && <MoneyRain />}
-          <div
-            className="wc-modal__card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="wc-winner-name"
-            tabIndex={-1}
-            ref={dialogRef}
-          >
-            <p className="wc-eyebrow">On the wheel</p>
-            <div className="wc-modal__avatar">
-              <Avatar name={winner.name} url={winner.avatarUrl} size={84} />
-            </div>
-            <h2 className="wc-modal__name" id="wc-winner-name">{winner.name}</h2>
-            <p className="wc-modal__month">{selected.label}</p>
-            <p className="wc-modal__points">
-              {winner.points} {pointWord(winner.points)}, {formatShare(winner.points, total)} of the wheel.
-            </p>
-            <Chips items={winner.breakdown} />
-            <p className="wc-modal__note">
-              Not present takes them off this drawing and spins again. Final winner locks the month.
-            </p>
-            {saveError && <p className="wc-save-error">{saveError}</p>}
-            <div className="wc-modal__actions">
-              <button
-                type="button"
-                className="wc-btn-ghost"
-                onClick={() => record('absent')}
-                disabled={saving || !data.storageReady}
-              >
-                {saving ? 'Saving' : 'Not present - spin again'}
-              </button>
-              <button
-                type="button"
-                className="btn-brand"
-                onClick={() => record('final')}
-                disabled={saving || !data.storageReady}
-              >
-                {saving ? 'Saving' : 'Final winner'}
-              </button>
-            </div>
-          </div>
-        </div>
+        <WinnerModal
+          winner={winner}
+          selected={selected}
+          months={months}
+          total={total}
+          billsOn={billsOn}
+          saving={saving}
+          saveError={saveError}
+          canRecord={admin && data.storageReady && selected && !selected.winner}
+          dialogRef={dialogRef}
+          onAbsent={() => record('absent')}
+          onFinal={() => record('final')}
+          onSpinAgain={() => { setWinner(null); setTimeout(spin, 40); }}
+          onClose={() => setWinner(null)}
+        />
       )}
     </>
   );
