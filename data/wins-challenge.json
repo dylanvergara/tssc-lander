@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T21:17:59Z",
+  "generatedAt": "2026-11-09T21:00:00.000Z",
   "tiers": {
     "Life Changer": 7,
     "Record Breaker": 6,
@@ -5859,6 +5859,42 @@
       "winner": null,
       "tally": [
         {
+          "memberId": "1834119",
+          "points": 15,
+          "entries": [
+            {
+              "postId": 38192947,
+              "date": "2026-11-06T21:24:32.985Z",
+              "topic": "Commission Earned",
+              "points": 4
+            },
+            {
+              "postId": 38193871,
+              "date": "2026-11-06T22:00:10.109Z",
+              "topic": "Commission Earned",
+              "points": 4
+            },
+            {
+              "postId": 38194876,
+              "date": "2026-11-06T22:43:56.745Z",
+              "topic": "Life Changer",
+              "points": 7
+            }
+          ]
+        },
+        {
+          "memberId": "57632573",
+          "points": 7,
+          "entries": [
+            {
+              "postId": 38187654,
+              "date": "2026-11-06T18:25:14.700Z",
+              "topic": "Life Changer",
+              "points": 7
+            }
+          ]
+        },
+        {
           "memberId": "17498764",
           "points": 7,
           "entries": [
@@ -5867,6 +5903,30 @@
               "date": "2026-11-02T23:43:36.212Z",
               "topic": "Life Changer",
               "points": 7
+            }
+          ]
+        },
+        {
+          "memberId": "65847390",
+          "points": 4,
+          "entries": [
+            {
+              "postId": 38167318,
+              "date": "2026-11-06T03:42:57.622Z",
+              "topic": "Commission Earned",
+              "points": 4
+            }
+          ]
+        },
+        {
+          "memberId": "60615094",
+          "points": 4,
+          "entries": [
+            {
+              "postId": 38137375,
+              "date": "2026-11-05T11:06:14.480Z",
+              "topic": "Commission Earned",
+              "points": 4
             }
           ]
         },
@@ -5931,7 +5991,8 @@
       "Winners only from explicit announcement posts; never inferred from leaderboards.",
       "June 2026 and July 2026 have final leaderboards and wheel-spin posts but no found winner announcement.",
       "October 2026 wheel spin scheduled 2026-11-03 evening CT; winner not announced at generation time.",
-      "Display names are first name + last initial only."
+      "Display names are first name + last initial only.",
+      "November 2026 refreshed 2026-11-09 from Wins Channel posts. One score per post, the highest point topic."
     ]
   }
 }
