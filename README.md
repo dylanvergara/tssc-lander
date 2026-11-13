@@ -39,12 +39,15 @@ One template serves every role at `/srotd/<keyword>`. The first role is `/srotd/
 ### Add a role
 
 1. Copy `data/srotd/sts.json` to `data/srotd/<keyword>.json`.
-2. Set `keyword` to that same slug (lowercase letters, numbers, hyphens). The filename and the `keyword` field must match.
+2. Set `keyword` to that same slug (lowercase letters, numbers, hyphens). The filename and the `keyword` field must match. `confirmation` is reserved. `/srotd/confirmation` is the shared inbox page for every role.
 3. Edit `role`, `niche`, `ote`, `source`, `headline`, `disclaimer`, and `meta` (`title`, `description`, `ogImage`).
 4. `highlights` can hold more than three strings. The page shows the first three only. Put the lines you want on the page first.
 5. `extraDetails` is optional and is not rendered. Use it for notes you do not want on the lander.
 6. Background photo: drop a file in `public/srotd/`, then set `backgroundImage` to that path, for example `/srotd/sts.jpg`. Leave it `""` to keep the built-in dark background.
 7. `utm` defaults to `utm_source=instagram`, `utm_medium=manychat_dm`, `utm_campaign=srotd`, `utm_content=<keyword>`. Set any of those keys in the JSON to change the default. A matching param on the incoming URL overrides the default. The signup component receives the resolved values as hidden fields.
+8. `roleName` and `docUrl` are optional and are not shown on the page. They are stored for a future Beehiiv opt-in. Leave `docUrl` as `""` until there is a link.
+
+The confirmation creative is `SROTD_CONFIRM_IMAGE` in `app/srotd/confirmation/page.js`. Leave it empty and no image is rendered.
 
 The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The Beehiiv publication id for Dylan's Newsletter lives in `lib/srotd/config.js`. The subscribe form is not connected yet. The only place to mount it is `components/srotd/SrotdSignup.js`.
 
