@@ -32,6 +32,22 @@ In `data/content.js`, find `testimonialCarousels` and add to any carousel array:
 { id: 19, label: '$15k first month', sub: 'Before: Retail', videoId: 'YOUR_YT_ID', platform: 'youtube' }
 ```
 
+## Sales Role of the Day
+
+One template serves every role at `/srotd/<keyword>`. The first role is `/srotd/sts`. Unknown keywords 404. Pages send `noindex`.
+
+### Add a role
+
+1. Copy `data/srotd/sts.json` to `data/srotd/<keyword>.json`.
+2. Set `keyword` to that same slug (lowercase letters, numbers, hyphens). The filename and the `keyword` field must match.
+3. Edit `role`, `niche`, `ote`, `source`, `headline`, `disclaimer`, and `meta` (`title`, `description`, `ogImage`).
+4. `highlights` can hold more than three strings. The page shows the first three only. Put the lines you want on the page first.
+5. `extraDetails` is optional and is not rendered. Use it for notes you do not want on the lander.
+6. Background photo: drop a file in `public/srotd/`, then set `backgroundImage` to that path, for example `/srotd/sts.jpg`. Leave it `""` to keep the built-in dark background.
+7. `utm` defaults to `utm_source=instagram`, `utm_medium=manychat_dm`, `utm_campaign=srotd`, `utm_content=<keyword>`. Set any of those keys in the JSON to change the default. A matching param on the incoming URL overrides the default. The signup component receives the resolved values as hidden fields.
+
+The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The Beehiiv publication id for Dylan's Newsletter lives in `lib/srotd/config.js`. The subscribe form is not connected yet. The only place to mount it is `components/srotd/SrotdSignup.js`.
+
 ## Wins Challenge
 
 `/wins-challenge` reads tallies from `data/wins-challenge.json`. `GET /api/wins-challenge` returns that file, then fills a null `winner` when a drawing has been locked and adds a `drawing` object on every month. A tally bot can still replace the file in a pull request. Do not infer a winner from the leaderboard. If a month has no announcement and no locked drawing, `winner` stays `null`.
