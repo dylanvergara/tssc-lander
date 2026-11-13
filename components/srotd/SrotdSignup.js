@@ -1,67 +1,81 @@
-import { srotdBeehiiv } from '../../lib/srotd/config';
+'use client';
 
-/**
- * SINGLE INTEGRATION POINT for the SROTD Beehiiv subscribe form.
- *
- * Status: PLACEHOLDER. Do not mount a second form on this page.
- * Publication: Dylan's Newsletter
- *   srotdBeehiiv.publicationId = pub_46fb910f-0d7f-4fd2-9867-b8a3dd5c9ff3
- *
- * TODO: replace the disabled name/email fields with the Beehiiv embed.
- * Keep the hidden `utm` inputs (or pass the same `utm` prop into the embed).
- * URL params already override the per-role defaults before they get here.
- */
-export const SROTD_SIGNUP_INTEGRATION = 'placeholder';
+import { useState } from 'react';
+import { enrollSrotdAction } from '../../app/srotd/actions';
+import { SROTD_COPY, validateSrotdSignup } from '../../lib/srotd/signup-fields';
 
-export default function SrotdSignup({ utm }) {
-  const entries = Object.entries(utm || {});
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+
+export default function SrotdSignup({ keyword, utm }) {
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState('');
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    if (pending) return;
+
+    const form = new FormData(event.currentTarget);
+    const input = {
+      firstName: form.get('firstName'),
+      lastName: form.get('lastName'),
+      phone: form.get('phone'),
+      email: form.get('email'),
+    };
+    const checked = validateSrotdSignup(input);
+    if (!checked.ok) {
+      setError(checked.message);
+      return;
+    }
+
+    setPending(true);
+    setError('');
+    try {
+      const result = await enrollSrotdAction({
+        keyword,
+        ...input,
+        utm: Object.fromEntries(UTM_KEYS.map((key) => [key, form.get(key) || ''])),
+      });
+      if (result?.ok) {
+        window.location.assign('/srotd/confirmation');
+        return;
+      }
+      setError(result?.message || SROTD_COPY.retry);
+      setPending(false);
+    } catch {
+      setError(SROTD_COPY.retry);
+      setPending(false);
+    }
+  }
 
   return (
-    <form
-      className="srotd__form"
-      data-srotd-signup={SROTD_SIGNUP_INTEGRATION}
-      data-todo="beehiiv-embed"
-      data-beehiiv-publication={srotdBeehiiv.publicationId}
-      data-beehiiv-publication-name={srotdBeehiiv.publicationName}
-      aria-disabled="true"
-      aria-describedby="srotd-signup-note"
-      noValidate
-    >
-      <p className="srotd__sr" id="srotd-signup-note">
-        Placeholder only. The Beehiiv signup for {srotdBeehiiv.publicationName} is not connected yet.
-      </p>
-      {entries.map(([name, value]) => (
-        <input key={name} type="hidden" name={name} value={value} />
+    <form className="srotd__form" onSubmit={onSubmit} noValidate>
+      {UTM_KEYS.map((key) => (
+        <input key={key} type="hidden" name={key} value={utm?.[key] || ''} />
       ))}
-      <fieldset className="srotd__fields" disabled>
-        <legend className="srotd__sr">Get the full breakdown</legend>
+      <div className="srotd__fields">
+        <div className="srotd__names">
+          <label className="srotd__label">
+            <span className="srotd__sr">First name</span>
+            <input className="srotd__input" name="firstName" type="text" autoComplete="given-name" placeholder="First name" aria-label="First name" required disabled={pending} />
+          </label>
+          <label className="srotd__label">
+            <span className="srotd__sr">Last name</span>
+            <input className="srotd__input" name="lastName" type="text" autoComplete="family-name" placeholder="Last name" aria-label="Last name" required disabled={pending} />
+          </label>
+        </div>
         <label className="srotd__label">
-          <span className="srotd__sr">First name</span>
-          <input
-            className="srotd__input"
-            type="text"
-            name="name"
-            placeholder="First name"
-            autoComplete="given-name"
-            aria-label="First name"
-          />
+          <span className="srotd__sr">Phone</span>
+          <input className="srotd__input" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="Phone" aria-label="Phone" required disabled={pending} />
         </label>
         <label className="srotd__label">
           <span className="srotd__sr">Email</span>
-          <input
-            className="srotd__input"
-            type="email"
-            name="email"
-            inputMode="email"
-            placeholder="Email"
-            autoComplete="email"
-            aria-label="Email"
-          />
+          <input className="srotd__input" name="email" type="email" inputMode="email" autoComplete="email" placeholder="Email" aria-label="Email" required disabled={pending} />
         </label>
-        <button className="srotd__submit" type="submit">
-          Get the breakdown
+        {error ? <p className="srotd__error" role="alert">{error}</p> : null}
+        <button className="srotd__submit" type="submit" disabled={pending} aria-busy={pending}>
+          {pending ? 'Getting the info together for you…' : 'Get access to this sales role now!'}
         </button>
-      </fieldset>
+      </div>
     </form>
   );
 }

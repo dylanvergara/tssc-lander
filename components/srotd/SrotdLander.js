@@ -42,7 +42,7 @@ export default function SrotdLander({ role, utm }) {
         <div className="srotd__ask">
           <h1 className="srotd__headline">{role.headline}</h1>
           <p className="srotd__disclaimer">{role.disclaimer}</p>
-          <SrotdSignup utm={utm} />
+          <SrotdSignup keyword={role.keyword} utm={utm} />
         </div>
       </div>
     </main>

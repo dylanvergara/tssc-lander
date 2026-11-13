@@ -49,7 +49,7 @@ One template serves every role at `/srotd/<keyword>`. The first role is `/srotd/
 
 The confirmation creative is `SROTD_CONFIRM_IMAGE` in `app/srotd/confirmation/page.js`. Leave it empty and no image is rendered.
 
-The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The Beehiiv publication id, automation id, and custom field names for Dylan's Newsletter live in `lib/srotd/config.js`. `BEEHIIV_SROTD_AUTOMATION_ID` overrides the automation id. The subscribe form and the opt-in API are not connected yet. The only place to mount the form is `components/srotd/SrotdSignup.js`.
+The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The Beehiiv publication, automation id, and custom field display names live in `lib/srotd/config.js`. The signup form is `components/srotd/SrotdSignup.js`. It posts through a server action. Set `BEEHIIV_API_KEY` and `BEEHIIV_SROTD_AUTOMATION_ID` or the form will not call Beehiiv. A role also needs a non-empty `docUrl`.
 
 ## Wins Challenge
 
