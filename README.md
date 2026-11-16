@@ -79,5 +79,5 @@ Names in the file must be first name plus last initial (`Alex P.`). A single fir
 - `months`: oldest first. `month` is `YYYY-MM`.
 - `winner`: `null`, or `{ name, avatarUrl, sourceUrl }`. `sourceUrl` is the announcement post. `null` means unknown. The API replaces a null winner with `{ name, avatarUrl, sourceUrl: null }` when a drawing final winner is locked.
 - `drawing`: API only. `{ absent: [{ memberId, name, avatarUrl, at }], finalWinner: null or the same person shape }`. `at` is an ISO timestamp. Not stored in the tally file.
-- `tally`: one object per member. `points` is the slice weight and must match the sum of `entries[].points`. `entries[].topic` should be a key in `tiers`.
+- `tally`: one object per member. `points` is the slice weight. When `entries` lists the posts, those points must add up to `points`, and `entries[].topic` should be a key in `tiers`. An empty `entries` list means the per-post tiers are unknown: the page shows the point total and leaves the tier line off.
 - `meta`: notes for the bot. The page only reads `meta.spaceUrl`.
