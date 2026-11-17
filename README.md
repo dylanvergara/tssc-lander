@@ -44,12 +44,12 @@ One template serves every role at `/srotd/<keyword>`. The first role is `/srotd/
 4. `highlights` can hold more than three strings. The page shows the first three only. Put the lines you want on the page first.
 5. `extraDetails` is optional and is not rendered. Use it for notes you do not want on the lander.
 6. Background photo: drop a file in `public/srotd/`, then set `backgroundImage` to that path, for example `/srotd/sts.jpg`. Leave it `""` to keep the built-in dark background.
-7. `utm` defaults to `utm_source=instagram`, `utm_medium=manychat_dm`, `utm_campaign=srotd`, `utm_content=<keyword>`. Set any of those keys in the JSON to change the default. A matching param on the incoming URL overrides the default. The signup component receives the resolved values as hidden fields.
-8. `roleName` and `docUrl` are optional and are not shown on the page. They are stored for a future Beehiiv opt-in. Leave `docUrl` as `""` until there is a link.
+7. `utm` on the role file is stored with the role. The page does not rewrite the URL. Beehiiv reads the address the visitor loaded, including `/srotd/<keyword>`.
+8. `roleName` and `docUrl` are optional and are not shown on the page.
 
 The confirmation creative is `SROTD_CONFIRM_IMAGE` in `app/srotd/confirmation/page.js`. Leave it empty and no image is rendered.
 
-The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The Beehiiv publication, automation id, and custom field display names live in `lib/srotd/config.js`. The signup form is `components/srotd/SrotdSignup.js`. It posts through a server action. Set `BEEHIIV_API_KEY` and `BEEHIIV_SROTD_AUTOMATION_ID` or the form will not call Beehiiv. A role also needs a non-empty `docUrl`.
+The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The signup slot is `components/srotd/SrotdSignup.js`. It mounts Dylan's Beehiiv embed in place. The page does not call the Beehiiv API and does not need `BEEHIIV_API_KEY`.
 
 ## Wins Challenge
 

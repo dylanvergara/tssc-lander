@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { siteData } from '../../../data/content.js';
 import SrotdLander from '../../../components/srotd/SrotdLander';
 import { SROTD_RESERVED_KEYWORDS } from '../../../lib/srotd/config';
-import { getSrotdKeywords, getSrotdRole, resolveSrotdUtm } from '../../../lib/srotd/roles';
+import { getSrotdKeywords, getSrotdRole } from '../../../lib/srotd/roles';
 
 export const dynamicParams = false;
 
@@ -47,9 +47,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function SrotdPage({ params, searchParams }) {
+export default function SrotdPage({ params }) {
   if (SROTD_RESERVED_KEYWORDS.includes(params.keyword)) notFound();
   const role = getSrotdRole(params.keyword);
   if (!role) notFound();
-  return <SrotdLander role={role} utm={resolveSrotdUtm(role, searchParams)} />;
+  return <SrotdLander role={role} />;
 }
