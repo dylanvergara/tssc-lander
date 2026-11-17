@@ -16,7 +16,7 @@ export default function SrotdLander({ role }) {
           height={1080}
           priority
           quality={90}
-          sizes="(max-width: 900px) 92vw, 420px"
+          sizes="(max-width: 900px) calc(100vw - 32px), 440px"
         />
         <div className="srotd__copy">
           <h1 className="srotd__headline">{HEADING}</h1>

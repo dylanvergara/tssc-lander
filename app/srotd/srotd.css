@@ -12,17 +12,19 @@ body:has(.srotd) {
 }
 
 .srotd {
-  /* Beehiiv draws the form card 25px inside the iframe. The column is as wide
-     as that card, and the iframe is pulled out by the same 25px so the card,
-     the slide, the heading, and the note share one pair of edges. */
+  /* Beehiiv draws the form card 25px inside the iframe and leaves about 24px
+     empty under the button. The iframe is shifted and clipped so the visible
+     card shares the column edges and the stack centers on what you see. */
   --srotd-inset: 25px;
-  --srotd-gap: 10px;
-  --srotd-size: min(calc(100vw - 32px), calc(100dvh - 336px), 440px);
+  --srotd-form-tail: 24px;
+  --srotd-gap: 16px;
+  --srotd-size: min(calc(100vw - 32px), calc(100dvh - 348px), 440px);
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding:
@@ -57,7 +59,7 @@ body:has(.srotd) {
 
 .srotd__copy {
   display: grid;
-  gap: 4px;
+  gap: var(--srotd-gap);
 }
 
 .srotd__headline {
@@ -83,6 +85,7 @@ body:has(.srotd) {
 
 .srotd__embed {
   width: 100%;
+  height: calc(240px - var(--srotd-form-tail));
   margin-top: calc(var(--srotd-inset) * -1);
   overflow: hidden;
 }
