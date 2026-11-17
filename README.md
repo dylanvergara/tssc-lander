@@ -40,16 +40,13 @@ One template serves every role at `/srotd/<keyword>`. The first role is `/srotd/
 
 1. Copy `data/srotd/sts.json` to `data/srotd/<keyword>.json`.
 2. Set `keyword` to that same slug (lowercase letters, numbers, hyphens). The filename and the `keyword` field must match. `confirmation` is reserved. `/srotd/confirmation` is the shared inbox page for every role.
-3. Edit `role`, `niche`, `ote`, `source`, `headline`, `disclaimer`, and `meta` (`title`, `description`, `ogImage`).
-4. `highlights` can hold more than three strings. The page shows the first three only. Put the lines you want on the page first.
-5. `extraDetails` is optional and is not rendered. Use it for notes you do not want on the lander.
-6. Background photo: drop a file in `public/srotd/`, then set `backgroundImage` to that path, for example `/srotd/sts.jpg`. Leave it `""` to keep the built-in dark background.
-7. `utm` on the role file is stored with the role. The page does not rewrite the URL. Beehiiv reads the address the visitor loaded, including `/srotd/<keyword>`.
-8. `roleName` and `docUrl` are optional and are not shown on the page.
+3. Drop the square slide in `public/srotd/` and set `heroImage` to that path, for example `/srotd/sts.jpg`. That is the only per-role content. The heading, the small line, and the Beehiiv form are shared.
+
+The page does not rewrite the URL. Beehiiv reads the address the visitor loaded, including `/srotd/<keyword>`.
 
 The confirmation creative is `SROTD_CONFIRM_IMAGE` in `app/srotd/confirmation/page.js`. Leave it empty and no image is rendered.
 
-The handwritten face for the values is set in one place: `lib/srotd/fonts.js` (Caveat). The signup slot is `components/srotd/SrotdSignup.js`. It mounts Dylan's Beehiiv embed in place. The page does not call the Beehiiv API and does not need `BEEHIIV_API_KEY`.
+The signup slot is `components/srotd/SrotdSignup.js`. It mounts Dylan's Beehiiv embed in place. The page does not call the Beehiiv API and does not need `BEEHIIV_API_KEY`.
 
 ## Wins Challenge
 

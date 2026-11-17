@@ -23,8 +23,9 @@ export function generateMetadata({ params }) {
   const robots = { index: false, follow: false };
   if (!role) return { robots };
 
-  const { title, description, ogImage } = role.meta;
-  const image = absoluteAsset(ogImage);
+  const title = 'Sales Role of the Day';
+  const description = 'Get the full breakdown + how to apply.';
+  const image = absoluteAsset(role.heroImage);
   const url = `${siteData.meta.url}/srotd/${role.keyword}`;
 
   return {
