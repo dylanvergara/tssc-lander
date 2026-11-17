@@ -1,8 +1,11 @@
-/* Sales Role of the Day. One centered column, little or no scroll. */
+/* Sales Role of the Day. One centered column, sized to the visible screen. */
 html:has(.srotd),
 body:has(.srotd) {
   height: 100vh;
+  height: 100svh;
   height: 100dvh;
+  max-height: 100vh;
+  max-height: 100svh;
   max-height: 100dvh;
   overflow: hidden;
   background: #080808;
@@ -17,10 +20,22 @@ body:has(.srotd) {
      card shares the column edges and the stack centers on what you see. */
   --srotd-inset: 25px;
   --srotd-form-tail: 24px;
-  --srotd-gap: 16px;
-  --srotd-size: min(calc(100vw - 32px), calc(100dvh - 348px), 440px);
+  --srotd-gap: 24px;
+  --srotd-copy-gap: 6px;
+  --srotd-pad-x: 20px;
+  /* Slide is the only flexible piece. This reserves the heading, the note,
+     the gaps, and the visible form so the square image can take the rest. */
+  --srotd-chrome: 300px;
+  --srotd-size: min(
+    calc(100vw - (var(--srotd-pad-x) * 2)),
+    calc(100svh - var(--srotd-chrome)),
+    calc(100dvh - var(--srotd-chrome)),
+    440px
+  );
   height: 100vh;
+  height: 100svh;
   height: 100dvh;
+  max-height: 100svh;
   max-height: 100dvh;
   overflow: hidden;
   display: flex;
@@ -28,9 +43,9 @@ body:has(.srotd) {
   align-items: center;
   justify-content: center;
   padding:
-    max(10px, env(safe-area-inset-top))
-    16px
-    max(10px, env(safe-area-inset-bottom));
+    env(safe-area-inset-top)
+    var(--srotd-pad-x)
+    env(safe-area-inset-bottom);
   box-sizing: border-box;
   background:
     radial-gradient(80% 50% at 50% 0%, rgba(36, 48, 62, 0.45), transparent 58%),
@@ -39,11 +54,14 @@ body:has(.srotd) {
 }
 
 .srotd__column {
+  width: calc(100vw - (var(--srotd-pad-x) * 2));
   width: var(--srotd-size);
+  max-width: 100%;
   max-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  justify-content: center;
   gap: var(--srotd-gap);
 }
 
@@ -59,7 +77,7 @@ body:has(.srotd) {
 
 .srotd__copy {
   display: grid;
-  gap: var(--srotd-gap);
+  gap: var(--srotd-copy-gap);
 }
 
 .srotd__headline {
@@ -70,6 +88,7 @@ body:has(.srotd) {
   letter-spacing: -0.03em;
   line-height: 1.12;
   color: #fff;
+  text-align: center;
   text-wrap: balance;
 }
 
@@ -81,6 +100,7 @@ body:has(.srotd) {
   line-height: 1.35;
   letter-spacing: 0.01em;
   color: rgba(255, 255, 255, 0.48);
+  text-align: center;
 }
 
 .srotd__embed {
@@ -96,4 +116,17 @@ body:has(.srotd) {
   border: 0 !important;
   display: block;
   background: transparent;
+}
+
+@media (min-width: 900px) {
+  .srotd {
+    --srotd-gap: 16px;
+    --srotd-copy-gap: 16px;
+    --srotd-pad-x: 16px;
+    --srotd-chrome: 300px;
+  }
+  .srotd__headline,
+  .srotd__note {
+    text-align: left;
+  }
 }
