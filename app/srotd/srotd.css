@@ -12,7 +12,12 @@ body:has(.srotd) {
 }
 
 .srotd {
-  --srotd-size: min(calc(100vw - 32px), 42dvh);
+  /* Beehiiv draws the form card 25px inside the iframe. The column is as wide
+     as that card, and the iframe is pulled out by the same 25px so the card,
+     the slide, the heading, and the note share one pair of edges. */
+  --srotd-inset: 25px;
+  --srotd-gap: 10px;
+  --srotd-size: min(calc(100vw - 32px), calc(100dvh - 336px), 440px);
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
@@ -37,7 +42,7 @@ body:has(.srotd) {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(8px, 1.1dvh, 12px);
+  gap: var(--srotd-gap);
 }
 
 .srotd__hero {
@@ -78,19 +83,14 @@ body:has(.srotd) {
 
 .srotd__embed {
   width: 100%;
-  min-height: 0;
-  border-radius: 8px;
+  margin-top: calc(var(--srotd-inset) * -1);
   overflow: hidden;
 }
 .srotd__embed iframe {
-  width: 100% !important;
-  max-width: 100%;
+  width: calc(100% + (var(--srotd-inset) * 2)) !important;
+  max-width: none !important;
+  margin-left: calc(var(--srotd-inset) * -1) !important;
   border: 0 !important;
   display: block;
-  border-radius: 8px;
   background: transparent;
-}
-
-@media (min-width: 900px) and (min-height: 800px) {
-  .srotd { --srotd-size: min(440px, 46dvh); }
 }
