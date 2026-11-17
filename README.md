@@ -32,6 +32,22 @@ In `data/content.js`, find `testimonialCarousels` and add to any carousel array:
 { id: 19, label: '$15k first month', sub: 'Before: Retail', videoId: 'YOUR_YT_ID', platform: 'youtube' }
 ```
 
+## Sales Role of the Day
+
+One template serves every role at `/srotd/<keyword>`. The first role is `/srotd/sts`. Unknown keywords 404. Pages send `noindex`.
+
+### Add a role
+
+1. Copy `data/srotd/sts.json` to `data/srotd/<keyword>.json`.
+2. Set `keyword` to that same slug (lowercase letters, numbers, hyphens). The filename and the `keyword` field must match. `confirmation` is reserved. `/srotd/confirmation` is the shared inbox page for every role.
+3. Drop the square slide in `public/srotd/` and set `heroImage` to that path, for example `/srotd/sts.jpg`. That is the only per-role content. The heading, the small line, and the Beehiiv form are shared.
+
+The page does not rewrite the URL. Beehiiv reads the address the visitor loaded, including `/srotd/<keyword>`.
+
+The confirmation creative is `SROTD_CONFIRM_IMAGE` in `app/srotd/confirmation/page.js`. Leave it empty and no image is rendered.
+
+The signup slot is `components/srotd/SrotdSignup.js`. It mounts Dylan's Beehiiv embed in place. The page does not call the Beehiiv API and does not need `BEEHIIV_API_KEY`.
+
 ## Wins Challenge
 
 `/wins-challenge` reads tallies from `data/wins-challenge.json`. `GET /api/wins-challenge` returns that file, then fills a null `winner` when a drawing has been locked and adds a `drawing` object on every month. A tally bot can still replace the file in a pull request. Do not infer a winner from the leaderboard. If a month has no announcement and no locked drawing, `winner` stays `null`.

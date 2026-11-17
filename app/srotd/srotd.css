@@ -1,0 +1,96 @@
+/* Sales Role of the Day. One centered column, little or no scroll. */
+html:has(.srotd),
+body:has(.srotd) {
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  background: #080808;
+}
+body:has(.srotd) {
+  padding-top: 0;
+}
+
+.srotd {
+  /* Beehiiv draws the form card 25px inside the iframe. The column is as wide
+     as that card, and the iframe is pulled out by the same 25px so the card,
+     the slide, the heading, and the note share one pair of edges. */
+  --srotd-inset: 25px;
+  --srotd-gap: 10px;
+  --srotd-size: min(calc(100vw - 32px), calc(100dvh - 336px), 440px);
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(10px, env(safe-area-inset-top))
+    16px
+    max(10px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background:
+    radial-gradient(80% 50% at 50% 0%, rgba(36, 48, 62, 0.45), transparent 58%),
+    #080808;
+  color: #fff;
+}
+
+.srotd__column {
+  width: var(--srotd-size);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--srotd-gap);
+}
+
+.srotd__hero {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.srotd__copy {
+  display: grid;
+  gap: 4px;
+}
+
+.srotd__headline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2.35dvh, 26px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.srotd__note {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.srotd__embed {
+  width: 100%;
+  margin-top: calc(var(--srotd-inset) * -1);
+  overflow: hidden;
+}
+.srotd__embed iframe {
+  width: calc(100% + (var(--srotd-inset) * 2)) !important;
+  max-width: none !important;
+  margin-left: calc(var(--srotd-inset) * -1) !important;
+  border: 0 !important;
+  display: block;
+  background: transparent;
+}
