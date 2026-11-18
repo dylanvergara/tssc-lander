@@ -26,9 +26,9 @@ export default function SrotdConfirmationPage() {
           <div className="srotd-wait" role="note">
             <p className="srotd-wait__title">
               <span className="srotd-wait__icon" aria-hidden="true">⏱️</span>
-              Heads up: your email can take 2–3 minutes to arrive.
+              Heads up: your email can take <span className="srotd-wait__keep">2–3 minutes to arrive.</span>
             </p>
-            <p className="srotd-wait__sub">Hang tight before checking spam.</p>
+            <p className="srotd-wait__sub">Hang tight before <span className="srotd-wait__keep">checking spam.</span></p>
           </div>
           <p className="lm15__sub">
             I just sent you an email with the full breakdown and how to apply for this role.
