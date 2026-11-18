@@ -138,6 +138,7 @@ body:has(.srotd) {
   line-height: 1.3;
   letter-spacing: -0.02em;
   color: #fff;
+  text-wrap: balance;
 }
 .srotd-wait__icon {
   margin-right: 6px;
@@ -148,6 +149,10 @@ body:has(.srotd) {
   font-weight: 500;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.62);
+  text-wrap: balance;
+}
+.srotd-wait__keep {
+  white-space: nowrap;
 }
 
 @media (min-width: 900px) {
