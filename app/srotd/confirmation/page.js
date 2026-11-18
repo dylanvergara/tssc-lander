@@ -23,9 +23,16 @@ export default function SrotdConfirmationPage() {
           </div>
           <span className="lm15__eyebrow">You&apos;re In</span>
           <h1 className="lm15__headline">Check your inbox for the role breakdown</h1>
+          <div className="srotd-wait" role="note">
+            <p className="srotd-wait__title">
+              <span className="srotd-wait__icon" aria-hidden="true">⏱️</span>
+              Heads up: your email can take 2–3 minutes to arrive.
+            </p>
+            <p className="srotd-wait__sub">Hang tight before checking spam.</p>
+          </div>
           <p className="lm15__sub">
             I just sent you an email with the full breakdown and how to apply for this role.
-            If it&apos;s not there in a minute or two, check your spam or promotions folder.
+            If it&apos;s not there after 3 minutes, check your spam or promotions folder.
           </p>
           <p className="lm15__sub lm15__sub--note">
             If it&apos;s in spam/promo, do me a solid and move it to your main inbox so that all future sales roles I send you land there 👍
