@@ -3,10 +3,10 @@ import {
   LIVE_ROOM_CAP,
   PRIMER_VIDEO_LABEL,
   PRIMER_VIDEO_URL,
-  getCurrentWebinar,
   googleCalendarUrl,
   linkedInShareUrl,
   outlookCalendarUrl,
+  calendarPath,
   registerUrl,
   senderEmailIsPlaceholder,
   senderEmailLabel,
@@ -14,9 +14,9 @@ import {
 } from '../../lib/webinar';
 import CompleteRegistration from './CompleteRegistration';
 import CopyLinkButton from './CopyLinkButton';
+import RegistrationDetails from './RegistrationDetails';
 
-export default function ConfirmationPage() {
-  const webinar = getCurrentWebinar();
+export default function ConfirmationPage({ webinar }) {
   const email = senderEmailLabel();
   const emailIsPlaceholder = senderEmailIsPlaceholder();
   const shareUrl = registerUrl(webinar.slug);
@@ -36,7 +36,9 @@ export default function ConfirmationPage() {
               <span className="wb-eyebrow__live">{webinar.confirmEyebrow}</span>
               <span className="wb-eyebrow__when">{webinar.eyebrowWhen}</span>
             </p>
+            <p className="wb-bf-note">{webinar.confirmMark}</p>
             <h1 id="wb-confirm-title" className="wb-h1">{webinar.confirmH1}</h1>
+            <RegistrationDetails />
             <p className="wb-lede">{webinar.confirmLede}</p>
 
             <div className="wb-cal" role="group" aria-label="Add to Calendar">
@@ -48,7 +50,7 @@ export default function ConfirmationPage() {
                 <a className="wb-btn wb-btn--ghost" href={outlookCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
                   Outlook
                 </a>
-                <a className="wb-btn wb-btn--ghost" href="/webinar/calendar.ics">
+                <a className="wb-btn wb-btn--ghost" href={calendarPath(webinar.slug)}>
                   Download .ics
                 </a>
               </div>

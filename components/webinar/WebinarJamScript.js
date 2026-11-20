@@ -8,7 +8,8 @@ import { SAVE_SEAT_LABEL } from '../../lib/webinar';
 // delegate. A button rendered later forwards its click to one that is bound.
 // next/script loads the file once. Inline styles and a replaced label are
 // stripped so the TSSC button is what people see.
-export default function WebinarJamScript({ hash, src }) {
+export default function WebinarJamScript({ hash, src, barSrc = '' }) {
+  const scriptSrc = barSrc || src;
   useEffect(() => {
     const jquery = () => window.wj?.[hash]?.jQuery || null;
 
@@ -55,5 +56,13 @@ export default function WebinarJamScript({ hash, src }) {
     };
   }, [hash]);
 
-  return <Script id={`wj-embed-${hash}`} src={src} strategy="afterInteractive" />;
+  if (!scriptSrc) return null;
+
+  return (
+    <Script
+      id={barSrc ? `wj-bar-${hash}` : `wj-embed-${hash}`}
+      src={scriptSrc}
+      strategy="afterInteractive"
+    />
+  );
 }

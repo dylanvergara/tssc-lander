@@ -20,7 +20,7 @@ export default function WebinarLayout({ children }) {
         />
       </header>
       {children}
-      <Footer data={siteData} />
+      <Footer data={siteData} openInNewTab />
     </div>
   );
 }

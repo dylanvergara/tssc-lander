@@ -26,12 +26,16 @@ export default function RegisterPage({ webinar, interviewCount, hoursLabel, tenk
             <div className="wb-kicker">
               <p className="wb-eyebrow">
                 <span className="wb-eyebrow__live">{webinar.eyebrowLive}</span>
+                <span className="wb-eyebrow__night">{webinar.eyebrowNight}</span>
                 <span className="wb-eyebrow__when">{webinar.eyebrowWhen}</span>
               </p>
-              <Countdown startIso={webinar.startIso} fallback={webinar.countdownFallback} />
+              <Countdown startIso={webinar.startIso} />
             </div>
 
-            <h1 id="wb-title" className="wb-h1">{webinar.h1}</h1>
+            <h1 id="wb-title" className="wb-h1">
+              <span className="wb-h1__bf">{webinar.h1Kicker}</span>
+              <span className="wb-h1__main">{webinar.h1Main}</span>
+            </h1>
             <p className="wb-lede">{webinar.lede}</p>
 
             <ul className="wb-points">
@@ -116,10 +120,10 @@ export default function RegisterPage({ webinar, interviewCount, hoursLabel, tenk
               </div>
               <div className="wb-host__copy">
                 <p>
-                  Dylan quit a high-paying roofing sales job right out of school to go remote. He rebuilt a six-figure income within 6 months on a part-time schedule. Since then he has worked with 500+ reps, 1-on-1 or in small groups.
+                  I quit a high-paying roofing sales job right out of school to go remote. I rebuilt a six-figure income within 6 months on a part-time schedule. In 2024, not even 2 years into this industry, I made $400k as a sales manager.
                 </p>
                 <p>
-                  He has hosted three sold-out in-person events in Austin. His hiring channel sourced {jobsLabel} 1099 WFH sales gigs over the last 12 months. He has recorded {interviewCount} full-length member interviews, {hoursLabel} hours, including {tenkCount} members on camera who hit $10k+/mo.
+                  I have worked with 500+ reps, 1-on-1 or in small groups. I have hosted three sold-out in-person events in Austin. My hiring channel sourced {jobsLabel} 1099 WFH sales gigs over the last 12 months. I have recorded {interviewCount} full-length member interviews, {hoursLabel} hours, including {tenkCount} members on camera who hit $10k+/mo.
                 </p>
               </div>
             </div>
@@ -153,7 +157,7 @@ export default function RegisterPage({ webinar, interviewCount, hoursLabel, tenk
           </div>
         </section>
       </main>
-      <WebinarJamScript hash={webinar.hash} src={webinar.embedSrc} />
+      <WebinarJamScript hash={webinar.hash} src={webinar.embedSrc} barSrc={webinar.embedBarSrc} />
     </>
   );
 }
