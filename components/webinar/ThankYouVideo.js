@@ -7,7 +7,7 @@ export default function ThankYouVideo({ mediaId }) {
 
   return (
     <div id="ty-video" className="wb-video">
-      <div className="wb-video__frame wb-video__frame--player">
+      <div className="wb-video__frame wb-video__frame--player wb-video__frame--lead">
         <style>{`
           .wb-video__frame wistia-player[media-id='${mediaId}']:not(:defined) {
             background: center / contain no-repeat url('${swatch}');

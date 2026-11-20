@@ -1,8 +1,5 @@
 import Image from 'next/image';
 import {
-  LIVE_ROOM_CAP,
-  PRIMER_VIDEO_LABEL,
-  PRIMER_VIDEO_URL,
   googleCalendarUrl,
   linkedInShareUrl,
   outlookCalendarUrl,
@@ -14,7 +11,7 @@ import {
 } from '../../lib/webinar';
 import CompleteRegistration from './CompleteRegistration';
 import CopyLinkButton from './CopyLinkButton';
-import RegistrationDetails from './RegistrationDetails';
+import RegistrationDetails, { JoinLink } from './RegistrationDetails';
 import ThankYouVideo from './ThankYouVideo';
 
 export default function ConfirmationPage({ webinar }) {
@@ -26,47 +23,21 @@ export default function ConfirmationPage({ webinar }) {
     <>
       <CompleteRegistration />
       <main id="wb-main">
-        <section className="wb-hero wb-hero--confirm" aria-labelledby="wb-confirm-title">
-          <div className="wb-wrap">
-            <div className="wb-checkring" aria-hidden="true">
+        <section className="wb-confirm" aria-labelledby="wb-watch-title">
+          <div className="wb-wrap wb-watch">
+            <div className="wb-confirm__check" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 6 9 17l-5-5" />
               </svg>
             </div>
-            <p className="wb-eyebrow">
-              <span className="wb-eyebrow__live">{webinar.confirmEyebrow}</span>
-              <span className="wb-eyebrow__when">{webinar.eyebrowWhen}</span>
-            </p>
-            <p className="wb-bf-note">{webinar.confirmMark}</p>
-            <h1 id="wb-confirm-title" className="wb-h1">{webinar.confirmH1}</h1>
-            <RegistrationDetails />
-            <p className="wb-lede">{webinar.confirmLede}</p>
-
-            <div className="wb-cal" role="group" aria-label="Add to Calendar">
-              <a className="wb-btn" href={googleCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
-                Add to Calendar
-                <span className="wb-sr"> with Google Calendar</span>
-              </a>
-              <div className="wb-cal__pair">
-                <a className="wb-btn wb-btn--ghost" href={outlookCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
-                  Outlook
-                </a>
-                <a className="wb-btn wb-btn--ghost" href={calendarPath(webinar.slug)}>
-                  Download .ics
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="wb-section wb-section--video" aria-label="Thank-you video">
-          <div className="wb-wrap">
+            <RegistrationDetails line={webinar.confirmLine} when={webinar.confirmWhen} />
+            <h1 id="wb-watch-title" className="wb-confirm__title">{webinar.watchHeadline}</h1>
             {webinar.thankYouVideoId ? (
               <ThankYouVideo mediaId={webinar.thankYouVideoId} />
             ) : (
               <div id="ty-video" className="wb-video">
                 {/* PASTE THANK-YOU VIDEO EMBED HERE */}
-                <div className="wb-video__frame" role="note">
+                <div className="wb-video__frame wb-video__frame--lead" role="note">
                   <Image
                     src="/images/dylan-headshot.jpg"
                     alt=""
@@ -85,68 +56,57 @@ export default function ConfirmationPage({ webinar }) {
                 </div>
               </div>
             )}
+            <div className="wb-cal wb-cal--quiet" role="group" aria-label="Add to Calendar">
+              <a className="wb-cal__link" href={googleCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
+                Add to Calendar
+                <span className="wb-sr"> with Google Calendar</span>
+              </a>
+              <a className="wb-cal__link" href={outlookCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
+                Outlook
+              </a>
+              <a className="wb-cal__link" href={calendarPath(webinar.slug)}>
+                .ics
+              </a>
+            </div>
+            <JoinLink />
           </div>
         </section>
 
-        <section className="wb-section" aria-labelledby="wb-steps-title">
+        <section className="wb-next" aria-labelledby="wb-next-title">
           <div className="wb-wrap">
-            <div className="wb-rule" aria-hidden="true" />
-            <h2 id="wb-steps-title" className="wb-h2">{webinar.stepsTitle}</h2>
-            <ol className="wb-steps">
-              {webinar.steps.map((step, index) => (
-                <li key={step.title} className="wb-card">
-                  <span className="wb-card__num">{index + 1}</span>
-                  <h3 className="wb-card__title">{step.title}</h3>
-                  {index === 0 ? (
+            <h2 id="wb-next-title" className="wb-next__title">{webinar.stepsTitle}</h2>
+            <ul className="wb-next__list">
+              {webinar.steps.map((step) => (
+                <li key={step.title}>
+                  <p className="wb-next__label">{step.title}</p>
+                  {step.title === 'Whitelist this email address' ? (
                     <p>
-                      Your join link and reminders come from{' '}
+                      Add{' '}
                       {emailIsPlaceholder ? (
-                        <>
-                          <strong className="wb-email wb-email--ph">{email}</strong>
-                          <span className="wb-chip wb-chip--inline">Placeholder</span>
-                        </>
+                        <strong className="wb-email wb-email--ph">{email}</strong>
                       ) : (
                         <a className="wb-email" href={`mailto:${email}`}>{email}</a>
                       )}
-                      . Add it to your contacts or drag our first email to Primary so nothing lands in spam at 7:58 PM.
+                      {' '}to your contacts so the join link stays out of spam.
                     </p>
                   ) : (
                     <p>{step.body}</p>
                   )}
                 </li>
               ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="wb-section" aria-labelledby="wb-primer-title">
-          <div className="wb-wrap">
-            <div className="wb-rule" aria-hidden="true" />
-            <h2 id="wb-primer-title" className="wb-h2">{webinar.primerTitle}</h2>
-            <p className="wb-lede wb-lede--left">{webinar.primerBody}</p>
-            <a className="wb-btn wb-btn--ghost" href={PRIMER_VIDEO_URL} target="_blank" rel="noopener noreferrer">
-              {PRIMER_VIDEO_LABEL}
-              <span className="wb-sr"> (opens in a new tab)</span>
-            </a>
-          </div>
-        </section>
-
-        <section className="wb-section" aria-labelledby="wb-share-title">
-          <div className="wb-wrap">
-            <div className="wb-rule" aria-hidden="true" />
-            <h2 id="wb-share-title" className="wb-h2">{webinar.shareTitle}</h2>
-            <p className="wb-lede">
-              {webinar.shareLead}{LIVE_ROOM_CAP ? ` ${LIVE_ROOM_CAP}` : ''}
-            </p>
-            <div className="wb-share">
-              <a className="wb-share__btn" href={xShareUrl(webinar)} target="_blank" rel="noopener noreferrer">
+            </ul>
+            <p className="wb-shareline">
+              Know someone who needs this?{' '}
+              <a href={xShareUrl(webinar)} target="_blank" rel="noopener noreferrer">
                 X<span className="wb-sr"> (opens in a new tab)</span>
               </a>
-              <a className="wb-share__btn" href={linkedInShareUrl(webinar)} target="_blank" rel="noopener noreferrer">
+              <span aria-hidden="true"> · </span>
+              <a href={linkedInShareUrl(webinar)} target="_blank" rel="noopener noreferrer">
                 LinkedIn<span className="wb-sr"> (opens in a new tab)</span>
               </a>
-              <CopyLinkButton url={shareUrl} />
-            </div>
+              <span aria-hidden="true"> · </span>
+              <CopyLinkButton url={shareUrl} className="wb-shareline__btn" />
+            </p>
           </div>
         </section>
       </main>
