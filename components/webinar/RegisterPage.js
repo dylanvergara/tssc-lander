@@ -123,7 +123,7 @@ export default function RegisterPage({ webinar, interviewCount, hoursLabel, tenk
                   I quit a high-paying roofing sales job right out of school to go remote. I rebuilt a six-figure income within 6 months on a part-time schedule. In 2024, not even 2 years into this industry, I made $400k as a sales manager.
                 </p>
                 <p>
-                  I have worked with 500+ reps, 1-on-1 or in small groups. I have hosted three sold-out in-person events in Austin. My hiring channel sourced {jobsLabel} 1099 WFH sales gigs over the last 12 months. I have recorded {interviewCount} full-length member interviews, {hoursLabel} hours, including {tenkCount} members on camera who hit $10k+/mo.
+                  I have worked with 500+ reps, 1-on-1 or in small groups. I have hosted 4x sold-out in-person events in Austin. My hiring channel sourced {jobsLabel} 1099 WFH sales gigs over the last 12 months. I have recorded {interviewCount} full-length member interviews, {hoursLabel} hours, including {tenkCount} members on camera who hit $10k+/mo.
                 </p>
               </div>
             </div>
