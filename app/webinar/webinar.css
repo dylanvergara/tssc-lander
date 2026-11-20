@@ -714,6 +714,22 @@
   border-color: #14506e;
   vertical-align: middle;
 }
+.wb-video__frame--player {
+  background: #141414;
+}
+.wb-video__frame--player wistia-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wb-email {
+  color: #14506e;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .wb-email--ph {
   color: #14506e;
   background: rgba(182, 205, 222, 0.45);

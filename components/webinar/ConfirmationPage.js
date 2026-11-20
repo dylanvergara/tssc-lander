@@ -15,6 +15,7 @@ import {
 import CompleteRegistration from './CompleteRegistration';
 import CopyLinkButton from './CopyLinkButton';
 import RegistrationDetails from './RegistrationDetails';
+import ThankYouVideo from './ThankYouVideo';
 
 export default function ConfirmationPage({ webinar }) {
   const email = senderEmailLabel();
@@ -60,26 +61,30 @@ export default function ConfirmationPage({ webinar }) {
 
         <section className="wb-section wb-section--video" aria-label="Thank-you video">
           <div className="wb-wrap">
-            <div id="ty-video" className="wb-video">
-              {/* PASTE THANK-YOU VIDEO EMBED HERE */}
-              <div className="wb-video__frame" role="note">
-                <Image
-                  src="/images/dylan-headshot.jpg"
-                  alt=""
-                  width={256}
-                  height={256}
-                  sizes="(max-width: 800px) 100vw, 720px"
-                  quality={60}
-                  loading="lazy"
-                  aria-hidden="true"
-                />
-                <div className="wb-video__shade">
-                  <span className="wb-chip">Placeholder</span>
-                  <span className="wb-video__play" aria-hidden="true" />
-                  <p>Paste the thank&#8209;you video embed here</p>
+            {webinar.thankYouVideoId ? (
+              <ThankYouVideo mediaId={webinar.thankYouVideoId} />
+            ) : (
+              <div id="ty-video" className="wb-video">
+                {/* PASTE THANK-YOU VIDEO EMBED HERE */}
+                <div className="wb-video__frame" role="note">
+                  <Image
+                    src="/images/dylan-headshot.jpg"
+                    alt=""
+                    width={256}
+                    height={256}
+                    sizes="(max-width: 800px) 100vw, 720px"
+                    quality={60}
+                    loading="lazy"
+                    aria-hidden="true"
+                  />
+                  <div className="wb-video__shade">
+                    <span className="wb-chip">Placeholder</span>
+                    <span className="wb-video__play" aria-hidden="true" />
+                    <p>Paste the thank&#8209;you video embed here</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
 
@@ -95,8 +100,14 @@ export default function ConfirmationPage({ webinar }) {
                   {index === 0 ? (
                     <p>
                       Your join link and reminders come from{' '}
-                      <strong className={emailIsPlaceholder ? 'wb-email wb-email--ph' : 'wb-email'}>{email}</strong>
-                      {emailIsPlaceholder ? <span className="wb-chip wb-chip--inline">Placeholder</span> : null}
+                      {emailIsPlaceholder ? (
+                        <>
+                          <strong className="wb-email wb-email--ph">{email}</strong>
+                          <span className="wb-chip wb-chip--inline">Placeholder</span>
+                        </>
+                      ) : (
+                        <a className="wb-email" href={`mailto:${email}`}>{email}</a>
+                      )}
                       . Add it to your contacts or drag our first email to Primary so nothing lands in spam at 7:58 PM.
                     </p>
                   ) : (
