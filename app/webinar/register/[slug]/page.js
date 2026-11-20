@@ -15,10 +15,10 @@ export async function generateMetadata({ params }) {
   if (!webinar) return {};
   const url = registerUrl(webinar.slug);
   const image = {
-    url: '/images/webinar-og.jpg',
+    url: '/images/og-image.jpg',
     width: 1200,
     height: 630,
-    alt: webinar.h1,
+    alt: 'The Serial Sales Community. Since 2022, the easy button for 1099 WFH sales jobs.',
   };
   return {
     title: webinar.metaTitle,
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       title: webinar.metaTitle,
       description: webinar.metaDescription,
-      images: ['/images/webinar-og.jpg'],
+      images: [image],
     },
   };
 }
