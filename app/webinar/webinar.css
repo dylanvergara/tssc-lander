@@ -63,11 +63,7 @@
   padding: 18px 0 8px;
 }
 .wb-confirm {
-  box-sizing: border-box;
-  min-height: calc(100svh - 69px);
-  display: flex;
-  align-items: center;
-  padding: 28px 0 32px;
+  padding: 4px 0 0;
 }
 .wb-confirm > .wb-wrap {
   width: 100%;
@@ -87,7 +83,7 @@
   height: 14px;
 }
 .wb-confirm__when {
-  margin: 0 0 28px;
+  margin: 0 0 12px;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -116,24 +112,6 @@
 .wb-video {
   width: 100%;
 }
-.wb-step-pill {
-  display: inline-flex;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  min-height: 20px;
-  margin: 0 0 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(240, 180, 41, 0.12);
-  border: 1px solid rgba(240, 180, 41, 0.45);
-  color: #f6c445;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-align: center;
-}
 .wb-watch .wb-watch__title {
   margin-bottom: 8px;
 }
@@ -147,7 +125,7 @@
   text-wrap: balance;
 }
 .wb-watch .wb-cal {
-  margin-top: 22px;
+  margin-top: 16px;
 }
 .wb-cal.wb-cal--quiet {
   grid-template-columns: 1.5fr 1fr 0.7fr;
@@ -188,7 +166,7 @@
   text-underline-offset: 3px;
 }
 .wb-next {
-  padding: 56px 0 36px;
+  padding: 28px 0 32px;
 }
 .wb-next__title {
   margin: 0 0 22px;
@@ -952,6 +930,12 @@
 @media (min-width: 800px) {
   .wb-hero {
     padding-top: 28px;
+  }
+  .wb-confirm {
+    padding-top: 12px;
+  }
+  .wb-next {
+    padding-top: 32px;
   }
   .wb-h1 {
     font-size: 40px;

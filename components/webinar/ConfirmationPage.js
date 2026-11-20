@@ -31,7 +31,6 @@ export default function ConfirmationPage({ webinar }) {
               </svg>
             </div>
             <RegistrationDetails line={webinar.confirmLine} when={webinar.confirmWhen} />
-            <p className="wb-step-pill">{webinar.watchStep}</p>
             <h1 id="wb-watch-title" className="wb-confirm__title">{webinar.watchHeadline}</h1>
             {webinar.thankYouVideoId ? (
               <ThankYouVideo mediaId={webinar.thankYouVideoId} />
