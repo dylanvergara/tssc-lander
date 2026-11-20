@@ -41,32 +41,20 @@ export default function ConfirmationPage({ webinar }) {
             <h1 id="wb-confirm-title" className="wb-h1">{webinar.confirmH1}</h1>
             <RegistrationDetails />
             <p className="wb-lede">{webinar.confirmLede}</p>
-
-            <div className="wb-cal" role="group" aria-label="Add to Calendar">
-              <a className="wb-btn" href={googleCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
-                Add to Calendar
-                <span className="wb-sr"> with Google Calendar</span>
-              </a>
-              <div className="wb-cal__pair">
-                <a className="wb-btn wb-btn--ghost" href={outlookCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
-                  Outlook
-                </a>
-                <a className="wb-btn wb-btn--ghost" href={calendarPath(webinar.slug)}>
-                  Download .ics
-                </a>
-              </div>
-            </div>
           </div>
         </section>
 
-        <section className="wb-section wb-section--video" aria-label="Thank-you video">
-          <div className="wb-wrap">
+        <section className="wb-section wb-section--video" aria-labelledby="wb-watch-title">
+          <div className="wb-wrap wb-watch">
+            <p className="wb-step-pill">{webinar.watchStep}</p>
+            <h2 id="wb-watch-title" className="wb-h2 wb-watch__title">{webinar.watchHeadline}</h2>
+            <p className="wb-watch__why">{webinar.watchWhy}</p>
             {webinar.thankYouVideoId ? (
               <ThankYouVideo mediaId={webinar.thankYouVideoId} />
             ) : (
               <div id="ty-video" className="wb-video">
                 {/* PASTE THANK-YOU VIDEO EMBED HERE */}
-                <div className="wb-video__frame" role="note">
+                <div className="wb-video__frame wb-video__frame--lead" role="note">
                   <Image
                     src="/images/dylan-headshot.jpg"
                     alt=""
@@ -85,6 +73,20 @@ export default function ConfirmationPage({ webinar }) {
                 </div>
               </div>
             )}
+            <div className="wb-cal" role="group" aria-label="Add to Calendar">
+              <a className="wb-btn" href={googleCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
+                Add to Calendar
+                <span className="wb-sr"> with Google Calendar</span>
+              </a>
+              <div className="wb-cal__pair">
+                <a className="wb-btn wb-btn--ghost" href={outlookCalendarUrl(webinar)} target="_blank" rel="noopener noreferrer">
+                  Outlook
+                </a>
+                <a className="wb-btn wb-btn--ghost" href={calendarPath(webinar.slug)}>
+                  Download .ics
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -95,9 +97,9 @@ export default function ConfirmationPage({ webinar }) {
             <ol className="wb-steps">
               {webinar.steps.map((step, index) => (
                 <li key={step.title} className="wb-card">
-                  <span className="wb-card__num">{index + 1}</span>
+                  <span className="wb-card__num">{index + 2}</span>
                   <h3 className="wb-card__title">{step.title}</h3>
-                  {index === 0 ? (
+                  {step.title === 'Whitelist this email address' ? (
                     <p>
                       Your join link and reminders come from{' '}
                       {emailIsPlaceholder ? (

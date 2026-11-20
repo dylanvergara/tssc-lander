@@ -63,7 +63,75 @@
   padding: 18px 0 8px;
 }
 .wb-hero--confirm {
-  padding-top: 22px;
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+.wb-hero--confirm .wb-checkring {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+}
+.wb-hero--confirm .wb-checkring svg {
+  width: 20px;
+  height: 20px;
+}
+.wb-hero--confirm .wb-h1 {
+  font-size: clamp(26px, 6.6vw, 36px);
+  margin-bottom: 8px;
+}
+.wb-hero--confirm .wb-lede {
+  margin-bottom: 0;
+}
+.wb-section--video {
+  padding-top: 18px;
+}
+.wb-watch {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.wb-video {
+  width: 100%;
+}
+.wb-step-pill {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  margin: 0 0 10px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(240, 180, 41, 0.14);
+  border: 1px solid rgba(240, 180, 41, 0.55);
+  color: #f6c445;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+}
+.wb-watch .wb-watch__title {
+  margin-bottom: 8px;
+}
+.wb-watch__why {
+  margin: 0 0 14px;
+  max-width: 36em;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.78);
+  text-wrap: balance;
+}
+.wb-watch .wb-cal {
+  margin-top: 16px;
+}
+.wb-video__frame--lead {
+  border-color: rgba(240, 180, 41, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(240, 180, 41, 0.28),
+    0 0 28px 6px rgba(240, 180, 41, 0.2);
 }
 
 .wb-kicker {
@@ -352,7 +420,8 @@
   padding: 28px 0;
 }
 .wb-section--video {
-  padding-top: 8px;
+  padding-top: 14px;
+  padding-bottom: 8px;
 }
 .wb-rule {
   width: 120px;
