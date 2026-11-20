@@ -22,35 +22,46 @@ function cleanLink(value) {
   }
 }
 
+function readPassed() {
+  const params = new URLSearchParams(window.location.search);
+  let name = '';
+  for (const key of NAME_KEYS) {
+    name = cleanName(params.get(key));
+    if (name) break;
+  }
+  let href = '';
+  for (const key of LINK_KEYS) {
+    href = cleanLink(params.get(key));
+    if (href) break;
+  }
+  return { name, href };
+}
+
 // Reads the thank-you query string once. Nothing is stored or sent anywhere.
-export default function RegistrationDetails() {
-  const [details, setDetails] = useState(null);
+export default function RegistrationDetails({ line, when }) {
+  const [name, setName] = useState('');
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    let name = '';
-    for (const key of NAME_KEYS) {
-      name = cleanName(params.get(key));
-      if (name) break;
-    }
-    let href = '';
-    for (const key of LINK_KEYS) {
-      href = cleanLink(params.get(key));
-      if (href) break;
-    }
-    if (name || href) setDetails({ name, href });
+    setName(readPassed().name);
   }, []);
 
-  if (!details) return null;
+  const text = name ? `You're in, ${name} · ${when}` : line;
+
+  return <p className="wb-confirm__when">{text}</p>;
+}
+
+export function JoinLink() {
+  const [href, setHref] = useState('');
+
+  useEffect(() => {
+    setHref(readPassed().href);
+  }, []);
+
+  if (!href) return null;
 
   return (
-    <div className="wb-passed">
-      {details.name ? <p className="wb-passed__name">You&apos;re in, {details.name}.</p> : null}
-      {details.href ? (
-        <a className="wb-btn wb-btn--ghost" href={details.href} target="_blank" rel="noopener noreferrer">
-          Your join link
-        </a>
-      ) : null}
-    </div>
+    <a className="wb-join" href={href} target="_blank" rel="noopener noreferrer">
+      Your join link
+    </a>
   );
 }

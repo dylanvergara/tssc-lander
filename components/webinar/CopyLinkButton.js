@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-export default function CopyLinkButton({ url }) {
+export default function CopyLinkButton({ url, className = 'wb-share__btn' }) {
   const [copied, setCopied] = useState(false);
 
   return (
     <button
       type="button"
-      className="wb-share__btn"
+      className={className}
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(url);
