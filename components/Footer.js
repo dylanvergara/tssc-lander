@@ -1,5 +1,6 @@
-export default function Footer({ data }) {
+export default function Footer({ data, openInNewTab = false }) {
   const year = new Date().getFullYear();
+  const linkProps = openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
   return (
     <footer className="footer">
       <div className="col">
@@ -8,11 +9,11 @@ export default function Footer({ data }) {
 
         {/* Fix 11: Privacy & Terms links */}
         <div className="footer__links">
-          <a href="/privacy-policy" className="footer__link">Privacy Policy</a>
+          <a href="/privacy-policy" className="footer__link" {...linkProps}>Privacy Policy</a>
           <span className="footer__sep">·</span>
-          <a href="/terms-and-conditions" className="footer__link">Terms &amp; Conditions</a>
+          <a href="/terms-and-conditions" className="footer__link" {...linkProps}>Terms &amp; Conditions</a>
           <span className="footer__sep">·</span>
-          <a href="mailto:dylan@serialsales.co" className="footer__link">Contact</a>
+          <a href="mailto:dylan@serialsales.co" className="footer__link" {...linkProps}>Contact</a>
         </div>
 
         {/* Fix 11: FTC earnings disclaimer */}
