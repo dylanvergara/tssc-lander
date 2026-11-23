@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T21:17:59Z",
+  "generatedAt": "2026-11-23T18:00:00.000Z",
   "tiers": {
     "Life Changer": 7,
     "Record Breaker": 6,
@@ -6537,60 +6537,151 @@
       "winner": null,
       "tally": [
         {
+          "memberId": "1834119",
+          "name": "Umesh B.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTFJ3VndrPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c229e08db6b473fc223d4d8fe4d9d041f0319dc1/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFJc0FXa0NMQUU2Q25OaGRtVnlld1k2Q25OMGNtbHdWQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--67365f61f655fbc86c65a51f2e9992ab818c41cd/IMG_4862.jpg",
+          "points": 15,
+          "entries": []
+        },
+        {
+          "memberId": "29286884",
+          "name": "Joey H.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCSFZwcmd3PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--fdcda10163bfbd372e82081c85c448b9c5b8b4d5/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_7150.jpeg",
+          "points": 12,
+          "entries": []
+        },
+        {
+          "memberId": "60615094",
+          "name": "Vibol T.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTlMvendzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--64d0888870db973d08522c1caac06992580863bb/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFJc0FXa0NMQUU2Q25OaGRtVnlld1k2Q25OMGNtbHdWQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--86d5a93b1fb9d9a40ce4e61c041294c46ab790a5/53b51cc7-f2ac-473c-ac96-2113d9a33ca5.png",
+          "points": 12,
+          "entries": []
+        },
+        {
+          "memberId": "59494618",
+          "name": "Colin L.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCRTRDREFzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--24010168da6686535d9f4bc45db1abcf2cb35188/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_9104.jpeg",
+          "points": 10,
+          "entries": []
+        },
+        {
           "memberId": "17498764",
           "name": "Justin V.",
           "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCT1dqblFZPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c721ab34b33dca9f364fa3e1a9b24498c6201e6c/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/88BE730C-5A00-422B-9F71-B828D8173FE9_1_105_c.jpeg",
-          "points": 7,
+          "points": 10,
           "entries": [
             {
               "postId": 38047209,
               "date": "2026-11-02T23:43:36.212Z",
-              "topic": "Life Changer",
-              "points": 7
+              "topic": "Record Breaker",
+              "points": 6
             }
           ]
+        },
+        {
+          "memberId": "22343601",
+          "name": "Jennifer J.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCSWEwZndzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2c7779b32a816e81c910819f7cd71f2791451e28/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFJc0FXa0NMQUU2Q25OaGRtVnlld1k2Q25OMGNtbHdWQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--86d5a93b1fb9d9a40ce4e61c041294c46ab790a5/55439789-EACB-4926-8434-0441A40B6FF0%20(1).png",
+          "points": 9,
+          "entries": []
+        },
+        {
+          "memberId": "60003745",
+          "name": "Sterling O.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCREU3UGdzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--95cca75c98773f3e3282e47577503c8c9401291b/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_4739.jpeg",
+          "points": 9,
+          "entries": []
+        },
+        {
+          "memberId": "57632573",
+          "name": "Ruhi M.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCQzZkcGdvPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--e1afa6e5f7bb11c60c9713bb57b2b2e0643f157e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/67B1B003-ACAD-4053-9931-84AB3F777286_1_105_c.jpeg",
+          "points": 7,
+          "entries": []
+        },
+        {
+          "memberId": "1493400",
+          "name": "Darian R.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTUhDdlFzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--abb020557d1d15bac654d29ae061ae7a557b9b63/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/B6907F58-2269-4C9B-A673-66FFD023D22D.jpeg",
+          "points": 5,
+          "entries": []
+        },
+        {
+          "memberId": "66646665",
+          "name": "Rimu M.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCRzBha0F3PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--df6ffa0b8762196f3308a33a2d4ac2f46e2d9657/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJU2xCSEJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFJc0FXa0NMQUU2Q25OaGRtVnlld1k2Q25OMGNtbHdWQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--47f3253c2b9b183528e3489d09290bffb84349e5/IMG_9568.JPG",
+          "points": 5,
+          "entries": []
+        },
+        {
+          "memberId": "58167951",
+          "name": "Abraham R.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCSnBVQlF3PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1be3dcbaccd50a7a5c1f53a57429bd7ea70faad0/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_0896.jpeg",
+          "points": 4,
+          "entries": []
+        },
+        {
+          "memberId": "59549523",
+          "name": "Eduardo S.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCSEx5VUFzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7af4a35cdd1e52251625fb6dbfb77c81b0b9333b/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_8122.jpeg",
+          "points": 4,
+          "entries": []
+        },
+        {
+          "memberId": "54946665",
+          "name": "Jeremy W.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTERwWkFzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4184400d2c892bba3cfe9535dde76023d0457abe/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/Moose%20Cheese.jpeg",
+          "points": 4,
+          "entries": []
+        },
+        {
+          "memberId": "65847390",
+          "name": "Jesus C.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCS242K1FzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--d052caf0e34f247c4580e1375e56a2f03051070a/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFJc0FXa0NMQUU2Q25OaGRtVnlld1k2Q25OMGNtbHdWQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--67365f61f655fbc86c65a51f2e9992ab818c41cd/ACg8ocIMf80nMD1B_7oG7l8KNG3DmQcelTw5I4ZInNvDCnF89LTjFhcN=s300-c",
+          "points": 4,
+          "entries": []
+        },
+        {
+          "memberId": "34195781",
+          "name": "Joshua P.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTXZBSUF3PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--b9fda6d443966abea23b63ef60dcf97c34349f88/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_1015.jpeg",
+          "points": 4,
+          "entries": []
+        },
+        {
+          "memberId": "31015506",
+          "name": "Arvin R.",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCUFpyS0EwPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--a0478333d0893f53fe7ec2826363964101060280/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFJc0FXa0NMQUU2Q25OaGRtVnlld1k2Q25OMGNtbHdWQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--86d5a93b1fb9d9a40ce4e61c041294c46ab790a5/1.png",
+          "points": 3,
+          "entries": []
         },
         {
           "memberId": "67000705",
           "name": "Cobi T.",
           "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCRUtKdWd3PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--689eb12d9f49cc8fc097e6f02e98bebed5aa0cff/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/IMG_2452.jpeg",
           "points": 3,
-          "entries": [
-            {
-              "postId": 38046966,
-              "date": "2026-11-02T23:34:17.504Z",
-              "topic": "Community Assist",
-              "points": 3
-            }
-          ]
+          "entries": []
+        },
+        {
+          "memberId": "67003236",
+          "name": "Oscar R.",
+          "avatarUrl": null,
+          "points": 2,
+          "entries": []
         },
         {
           "memberId": "66351650",
           "name": "Ryan A.",
           "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTlNYRVF3PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--d1e739a494834a4ebf42cba11ff926d4457ad730/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/Image%205-6-26%20at%2012.53%E2%80%AFPM.jpeg",
           "points": 2,
-          "entries": [
-            {
-              "postId": 38042378,
-              "date": "2026-11-02T20:59:04.793Z",
-              "topic": "Interview Win",
-              "points": 2
-            }
-          ]
+          "entries": []
         },
         {
-          "memberId": "1493400",
-          "name": "Darian R.",
-          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCTUhDdlFzPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--abb020557d1d15bac654d29ae061ae7a557b9b63/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/B6907F58-2269-4C9B-A673-66FFD023D22D.jpeg",
+          "memberId": "20928932",
+          "name": "Billie",
+          "avatarUrl": "https://app.circle.so/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCRkZuakFZPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--10c7fd802e8b83b632beb72dcc91ae279c8fd35c/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hSeVpYTnBlbVZmZEc5ZmJHbHRhWFJiQjJrQ0xBRnBBaXdCT2dwellYWmxjbnNHT2dwemRISnBjRlE9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--ef295ed08e817a599d692fd6d8761673d3ed547f/Billie%20Cropped.jpeg",
           "points": 1,
-          "entries": [
-            {
-              "postId": 38064253,
-              "date": "2026-11-03T13:59:26.152Z",
-              "topic": "Other",
-              "points": 1
-            }
-          ]
+          "entries": []
         }
       ]
     }
@@ -6617,7 +6708,8 @@
       "Winners only from explicit announcement posts; never inferred from leaderboards.",
       "June 2026 and July 2026 have final leaderboards and wheel-spin posts but no found winner announcement.",
       "October 2026 wheel spin scheduled 2026-11-03 evening CT; winner not announced at generation time.",
-      "Display names are first name + last initial only."
+      "Display names are first name + last initial only.",
+      "November 2026 refreshed 2026-11-23 from the month-to-date point totals. 20 members, 125 points. Per-post tiers are stored only for Justin V. (one Record Breaker, 6 points). His other 4 points have no tier breakdown. Everyone else has points and an empty entries list, so the page shows the total without a tier line."
     ]
   }
 }
